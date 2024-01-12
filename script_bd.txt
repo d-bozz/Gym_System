@@ -1,0 +1,120 @@
+
+
+create database DBVentaBlazor
+
+go
+
+use DBVentaBlazor
+
+go
+
+create table Rol(
+idRol int primary key identity(1,1),
+descripcion varchar(50),
+esActivo bit,
+fechaRegistro datetime default getdate()
+)
+
+go
+
+create table Usuario(
+idUsuario int primary key identity(1,1),
+nombreApellidos varchar(100),
+correo varchar(40),
+idRol int references Rol(idRol),
+clave varchar(40),
+esActivo bit
+)
+
+go
+
+create table Categoria(
+idCategoria int primary key identity(1,1),
+descripcion varchar(50),
+esActivo bit,
+fechaRegistro datetime default getdate()
+)
+
+
+go 
+create table Producto (
+idProducto int primary key identity(1,1),
+nombre varchar(100),
+idCategoria int references Categoria(idCategoria),
+stock int,
+precio decimal(10,2),
+esActivo bit,
+fechaRegistro datetime default getdate()
+)
+
+go
+
+create table NumeroDocumento(
+idNumeroDocumento int primary key identity(1,1),
+ultimo_Numero int not null,
+fechaRegistro datetime default getdate()
+)
+go
+
+create table Venta(
+idVenta int primary key identity(1,1),
+numeroDocumento varchar(40),
+tipoPago varchar(50),
+fechaRegistro datetime default getdate(),
+total decimal(10,2)
+)
+go
+
+create table DetalleVenta(
+idDetalleVenta int primary key identity(1,1),
+idVenta int references Venta(idVenta),
+idProducto int references Producto(idProducto),
+cantidad int,
+precio decimal(10,2),
+total decimal(10,2)
+)
+
+go
+
+CREATE TABLE Socio (
+    idSocio INT PRIMARY KEY IDENTITY(1,1),
+    nombre VARCHAR(100),
+	apellido VARCHAR(100),
+	telefono VARCHAR(100),
+	clave VARCHAR(40),
+	correo VARCHAR(40),
+    fechaInicioMembresia DATETIME,
+    estadoPago BIT,
+	restricciones VARCHAR(250),
+	mutualista VARCHAR(100)
+)
+
+go
+
+create table PagoMensual (
+    idPago int primary key identity(1,1),
+    idSocio int references Socio(idSocio),
+    mes int,
+    anio int,
+    fechaPago datetime,
+    monto decimal(10,2),
+)
+
+go
+
+create table HorarioActividad (
+    idHorario int primary key identity(1,1),
+    diaSemana varchar(20),
+    horaInicio time,
+    horaFin time,
+    actividad varchar(100),
+)
+
+go
+
+create table Asistencia (
+    idAsistencia int primary key identity(1,1),
+    idSocio int references Socio(idSocio),
+    idHorario int references HorarioActividad(idHorario),
+    fechaAsistencia datetime,
+)
