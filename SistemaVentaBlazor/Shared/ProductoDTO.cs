@@ -14,5 +14,9 @@ namespace SistemaVentaBlazor.Shared
         public string? DescripcionCategoria { get; set; }
         public int? Stock { get; set; }
         public decimal? Precio { get; set; }
+        public DateTime? FechaRegistro { get; set; }
+        public string? Marca { get; set; }
+        public string? Peso { get; set; }
+        public string? Foto { get; set; }
     }
 }

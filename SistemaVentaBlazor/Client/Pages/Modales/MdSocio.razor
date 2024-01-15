@@ -9,18 +9,34 @@
             <EditForm Model="@_socio">
 
                 <MudTextField @bind-Value="@_socio.Nombre" Class="mb-3"
-                              Label="Nombre" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Badge" />
+                              Label="Nombre" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Person" />
 
                 <MudTextField @bind-Value="@_socio.Apellido" Class="mb-3"
-                              Label="Nombre" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Badge" />
+                              Label="Apellido" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Person" />
+
+                <MudTextField @bind-Value="@_socio.Telefono" Class="mb-3"
+                              Label="Teléfono" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Phone" />
 
                 <MudTextField @bind-Value="@_socio.Correo" Class="mb-3"
                               Label="Correo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Email" />
 
-                <MudTextField @bind-Value="@_socio.Clave" Label="Contraseña" Variant="Variant.Outlined" Class="mb-3"
-                              InputType="@PasswordInput" Adornment="Adornment.End"
-                              AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="MostrarClave"
-                              AdornmentAriaLabel="Mostrar Contraseña" />
+                <MudTextField @bind-Value="@_socio.FechaInicioMembresia" Class="mb-3"
+                              Label="Fecha de Inicio de la Membresia" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.CalendarToday" />
+
+                <MudTextField @bind-Value="@_socio.EstadoPago" Class="mb-3"
+                              Label="Estado del Pago" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Payment" />
+
+                <MudTextField @bind-Value="@_socio.Restricciones" Class="mb-3"
+                              Label="Restricciones" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Cancel" />
+
+                <MudTextField @bind-Value="@_socio.Mutualista" Class="mb-3"
+                              Label="Mutualista" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.LocalHospital" />
+                
+                <MudTextField @bind-Value="@_socio.Direccion" Class="mb-3"
+                              Label="Dirección" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.MyLocation" />
+                
+                <MudTextField @bind-Value="@_socio.TelefonoContacto" Class="mb-3"
+                              Label="Teléfono de Contacto" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContactPhone" />
 
             </EditForm>
 

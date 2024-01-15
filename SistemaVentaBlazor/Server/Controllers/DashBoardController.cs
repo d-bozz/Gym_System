@@ -33,6 +33,7 @@ namespace SistemaVentaBlazor.Server.Controllers
                 vmDashboard.TotalVentas = await _dashboardRepositorio.TotalVentasUltimaSemana();
                 vmDashboard.TotalIngresos = await _dashboardRepositorio.TotalIngresosUltimaSemana();
                 vmDashboard.TotalProductos = await _dashboardRepositorio.TotalProductos();
+                vmDashboard.TotalSocios = await _dashboardRepositorio.TotalSocios();
 
                 List<VentaSemanaDTO> listaVentasSemana = new List<VentaSemanaDTO>();
 

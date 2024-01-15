@@ -14,5 +14,8 @@ namespace SistemaVentaBlazor.Shared
         public int IdRol { get; set; }
         public string? rolDescripcion { get; set; }
         public string? Clave { get; set; }
+        public string? Telefono { get; set; }
+        public string? Direccion { get; set; }
+        public string? Horario { get; set; }
     }
 }

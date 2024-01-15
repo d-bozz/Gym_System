@@ -78,6 +78,20 @@ namespace SistemaVentaBlazor.Server.Repositorio.Implementacion
             }
         }
 
+        public async Task<int> TotalSocios()
+        {
+            try
+            {
+                IQueryable<Socio> query = _dbcontext.Socios;
+                int total = query.Count();
+                return total;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public async Task<Dictionary<string, int>> VentasUltimaSemana()
         {
             Dictionary<string, int> resultado = new Dictionary<string, int>();

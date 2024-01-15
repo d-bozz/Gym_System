@@ -26,6 +26,16 @@
                     }
                 </MudSelect>
 
+                <MudTextField @bind-Value="@_usuario.Telefono" Class="mb-3"
+                              Label="Telefono" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Phone" />
+
+                <MudTextField @bind-Value="@_usuario.Direccion" Class="mb-3"
+                              Label="Dirección" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.LocationCity" />
+
+                <MudTextField @bind-Value="@_usuario.Horario" Class="mb-3"
+                              Label="Horario" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Schedule" />
+
+
                 <MudTextField @bind-Value="@_usuario.Clave" Label="Contraseña" Variant="Variant.Outlined" Class="mb-3"
                               InputType="@PasswordInput" Adornment="Adornment.End"
                               AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="MostrarClave"

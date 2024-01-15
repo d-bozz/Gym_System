@@ -41,7 +41,7 @@ public partial class GymSystemContext : DbContext
     {
         modelBuilder.Entity<Asistencia>(entity =>
         {
-            entity.HasKey(e => e.IdAsistencia).HasName("PK__Asistenc__4E1AB894840D521F");
+            entity.HasKey(e => e.IdAsistencia).HasName("PK__Asistenc__4E1AB8945138024D");
 
             entity.Property(e => e.IdAsistencia).HasColumnName("idAsistencia");
             entity.Property(e => e.FechaAsistencia)
@@ -61,7 +61,7 @@ public partial class GymSystemContext : DbContext
 
         modelBuilder.Entity<Categoria>(entity =>
         {
-            entity.HasKey(e => e.IdCategoria).HasName("PK__Categori__8A3D240C744B5EBD");
+            entity.HasKey(e => e.IdCategoria).HasName("PK__Categori__8A3D240C43C29861");
 
             entity.Property(e => e.IdCategoria).HasColumnName("idCategoria");
             entity.Property(e => e.Descripcion)
@@ -77,7 +77,7 @@ public partial class GymSystemContext : DbContext
 
         modelBuilder.Entity<DetalleVenta>(entity =>
         {
-            entity.HasKey(e => e.IdDetalleVenta).HasName("PK__DetalleV__BFE2843F899131A3");
+            entity.HasKey(e => e.IdDetalleVenta).HasName("PK__DetalleV__BFE2843F7A4E5913");
 
             entity.Property(e => e.IdDetalleVenta).HasColumnName("idDetalleVenta");
             entity.Property(e => e.Cantidad).HasColumnName("cantidad");
@@ -92,16 +92,16 @@ public partial class GymSystemContext : DbContext
 
             entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.DetalleVenta)
                 .HasForeignKey(d => d.IdProducto)
-                .HasConstraintName("FK__DetalleVe__idPro__4CA06362");
+                .HasConstraintName("FK__DetalleVe__idPro__4AB81AF0");
 
             entity.HasOne(d => d.IdVentaNavigation).WithMany(p => p.DetalleVenta)
                 .HasForeignKey(d => d.IdVenta)
-                .HasConstraintName("FK__DetalleVe__idVen__4BAC3F29");
+                .HasConstraintName("FK__DetalleVe__idVen__49C3F6B7");
         });
 
         modelBuilder.Entity<HorarioActividad>(entity =>
         {
-            entity.HasKey(e => e.IdHorario).HasName("PK__HorarioA__DE60F33AF7DEAD5B");
+            entity.HasKey(e => e.IdHorario).HasName("PK__HorarioA__DE60F33A35B605FB");
 
             entity.ToTable("HorarioActividad");
 
@@ -120,7 +120,7 @@ public partial class GymSystemContext : DbContext
 
         modelBuilder.Entity<NumeroDocumento>(entity =>
         {
-            entity.HasKey(e => e.IdNumeroDocumento).HasName("PK__NumeroDo__471E421AC806C536");
+            entity.HasKey(e => e.IdNumeroDocumento).HasName("PK__NumeroDo__471E421AC67BCFA0");
 
             entity.ToTable("NumeroDocumento");
 
@@ -134,7 +134,7 @@ public partial class GymSystemContext : DbContext
 
         modelBuilder.Entity<PagoMensual>(entity =>
         {
-            entity.HasKey(e => e.IdPago).HasName("PK__PagoMens__BD2295AD553BD3EE");
+            entity.HasKey(e => e.IdPago).HasName("PK__PagoMens__BD2295AD37C93F54");
 
             entity.ToTable("PagoMensual");
 
@@ -156,7 +156,7 @@ public partial class GymSystemContext : DbContext
 
         modelBuilder.Entity<Producto>(entity =>
         {
-            entity.HasKey(e => e.IdProducto).HasName("PK__Producto__07F4A132A36F212A");
+            entity.HasKey(e => e.IdProducto).HasName("PK__Producto__07F4A13240D73834");
 
             entity.ToTable("Producto");
 
@@ -166,11 +166,22 @@ public partial class GymSystemContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("fechaRegistro");
+            entity.Property(e => e.Foto)
+                .IsUnicode(false)
+                .HasColumnName("foto");
             entity.Property(e => e.IdCategoria).HasColumnName("idCategoria");
+            entity.Property(e => e.Marca)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("marca");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("nombre");
+            entity.Property(e => e.Peso)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("peso");
             entity.Property(e => e.Precio)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("precio");
@@ -178,12 +189,12 @@ public partial class GymSystemContext : DbContext
 
             entity.HasOne(d => d.IdCategoriaNavigation).WithMany(p => p.Productos)
                 .HasForeignKey(d => d.IdCategoria)
-                .HasConstraintName("FK__Producto__idCate__4222D4EF");
+                .HasConstraintName("FK__Producto__idCate__403A8C7D");
         });
 
         modelBuilder.Entity<Rol>(entity =>
         {
-            entity.HasKey(e => e.IdRol).HasName("PK__Rol__3C872F76726A2304");
+            entity.HasKey(e => e.IdRol).HasName("PK__Rol__3C872F76DE98E9B4");
 
             entity.ToTable("Rol");
 
@@ -201,7 +212,7 @@ public partial class GymSystemContext : DbContext
 
         modelBuilder.Entity<Socio>(entity =>
         {
-            entity.HasKey(e => e.IdSocio).HasName("PK__Socio__E19769C12475984F");
+            entity.HasKey(e => e.IdSocio).HasName("PK__Socio__E19769C12AE5F727");
 
             entity.ToTable("Socio");
 
@@ -210,14 +221,14 @@ public partial class GymSystemContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("apellido");
-            entity.Property(e => e.Clave)
-                .HasMaxLength(40)
-                .IsUnicode(false)
-                .HasColumnName("clave");
             entity.Property(e => e.Correo)
                 .HasMaxLength(40)
                 .IsUnicode(false)
                 .HasColumnName("correo");
+            entity.Property(e => e.Direccion)
+                .HasMaxLength(250)
+                .IsUnicode(false)
+                .HasColumnName("direccion");
             entity.Property(e => e.EstadoPago).HasColumnName("estadoPago");
             entity.Property(e => e.FechaInicioMembresia)
                 .HasColumnType("datetime")
@@ -238,11 +249,15 @@ public partial class GymSystemContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("telefono");
+            entity.Property(e => e.TelefonoContacto)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("telefonoContacto");
         });
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.IdUsuario).HasName("PK__Usuario__645723A661A6225D");
+            entity.HasKey(e => e.IdUsuario).HasName("PK__Usuario__645723A615FCC783");
 
             entity.ToTable("Usuario");
 
@@ -255,12 +270,24 @@ public partial class GymSystemContext : DbContext
                 .HasMaxLength(40)
                 .IsUnicode(false)
                 .HasColumnName("correo");
+            entity.Property(e => e.Direccion)
+                .HasMaxLength(250)
+                .IsUnicode(false)
+                .HasColumnName("direccion");
             entity.Property(e => e.EsActivo).HasColumnName("esActivo");
+            entity.Property(e => e.Horario)
+                .HasMaxLength(250)
+                .IsUnicode(false)
+                .HasColumnName("horario");
             entity.Property(e => e.IdRol).HasColumnName("idRol");
             entity.Property(e => e.NombreApellidos)
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("nombreApellidos");
+            entity.Property(e => e.Telefono)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("telefono");
 
             entity.HasOne(d => d.IdRolNavigation).WithMany(p => p.Usuarios)
                 .HasForeignKey(d => d.IdRol)
@@ -269,7 +296,7 @@ public partial class GymSystemContext : DbContext
 
         modelBuilder.Entity<Venta>(entity =>
         {
-            entity.HasKey(e => e.IdVenta).HasName("PK__Venta__077D56146F694490");
+            entity.HasKey(e => e.IdVenta).HasName("PK__Venta__077D56146481535B");
 
             entity.Property(e => e.IdVenta).HasColumnName("idVenta");
             entity.Property(e => e.FechaRegistro)

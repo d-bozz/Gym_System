@@ -17,7 +17,7 @@
         <MudGrid>
             <MudItem xs="12" sm="6" md="4">
                 <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-                    <MudIcon Icon="@Icons.Material.Filled.Euro" Color="Color.Primary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+                    <MudIcon Icon="@Icons.Material.Filled.AttachMoney" Color="Color.Primary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
                     <div>
                         <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Total Ingresos</MudText>
                         <MudText Typo="Typo.h5">@dashboard.TotalIngresos</MudText>
@@ -42,6 +42,16 @@
                     </div>
                 </MudPaper>
             </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                    <MudIcon Icon="@Icons.Material.Filled.Person" Color="Color.Success" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+                    <div>
+                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Total de Socios</MudText>
+                        <MudText Typo="Typo.h5">@dashboard.TotalSocios</MudText>
+                    </div>
+                </MudPaper>
+            </MudItem>
+
             <MudItem xs="12" sm="12" md="12">
                 <MudPaper Elevation="25" Style="height:310px;">
 

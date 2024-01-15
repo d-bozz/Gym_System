@@ -6,7 +6,7 @@
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
 
-  <MudText Typo="Typo.h5" GutterBottom="true">Usuarios</MudText>
+  <MudText Typo="Typo.h5" GutterBottom="true">Administradores</MudText>
 
    <MudPaper Elevation="3" Class="pa-4" Width="100%">
        <MudGrid>
@@ -15,7 +15,7 @@
             StartIcon="@Icons.Material.Filled.Add"
             Color="Color.Primary"
             OnClick="AbrirNuevoUsuario">
-                Nuevo Usuario</MudButton>
+                Nuevo Administrador</MudButton>
         </MudItem>
         <MudItem xs="12">
 
@@ -34,12 +34,18 @@
                         <MudTh>Nombre completo</MudTh>
                         <MudTh>Correo</MudTh>
                         <MudTh>Rol</MudTh>
+                        <MudTh>Teléfono</MudTh>
+                        <MudTh>Dirección</MudTh>
+                        <MudTh>Horario</MudTh>
                         <MudTh></MudTh>
                     </HeaderContent>
                     <RowTemplate Context="usuarioRow">
                         <MudTd DataLabel="Nombre Completo">@usuarioRow.NombreApellidos</MudTd>
                         <MudTd DataLabel="Correo">@usuarioRow.Correo</MudTd>
                         <MudTd DataLabel="Rol">@usuarioRow.rolDescripcion</MudTd>
+                        <MudTd DataLabel="Telefono">@usuarioRow.Telefono</MudTd>
+                        <MudTd DataLabel="Direccion">@usuarioRow.Direccion</MudTd>
+                        <MudTd DataLabel="Horario">@usuarioRow.Horario</MudTd>
                         <MudTd DataLabel="">
                             <MudFab Color="Color.Primary" 
                                 StartIcon="@Icons.Material.Filled.Edit"
@@ -110,7 +116,7 @@
 
     private async Task AbrirNuevoUsuario()
     {
-        var dialogo = _dialogServicio.Show<MdUsuario>("Nuevo Usuario");
+        var dialogo = _dialogServicio.Show<MdUsuario>("Nuevo Administrador");
         var resultado = await dialogo.Result;
 
         if (!resultado.Canceled)
@@ -123,7 +129,7 @@
     {
         var parametros = new DialogParameters { ["_usuario"] = usuario };
 
-        var dialogo = _dialogServicio.Show<MdUsuario>("Editar Usuario",parametros);
+        var dialogo = _dialogServicio.Show<MdUsuario>("Editar Administrador", parametros);
         var resultado = await dialogo.Result;
         if (!resultado.Canceled)
         {

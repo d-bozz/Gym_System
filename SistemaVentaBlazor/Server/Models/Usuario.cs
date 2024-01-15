@@ -17,5 +17,11 @@ public partial class Usuario
 
     public bool? EsActivo { get; set; }
 
+    public string? Telefono { get; set; }
+
+    public string? Direccion { get; set; }
+
+    public string? Horario { get; set; }
+
     public virtual Rol? IdRolNavigation { get; set; }
 }

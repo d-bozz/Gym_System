@@ -5,6 +5,7 @@
         Task<int> TotalVentasUltimaSemana();
         Task<string> TotalIngresosUltimaSemana();
         Task<int> TotalProductos();
+        Task<int> TotalSocios();
         Task<Dictionary<string, int>> VentasUltimaSemana();
     }
 }

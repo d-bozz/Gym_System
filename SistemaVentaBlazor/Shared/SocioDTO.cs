@@ -16,8 +16,6 @@ namespace SistemaVentaBlazor.Shared
 
         public string? Telefono { get; set; }
 
-        public string? Clave { get; set; }
-
         public string? Correo { get; set; }
 
         public DateTime? FechaInicioMembresia { get; set; }
@@ -27,5 +25,9 @@ namespace SistemaVentaBlazor.Shared
         public string? Restricciones { get; set; }
 
         public string? Mutualista { get; set; }
+
+        public string? Direccion { get; set; }
+
+        public string? TelefonoContacto { get; set; }
     }
 }

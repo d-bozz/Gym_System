@@ -1,10 +1,10 @@
 
 
-create database DBVentaBlazor
+create database DBGymSystem
 
 go
 
-use DBVentaBlazor
+use DBGymSystem
 
 go
 
@@ -23,7 +23,10 @@ nombreApellidos varchar(100),
 correo varchar(40),
 idRol int references Rol(idRol),
 clave varchar(40),
-esActivo bit
+esActivo bit,
+telefono varchar(25),
+direccion varchar(250),
+horario varchar(250)
 )
 
 go
@@ -35,8 +38,8 @@ esActivo bit,
 fechaRegistro datetime default getdate()
 )
 
+go
 
-go 
 create table Producto (
 idProducto int primary key identity(1,1),
 nombre varchar(100),
@@ -44,7 +47,10 @@ idCategoria int references Categoria(idCategoria),
 stock int,
 precio decimal(10,2),
 esActivo bit,
-fechaRegistro datetime default getdate()
+fechaRegistro datetime default getdate(),
+marca varchar(100),
+peso varchar(10),
+foto varchar(max)
 )
 
 go
@@ -54,24 +60,26 @@ idNumeroDocumento int primary key identity(1,1),
 ultimo_Numero int not null,
 fechaRegistro datetime default getdate()
 )
+
 go
 
 create table Venta(
-idVenta int primary key identity(1,1),
-numeroDocumento varchar(40),
-tipoPago varchar(50),
-fechaRegistro datetime default getdate(),
-total decimal(10,2)
+    idVenta int primary key identity(1,1),
+    numeroDocumento varchar(40),
+    tipoPago varchar(50),
+    fechaRegistro datetime default getdate(),
+    total decimal(10,2)
 )
+
 go
 
 create table DetalleVenta(
-idDetalleVenta int primary key identity(1,1),
-idVenta int references Venta(idVenta),
-idProducto int references Producto(idProducto),
-cantidad int,
-precio decimal(10,2),
-total decimal(10,2)
+    idDetalleVenta int primary key identity(1,1),
+    idVenta int references Venta(idVenta),
+    idProducto int references Producto(idProducto),
+    cantidad int,
+    precio decimal(10,2),
+    total decimal(10,2)
 )
 
 go
@@ -81,12 +89,13 @@ CREATE TABLE Socio (
     nombre VARCHAR(100),
 	apellido VARCHAR(100),
 	telefono VARCHAR(100),
-	clave VARCHAR(40),
 	correo VARCHAR(40),
     fechaInicioMembresia DATETIME,
     estadoPago BIT,
 	restricciones VARCHAR(250),
-	mutualista VARCHAR(100)
+	mutualista VARCHAR(100),
+    direccion VARCHAR(250),
+    telefonoContacto varchar(50)
 )
 
 go

@@ -35,6 +35,12 @@
                         <MudTh>Apellido</MudTh>
                         <MudTh>Teléfono</MudTh>
                         <MudTh>Correo</MudTh>
+                        <MudTh>Fecha de inscripción</MudTh>
+                        <MudTh>Estado de pago</MudTh>
+                        <MudTh>Restricciones</MudTh>
+                        <MudTh>Mutualista</MudTh>
+                        <MudTh>Dirección</MudTh>
+                        <MudTh>Contacto de emergencia</MudTh>
                         <MudTh></MudTh>
                     </HeaderContent>
                     <RowTemplate Context="socioRow">
@@ -42,6 +48,12 @@
                         <MudTd DataLabel="Nombre">@socioRow.Apellido</MudTd>
                         <MudTd DataLabel="Nombre">@socioRow.Telefono</MudTd>
                         <MudTd DataLabel="Correo">@socioRow.Correo</MudTd>
+                        <MudTd DataLabel="Correo">@socioRow.FechaInicioMembresia</MudTd>
+                        <MudTd DataLabel="Correo">@socioRow.EstadoPago</MudTd>
+                        <MudTd DataLabel="Correo">@socioRow.Restricciones</MudTd>
+                        <MudTd DataLabel="Correo">@socioRow.Mutualista</MudTd>
+                        <MudTd DataLabel="Correo">@socioRow.Direccion</MudTd>
+                        <MudTd DataLabel="Correo">@socioRow.TelefonoContacto</MudTd>
                         <MudTd DataLabel="">
                             <MudFab Color="Color.Primary" 
                                 StartIcon="@Icons.Material.Filled.Edit"
@@ -102,11 +114,9 @@
             return true;
         if (element.Apellido.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.Telefono.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
         if (element.Correo.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if ($"{element.Nombre} {element.Apellido} {element.Telefono} {element.Correo}".Contains(searchString))
+        if ($"{element.Nombre} {element.Apellido} {element.Correo}".Contains(searchString))
             return true;
 
         return false;
