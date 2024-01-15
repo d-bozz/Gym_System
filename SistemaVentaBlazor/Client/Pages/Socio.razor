@@ -1,0 +1,164 @@
+﻿@page "/page/socio"
+@inject ISocioService _socioServicio
+@inject IDialogService _dialogServicio
+@inject ISnackbar _snackBar
+@inject SweetAlertService Swal;
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
+
+  <MudText Typo="Typo.h5" GutterBottom="true">Socios</MudText>
+
+   <MudPaper Elevation="3" Class="pa-4" Width="100%">
+       <MudGrid>
+        <MudItem xs="12">
+            <MudButton Variant="Variant.Filled" 
+            StartIcon="@Icons.Material.Filled.Add"
+            Color="Color.Primary"
+            OnClick="AbrirNuevoSocio">
+                Nuevo Socio</MudButton>
+        </MudItem>
+        <MudItem xs="12">
+
+                <MudTable 
+                    Items="@listaSocios"
+                    Dense="true"
+                    Striped="true" Bordered="true" 
+                    Filter="new Func<SocioDTO,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1"
+                    Loading="@_loading" LoadingProgressColor="Color.Info"
+                >
+                    <ToolBarContent>
+                        <MudSpacer />
+                        <MudTextField @bind-Value="searchString1" Placeholder="Buscar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                    </ToolBarContent>
+                    <HeaderContent>
+                        <MudTh>Nombre</MudTh>
+                        <MudTh>Apellido</MudTh>
+                        <MudTh>Teléfono</MudTh>
+                        <MudTh>Correo</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate Context="socioRow">
+                        <MudTd DataLabel="Nombre">@socioRow.Nombre</MudTd>
+                        <MudTd DataLabel="Nombre">@socioRow.Apellido</MudTd>
+                        <MudTd DataLabel="Nombre">@socioRow.Telefono</MudTd>
+                        <MudTd DataLabel="Correo">@socioRow.Correo</MudTd>
+                        <MudTd DataLabel="">
+                            <MudFab Color="Color.Primary" 
+                                StartIcon="@Icons.Material.Filled.Edit"
+                                Size="Size.Small" 
+                                IconSize="Size.Small"
+                                OnClick="@(() => AbrirEditarSocio(socioRow))"
+                            />
+                            <MudFab 
+                                Color="Color.Error" 
+                                StartIcon="@Icons.Material.Filled.Delete" 
+                                Size="Size.Small" 
+                                IconSize="Size.Small"
+                                OnClick="@(() => EliminarSocio(socioRow))"
+                            />
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager />
+                    </PagerContent>
+                </MudTable>
+
+
+        </MudItem>
+    </MudGrid>
+   </MudPaper>
+
+</MudContainer>
+@code {
+    List<SocioDTO> listaSocios = new List<SocioDTO>();
+    private string searchString1 = "";
+    private SocioDTO selectedItem1 = null;
+    private bool _loading = true;
+
+    private async Task ObtenerSocios()
+    {
+        var result = await _socioServicio.Lista();
+
+        if (result.status)
+        {
+            listaSocios = (List<SocioDTO>)result.value!;
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ObtenerSocios();
+        _loading = false;
+    }
+
+    private bool FilterFunc1(SocioDTO element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(SocioDTO element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Nombre.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Apellido.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Telefono.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Correo.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{element.Nombre} {element.Apellido} {element.Telefono} {element.Correo}".Contains(searchString))
+            return true;
+
+        return false;
+    }
+
+    private async Task AbrirNuevoSocio()
+    {
+        var dialogo = _dialogServicio.Show<MdSocio>("Nuevo Socio");
+        var resultado = await dialogo.Result;
+
+        if (!resultado.Canceled)
+        {
+            await ObtenerSocios();
+        }
+    }
+
+    private async Task AbrirEditarSocio(SocioDTO socio)
+    {
+        var parametros = new DialogParameters { ["_socio"] = socio };
+
+        var dialogo = _dialogServicio.Show<MdSocio>("Editar Socio",parametros);
+        var resultado = await dialogo.Result;
+        if (!resultado.Canceled)
+        {
+            await ObtenerSocios();
+        }
+    }
+
+    private async Task EliminarSocio(SocioDTO socio)
+    {
+        SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Esta seguro?",
+                Text = $"Eliminar socio: {socio.Nombre} {socio.Apellido}",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Si, eliminar",
+                CancelButtonText = "No, volver"
+            });
+
+        if (result.IsConfirmed)
+        {
+            var resultado = await _socioServicio.Eliminar(socio.IdSocio);
+
+            if (resultado)
+            {
+                _snackBar.Add("El socio fue eliminado", Severity.Success, a => a.VisibleStateDuration = 500);
+                await ObtenerSocios();
+            }
+            else
+                _snackBar.Add("No se pudo eliminar", Severity.Error, a => a.VisibleStateDuration = 500);
+        }
+    }
+
+}

@@ -136,6 +136,10 @@ namespace SistemaVentaBlazor.Server.Utilidades
                     opt => opt.MapFrom(origen => Convert.ToString(origen.Total.Value, new CultureInfo("es-PE")))
                 );
             #endregion Reporte
+
+            #region Socio
+            CreateMap<Socio, SocioDTO>().ReverseMap();
+            #endregion
         }
     }
 }
