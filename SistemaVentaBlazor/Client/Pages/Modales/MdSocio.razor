@@ -8,16 +8,16 @@
 
             <EditForm Model="@_socio">
 
-                <MudTextField @bind-Value="@_socio.Nombre" Class="mb-3"
+                <MudTextField @bind-Value="@_socio.Nombre" Required Class="mb-3"
                               Label="Nombre" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Person" />
 
-                <MudTextField @bind-Value="@_socio.Apellido" Class="mb-3"
+                <MudTextField @bind-Value="@_socio.Apellido" Required Class="mb-3"
                               Label="Apellido" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Person" />
 
                 <MudTextField @bind-Value="@_socio.Telefono" Class="mb-3"
                               Label="Teléfono" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Phone" />
 
-                <MudTextField @bind-Value="@_socio.Correo" Class="mb-3"
+                <MudTextField @bind-Value="@_socio.Correo" Required Class="mb-3"
                               Label="Correo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Email" />
 
                 <MudTextField @bind-Value="@_socio.FechaInicioMembresia" Class="mb-3"

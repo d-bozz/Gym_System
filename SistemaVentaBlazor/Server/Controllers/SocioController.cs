@@ -94,7 +94,6 @@ namespace SistemaVentaBlazor.Server.Controllers
                     _SocioParaEditar.FechaInicioMembresia = _Socio.FechaInicioMembresia;
                     _SocioParaEditar.Restricciones = _Socio.Restricciones;
                     _SocioParaEditar.Mutualista = _Socio.Mutualista;
-                    _SocioParaEditar.Clave = _Socio.Clave;
 
                     bool respuesta = await _SocioRepositorio.Editar(_SocioParaEditar);
 

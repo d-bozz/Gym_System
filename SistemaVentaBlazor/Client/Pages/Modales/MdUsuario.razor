@@ -9,10 +9,10 @@
 
             <EditForm Model="@_usuario">
 
-                <MudTextField @bind-Value="@_usuario.NombreApellidos" Class="mb-3"
+                <MudTextField @bind-Value="@_usuario.NombreApellidos" Required Class="mb-3"
                               Label="Nombre Completo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Badge" />
 
-                <MudTextField @bind-Value="@_usuario.Correo" Class="mb-3"
+                <MudTextField @bind-Value="@_usuario.Correo" Required Class="mb-3"
                               Label="Correo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Email" />
 
                 <MudSelect Label="Rol" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Class="mb-3" 
@@ -36,7 +36,7 @@
                               Label="Horario" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Schedule" />
 
 
-                <MudTextField @bind-Value="@_usuario.Clave" Label="Contraseña" Variant="Variant.Outlined" Class="mb-3"
+                <MudTextField @bind-Value="@_usuario.Clave" Required Label="Contraseña" Variant="Variant.Outlined" Class="mb-3"
                               InputType="@PasswordInput" Adornment="Adornment.End"
                               AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="MostrarClave"
                               AdornmentAriaLabel="Mostrar Contraseña" />

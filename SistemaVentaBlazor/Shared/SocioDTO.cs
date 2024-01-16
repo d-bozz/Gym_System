@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace SistemaVentaBlazor.Shared
 {
@@ -10,12 +7,17 @@ namespace SistemaVentaBlazor.Shared
     {
         public int IdSocio { get; set; }
 
+        [Required(ErrorMessage = "El campo Nombre es obligatorio.")]
         public string? Nombre { get; set; }
 
+        [Required(ErrorMessage = "El campo Apellido es obligatorio.")]
         public string? Apellido { get; set; }
 
+        [Required(ErrorMessage = "El campo Teléfono es obligatorio.")]
         public string? Telefono { get; set; }
 
+        [Required(ErrorMessage = "El campo Correo es obligatorio.")]
+        [EmailAddress(ErrorMessage = "Por favor, ingrese una dirección de correo electrónico válida.")]
         public string? Correo { get; set; }
 
         public DateTime? FechaInicioMembresia { get; set; }
