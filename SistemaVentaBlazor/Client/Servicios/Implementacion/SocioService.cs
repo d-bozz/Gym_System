@@ -1,4 +1,5 @@
 ﻿using SistemaVentaBlazor.Client.Utilidades;
+using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace SistemaVentaBlazor.Client.Servicios.Implementacion
@@ -38,6 +39,11 @@ namespace SistemaVentaBlazor.Client.Servicios.Implementacion
         {
             var result = await _http.GetFromJsonAsync<ResponseDTO<List<SocioDTO>>>("api/socio/Lista");
             return result!;
+        }
+
+        public async Task<ResponseDTO<SocioDTO>> Obtener(int id)
+        {
+            return await _http.GetFromJsonAsync<ResponseDTO<SocioDTO>>($"api/socio/Obtener/{id}");
         }
     }
 }

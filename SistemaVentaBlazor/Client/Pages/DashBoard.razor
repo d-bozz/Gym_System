@@ -15,11 +15,58 @@
     <MudPaper Elevation="3" Class="pa-4" Width="100%">
 
         <MudGrid>
+            @*Estadisticas de Socios*@
+            <MudText Typo="Typo.h6" Class="mb-3">Estadísticas de Socios:</MudText>
+            <MudDivider />
             <MudItem xs="12" sm="6" md="4">
                 <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-                    <MudIcon Icon="@Icons.Material.Filled.AttachMoney" Color="Color.Success" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+                    <MudIcon Icon="@Icons.Material.Filled.People" Color="Color.Dark" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
                     <div>
-                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Total de Ingresos</MudText>
+                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Socios Registrados</MudText>
+                        <MudText Typo="Typo.h5">@dashboard.TotalSocios</MudText>
+                    </div>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                    <MudIcon Icon="@Icons.Material.Filled.FactCheck" Color="Color.Success" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+                    <div>
+                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Socios activos</MudText>
+                        <MudText Typo="Typo.h5">@dashboard.TotalSocios</MudText>
+                    </div>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                    <MudIcon Icon="@Icons.Material.Filled.Autorenew" Color="Color.Primary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+                    <div>
+                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Nuevos Socios en el Último Mes</MudText>
+                        <MudText Typo="Typo.h5">@dashboard.TotalSocios</MudText>
+                    </div>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                    <MudIcon Icon="@Icons.Material.Filled.PendingActions" Color="Color.Error" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+                    <div>
+                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Pagos Pendientes</MudText>
+                        <MudText Typo="Typo.h5">@dashboard.TotalSocios</MudText>
+                    </div>
+                </MudPaper>
+            </MudItem>
+            <MudDivider />
+
+            @*Fin Estadisticas de Socios*@
+
+            @*Estadisticas por Ventas*@
+
+            <MudText Typo="Typo.h6" Class="mt-3 mb-3">Estadísticas por Ventas:</MudText>
+            <MudDivider />
+            <MudItem xs="12" sm="6" md="4">
+                <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                    <MudIcon Icon="@Icons.Material.Filled.AttachMoney" Color="Color.Dark" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+                    <div>
+                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Total de Ingresos Mensual</MudText>
                         <MudText Typo="Typo.h5">@dashboard.TotalIngresos</MudText>
                     </div>
                 </MudPaper>
@@ -28,30 +75,24 @@
                 <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
                     <MudIcon Icon="@Icons.Material.Filled.LocalOffer" Color="Color.Secondary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
                     <div>
-                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Total de Ventas</MudText>
+                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Total de Ventas Mensual</MudText>
                         <MudText Typo="Typo.h5">@dashboard.TotalVentas</MudText>
                     </div>
                 </MudPaper>
             </MudItem>
             <MudItem xs="12" sm="6" md="4">
                 <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-                    <MudIcon Icon="@Icons.Material.Filled.Layers" Color="Color.Primary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+                    <MudIcon Icon="@Icons.Material.Filled.Layers" Color="Color.Tertiary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
                     <div>
-                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Total Productos</MudText>
+                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Total de Productos</MudText>
                         <MudText Typo="Typo.h5">@dashboard.TotalProductos</MudText>
                     </div>
                 </MudPaper>
             </MudItem>
-            <MudItem xs="12" sm="6" md="4">
-                <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-                    <MudIcon Icon="@Icons.Material.Filled.Person" Color="Color.Dark" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
-                    <div>
-                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Total de Socios</MudText>
-                        <MudText Typo="Typo.h5">@dashboard.TotalSocios</MudText>
-                    </div>
-                </MudPaper>
-            </MudItem>
+            @*Fin Estadisticas por Ventas*@
 
+            <MudText Typo="Typo.h6" Class="mt-3 mb-3">Graficas de Ventas:</MudText>
+            <MudDivider />
             <MudItem xs="12" sm="12" md="12">
                 <MudPaper Elevation="25" Style="height:310px;">
 
@@ -61,9 +102,7 @@
             </MudItem>
 
         </MudGrid>
-        
     </MudPaper>
-
 </MudContainer>
 @code {
     DashBoardDTO dashboard = new DashBoardDTO();

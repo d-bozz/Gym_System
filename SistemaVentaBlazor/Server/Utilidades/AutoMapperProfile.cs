@@ -140,6 +140,10 @@ namespace SistemaVentaBlazor.Server.Utilidades
             #region Socio
             CreateMap<Socio, SocioDTO>().ReverseMap();
             #endregion
+
+            #region PagoMensual
+
+            #endregion
         }
     }
 }

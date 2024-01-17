@@ -1,9 +1,15 @@
 ﻿<MudNavMenu>
     <MudNavLink Href="/page/dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard">DashBoard</MudNavLink>
     <MudNavLink Href="/page/usuario" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AdminPanelSettings">Administradores</MudNavLink>
-    <MudNavLink Href="/page/socio" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person2">Socios</MudNavLink>
-    <MudNavLink Href="/page/producto" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AllInbox">Productos</MudNavLink>
-    <MudNavLink Href="/page/venta" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PriceCheck">Vender</MudNavLink>
-    <MudNavLink Href="/page/historialventa" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PlaylistAddCheckCircle">Historial Ventas</MudNavLink>
+    <MudNavGroup Title="Socios" Icon="@Icons.Material.Filled.CardMembership">
+        <MudNavLink Href="/page/socio" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.People">Ver Socios</MudNavLink>
+        <MudNavLink Href="/page/historialmembresia" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Payments">Registrar pago de membresia</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Productos" Icon="@Icons.Material.Filled.AllInbox">
+        <MudNavLink Href="/page/producto" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AllInbox">Ver Productos</MudNavLink>
+        <MudNavLink Href="/page/categoria" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LocalOffer">Ver Categorias</MudNavLink>
+        <MudNavLink Href="/page/venta" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PriceCheck">Registrar una Venta</MudNavLink>
+        <MudNavLink Href="/page/historialventa" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PlaylistAddCheckCircle">Historial de Ventas</MudNavLink>
+    </MudNavGroup>
     <MudNavLink Href="/page/reporte" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Receipt">Reportes</MudNavLink>
 </MudNavMenu>

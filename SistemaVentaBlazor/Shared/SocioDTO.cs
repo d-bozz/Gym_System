@@ -22,7 +22,7 @@ namespace SistemaVentaBlazor.Shared
 
         public DateTime? FechaInicioMembresia { get; set; }
 
-        public bool? EstadoPago { get; set; }
+        public bool Activo { get; set; }
 
         public string? Restricciones { get; set; }
 

@@ -1,56 +1,51 @@
-﻿@page "/page/producto"
-@inject IProductoService _productoServicio
+﻿@page "/page/categoria"
+@inject ICategoriaService _categoriaServicio
 @inject IDialogService _dialogServicio
 @inject ISnackbar _snackBar
 @inject SweetAlertService Swal;
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
 
-    <MudText Typo="Typo.h5" GutterBottom="true">Productos</MudText>
+    <MudText Typo="Typo.h5" GutterBottom="true">Categorias</MudText>
 
     <MudPaper Elevation="3" Class="pa-4" Width="100%">
         <MudGrid>
             <MudItem xs="12">
                 <MudButton Variant="Variant.Filled"
-                           StartIcon="@Icons.Material.Filled.LibraryAdd"
+                           StartIcon="@Icons.Material.Filled.Add"
                            Color="Color.Primary"
-                           OnClick="AbrirNuevoProducto">
-                    Nuevo Producto
+                           OnClick="AbrirNuevoCategoria">
+                    Nuevo Categoria
                 </MudButton>
             </MudItem>
             <MudItem xs="12">
 
-                <MudTable Items="@listaProductos"
-                          Striped="true" Bordered="true" Dense="true"
-                          Filter="new Func<ProductoDTO,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1"
+                <MudTable Items="@listaCategorias"
+                          Dense="true"
+                          Striped="true" Bordered="true"
+                          Filter="new Func<CategoriaDTO,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1"
                           Loading="@_loading" LoadingProgressColor="Color.Info">
                     <ToolBarContent>
                         <MudSpacer />
                         <MudTextField @bind-Value="searchString1" Placeholder="Buscar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                     </ToolBarContent>
                     <HeaderContent>
-                        <MudTh>Nombre</MudTh>
-                        <MudTh>Categoria</MudTh>
-                        <MudTh>Stock</MudTh>
-                        <MudTh>Precio</MudTh>
+                        <MudTh>Descripción</MudTh>
                         <MudTh></MudTh>
                     </HeaderContent>
-                    <RowTemplate Context="productoRow">
-                        <MudTd DataLabel="Nombre">@productoRow.Nombre</MudTd>
-                        <MudTd DataLabel="Correo">@productoRow.DescripcionCategoria</MudTd>
-                        <MudTd DataLabel="Rol">@productoRow.Stock</MudTd>
-                        <MudTd DataLabel="Precio">@productoRow.Precio</MudTd>
+                    <RowTemplate Context="categoriaRow">
+                        <MudTd DataLabel="Nombre">@categoriaRow.Descripcion</MudTd>
                         <MudTd DataLabel="">
                             <MudFab Color="Color.Primary"
                                     StartIcon="@Icons.Material.Filled.Edit"
                                     Size="Size.Small"
                                     IconSize="Size.Small"
-                                    OnClick="@(() => AbrirEditarProducto(productoRow))" />
+                                    OnClick="@(() => AbrirEditarCategoria(categoriaRow))" />
                             <MudFab Color="Color.Error"
                                     StartIcon="@Icons.Material.Filled.Delete"
                                     Size="Size.Small"
                                     IconSize="Size.Small"
-                                    OnClick="@(() => EliminarUsuario(productoRow))" />
+                                    OnClick="@(() => EliminarCategoria(categoriaRow))" />
                         </MudTd>
                     </RowTemplate>
                     <PagerContent>
@@ -64,77 +59,73 @@
     </MudPaper>
 
 </MudContainer>
-
 @code {
-    List<ProductoDTO> listaProductos = new List<ProductoDTO>();
+    List<CategoriaDTO> listaCategorias = new List<CategoriaDTO>();
     private string searchString1 = "";
-    private ProductoDTO selectedItem1 = null;
+    private CategoriaDTO selectedItem1 = null;
     private bool _loading = true;
 
-    private async Task ObtenerProductos()
+    private async Task ObtenerCategorias()
     {
-        var result = await _productoServicio.Lista();
+        var result = await _categoriaServicio.Lista();
 
         if (result.status)
         {
-            listaProductos = (List<ProductoDTO>)result.value!;
+            listaCategorias = (List<CategoriaDTO>)result.value!;
         }
     }
 
 
     protected override async Task OnInitializedAsync()
     {
-        await ObtenerProductos();
+        await ObtenerCategorias();
         _loading = false;
     }
 
-    private bool FilterFunc1(ProductoDTO element) => FilterFunc(element, searchString1);
+    private bool FilterFunc1(CategoriaDTO element) => FilterFunc(element, searchString1);
 
-    private bool FilterFunc(ProductoDTO element, string searchString)
+    private bool FilterFunc(CategoriaDTO element, string searchString)
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        if (element.Nombre.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.Descripcion.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.DescripcionCategoria.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-     
-        if ($"{element.Nombre} {element.DescripcionCategoria}".Contains(searchString))
+        
+        if ($"{element.Descripcion}".Contains(searchString))
             return true;
 
         return false;
     }
 
-    private async Task AbrirNuevoProducto()
+    private async Task AbrirNuevoCategoria()
     {
-        var dialogo = _dialogServicio.Show<MdProducto>("Nuevo Producto");
+        var dialogo = _dialogServicio.Show<MdCategoria>("Nuevo Categoria");
         var resultado = await dialogo.Result;
 
         if (!resultado.Canceled)
         {
-            await ObtenerProductos();
+            await ObtenerCategorias();
         }
     }
 
-    private async Task AbrirEditarProducto(ProductoDTO model)
+    private async Task AbrirEditarCategoria(CategoriaDTO categoria)
     {
-        var parametros = new DialogParameters { ["_producto"] = model };
+        var parametros = new DialogParameters { ["_categoria"] = categoria };
 
-        var dialogo = _dialogServicio.Show<MdProducto>("Editar Producto", parametros);
+        var dialogo = _dialogServicio.Show<MdCategoria>("Editar Categoria", parametros);
         var resultado = await dialogo.Result;
-
         if (!resultado.Canceled)
         {
-            await ObtenerProductos();
+            await ObtenerCategorias();
         }
     }
 
-    private async Task EliminarUsuario(ProductoDTO model)
+    private async Task EliminarCategoria(CategoriaDTO categoria)
     {
         SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
             {
                 Title = "Esta seguro?",
-                Text = $"Eliminar producto: {model.Nombre}",
+                Text = $"Eliminar categoria: {categoria.Descripcion}",
                 Icon = SweetAlertIcon.Warning,
                 ShowCancelButton = true,
                 ConfirmButtonText = "Si, eliminar",
@@ -143,12 +134,12 @@
 
         if (result.IsConfirmed)
         {
-            var resultado = await _productoServicio.Eliminar(model.IdProducto);
+            var resultado = await _categoriaServicio.Eliminar(categoria.IdCategoria);
 
             if (resultado)
             {
-                _snackBar.Add("El producto fue eliminado", Severity.Success, a => a.VisibleStateDuration = 500);
-                await ObtenerProductos();
+                _snackBar.Add("El categoria fue eliminada", Severity.Success, a => a.VisibleStateDuration = 500);
+                await ObtenerCategorias();
             }
             else
                 _snackBar.Add("No se pudo eliminar", Severity.Error, a => a.VisibleStateDuration = 500);

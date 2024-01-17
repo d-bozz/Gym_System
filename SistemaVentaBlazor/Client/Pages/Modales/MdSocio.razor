@@ -23,8 +23,10 @@
                 <MudTextField @bind-Value="@_socio.FechaInicioMembresia" Class="mb-3"
                               Label="Fecha de Inicio de la Membresia" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.CalendarToday" />
 
-                <MudTextField @bind-Value="@_socio.EstadoPago" Class="mb-3"
-                              Label="Estado del Pago" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Payment" />
+                <MudSelect @bind-Value="@_socio.Activo" Label="Actividad" AnchorOrigin="Origin.BottomCenter" ItemConverter="StringToBoolConverter">
+                    <MudSelectItem Value="true">Activo</MudSelectItem>
+                    <MudSelectItem Value="false">Inactivo</MudSelectItem>
+                </MudSelect>
 
                 <MudTextField @bind-Value="@_socio.Restricciones" Class="mb-3"
                               Label="Restricciones" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Cancel" />
@@ -50,6 +52,7 @@
 </MudDialog>
 
 @code {
+
     [Parameter]
     public SocioDTO _socio { get; set; } = new SocioDTO();
 
@@ -60,6 +63,10 @@
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; }
 
+    bool StringToBoolConverter(string stringValue)
+    {
+        return bool.Parse(stringValue);
+    }
 
 
     protected override async Task OnInitializedAsync()

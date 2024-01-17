@@ -2,7 +2,9 @@
 using Azure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SistemaVentaBlazor.Server.Models;
 using SistemaVentaBlazor.Server.Repositorio.Contrato;
+using SistemaVentaBlazor.Server.Repositorio.Implementacion;
 using SistemaVentaBlazor.Shared;
 
 namespace SistemaVentaBlazor.Server.Controllers
@@ -45,5 +47,95 @@ namespace SistemaVentaBlazor.Server.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("Guardar")]
+        public async Task<IActionResult> Guardar([FromBody] CategoriaDTO request)
+        {
+            ResponseDTO<CategoriaDTO> _ResponseDTO = new ResponseDTO<CategoriaDTO>();
+            try
+            {
+                Categoria _Categoria = _mapper.Map<Categoria>(request);
+
+                Categoria _CategoriaCreado = await _categoriaRepositorio.Crear(_Categoria);
+
+                if (_CategoriaCreado.IdCategoria != 0)
+                    _ResponseDTO = new ResponseDTO<CategoriaDTO>() { status = true, msg = "ok", value = _mapper.Map<CategoriaDTO>(_CategoriaCreado) };
+                else
+                    _ResponseDTO = new ResponseDTO<CategoriaDTO>() { status = false, msg = "No se pudo crear la Categoria" };
+
+                return StatusCode(StatusCodes.Status200OK, _ResponseDTO);
+            }
+            catch (Exception ex)
+            {
+                _ResponseDTO = new ResponseDTO<CategoriaDTO>() { status = false, msg = ex.Message };
+                return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
+            }
+        }
+
+        [HttpPut]
+        [Route("Editar")]
+        public async Task<IActionResult> Editar([FromBody] CategoriaDTO request)
+        {
+            ResponseDTO<CategoriaDTO> _ResponseDTO = new ResponseDTO<CategoriaDTO>();
+            try
+            {
+                Categoria _categoria = _mapper.Map<Categoria>(request);
+                Categoria _CategoriaParaEditar = await _categoriaRepositorio.Obtener(u => u.IdCategoria == _categoria.IdCategoria);
+
+                if (_CategoriaParaEditar != null)
+                {
+
+                    _CategoriaParaEditar.Descripcion = _categoria.Descripcion;
+
+                    bool respuesta = await _categoriaRepositorio.Editar(_CategoriaParaEditar);
+
+                    if (respuesta)
+                        _ResponseDTO = new ResponseDTO<CategoriaDTO>() { status = true, msg = "ok", value = _mapper.Map<CategoriaDTO>(_CategoriaParaEditar) };
+                    else
+                        _ResponseDTO = new ResponseDTO<CategoriaDTO>() { status = false, msg = "No se pudo editar la Categoria" };
+                }
+                else
+                {
+                    _ResponseDTO = new ResponseDTO<CategoriaDTO>() { status = false, msg = "No se encontró la Categoria" };
+                }
+
+                return StatusCode(StatusCodes.Status200OK, _ResponseDTO);
+            }
+            catch (Exception ex)
+            {
+                _ResponseDTO = new ResponseDTO<CategoriaDTO>() { status = false, msg = ex.Message };
+                return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
+            }
+        }
+
+
+
+        [HttpDelete]
+        [Route("Eliminar/{id:int}")]
+        public async Task<IActionResult> Eliminar(int id)
+        {
+            ResponseDTO<string> _ResponseDTO = new ResponseDTO<string>();
+            try
+            {
+                Categoria _CategoriaEliminar = await _categoriaRepositorio.Obtener(u => u.IdCategoria == id);
+                if (_CategoriaEliminar != null)
+                {
+
+                    bool respuesta = await _categoriaRepositorio.Eliminar(_CategoriaEliminar);
+
+                    if (respuesta)
+                        _ResponseDTO = new ResponseDTO<string>() { status = true, msg = "ok", value = "" };
+                    else
+                        _ResponseDTO = new ResponseDTO<string>() { status = false, msg = "No se pudo eliminar la cetegoria", value = "" };
+                }
+
+                return StatusCode(StatusCodes.Status200OK, _ResponseDTO);
+            }
+            catch (Exception ex)
+            {
+                _ResponseDTO = new ResponseDTO<string>() { status = false, msg = ex.Message };
+                return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
+            }
+        }
     }
 }

@@ -1,0 +1,160 @@
+﻿@page "/page/socio/detalle/{id:int}"
+@inject ISocioService _socioServicio
+@inject IDialogService _dialogServicio
+@inject ISnackbar _snackBar
+@inject SweetAlertService Swal;
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
+    <MudText Typo="Typo.h5" GutterBottom="true">Detalles del Socio</MudText>
+
+    <div class="container">
+        <div class="main-body">
+            @if (socioDetalles != null)
+            {
+                <div class="row gutters-sm">
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                                <div class="mt-3">
+                                        <h4>@socioDetalles.Nombre @socioDetalles.Apellido</h4>
+                                        <p class="text-secondary mb-1">ID Socio: @socioDetalles.IdSocio</p>
+                                    <p class="text-muted font-size-sm">
+                                            @if (socioDetalles.Activo == true)
+                                            {
+                                                <MudChip Color="Color.Success">Activo</MudChip>
+                                            }
+                                            else
+                                            {
+                                                <MudChip Color="Color.Error">Inactivo</MudChip>
+                                            }
+                                    </p>
+                                    <button class="btn btn-primary">Follow</button>
+                                    <button class="btn btn-outline-primary">Message</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Nombre completo</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                        @socioDetalles.Nombre @socioDetalles.Apellido
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Inscripción</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                        @socioDetalles.FechaInicioMembresia
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Teléfono</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                        @socioDetalles.Telefono
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Correo</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                        @socioDetalles.Correo
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Dirección</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                        @socioDetalles.Direccion
+                                </div>
+                            </div>
+                            <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Restricciones</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @socioDetalles.Restricciones
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Mutualista</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @socioDetalles.Mutualista
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Teléfono de Emergencia</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @socioDetalles.TelefonoContacto
+                                    </div>
+                                </div>
+                                <hr>
+                            <div class="row">
+                                    <MudTd DataLabel="">
+                                        <MudFab Color="Color.Primary"
+                                            StartIcon="@Icons.Material.Filled.Edit"
+                                            Size="Size.Small"
+                                            IconSize="Size.Small"
+                                            OnClick="@(() => AbrirEditarSocio(socioDetalles))" />
+                                    </MudTd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</MudContainer>
+
+@code {
+    [Parameter] public int id { get; set; }
+    private SocioDTO socioDetalles;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (id != 0)
+        {
+            var response = await _socioServicio.Obtener(id);
+            if (response.status!)
+            {
+                socioDetalles = (SocioDTO)response.value!;
+            }
+            else
+            {
+                _snackBar.Add("No se pudo encontrar al socio", Severity.Error, a => a.VisibleStateDuration = 500);
+            }
+        }
+    }
+
+    private async Task AbrirEditarSocio(SocioDTO socio)
+    {
+        var parametros = new DialogParameters { ["_socio"] = socio };
+
+        var dialogo = _dialogServicio.Show<MdSocio>("Editar Socio", parametros);
+        var resultado = await dialogo.Result;
+    }
+}

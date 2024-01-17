@@ -12,7 +12,7 @@
        <MudGrid>
         <MudItem xs="12">
             <MudButton Variant="Variant.Filled" 
-            StartIcon="@Icons.Material.Filled.Add"
+            StartIcon="@Icons.Material.Filled.PersonAdd"
             Color="Color.Primary"
             OnClick="AbrirNuevoSocio">
                 Nuevo Socio</MudButton>
@@ -31,29 +31,32 @@
                         <MudTextField @bind-Value="searchString1" Placeholder="Buscar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                     </ToolBarContent>
                     <HeaderContent>
+                        <MudTh>ID de Socio</MudTh>
                         <MudTh>Nombre</MudTh>
                         <MudTh>Apellido</MudTh>
                         <MudTh>Teléfono</MudTh>
-                        <MudTh>Correo</MudTh>
-                        <MudTh>Fecha de inscripción</MudTh>
-                        <MudTh>Estado de pago</MudTh>
-                        <MudTh>Restricciones</MudTh>
-                        <MudTh>Mutualista</MudTh>
-                        <MudTh>Dirección</MudTh>
-                        <MudTh>Contacto de emergencia</MudTh>
-                        <MudTh></MudTh>
+                        <MudTh>Actividad</MudTh>
+                        <MudTh>Detalles</MudTh>
+                        <MudTh>Acciones</MudTh>
                     </HeaderContent>
                     <RowTemplate Context="socioRow">
+                        <MudTd DataLabel="IdSocio">@socioRow.IdSocio</MudTd>
                         <MudTd DataLabel="Nombre">@socioRow.Nombre</MudTd>
-                        <MudTd DataLabel="Nombre">@socioRow.Apellido</MudTd>
-                        <MudTd DataLabel="Nombre">@socioRow.Telefono</MudTd>
-                        <MudTd DataLabel="Correo">@socioRow.Correo</MudTd>
-                        <MudTd DataLabel="Correo">@socioRow.FechaInicioMembresia</MudTd>
-                        <MudTd DataLabel="Correo">@socioRow.EstadoPago</MudTd>
-                        <MudTd DataLabel="Correo">@socioRow.Restricciones</MudTd>
-                        <MudTd DataLabel="Correo">@socioRow.Mutualista</MudTd>
-                        <MudTd DataLabel="Correo">@socioRow.Direccion</MudTd>
-                        <MudTd DataLabel="Correo">@socioRow.TelefonoContacto</MudTd>
+                        <MudTd DataLabel="Apellido">@socioRow.Apellido</MudTd>
+                        <MudTd DataLabel="Telefono">@socioRow.Telefono</MudTd>
+                        <MudTd DataLabel="Activo">
+                            @if (socioRow.Activo == true)
+                            { 
+                                <MudChip Color="Color.Success">Activo</MudChip>
+                            }
+                            else
+                            {
+                                <MudChip Color="Color.Error">Inactivo</MudChip>
+                            }
+                        </MudTd>
+                         <MudTd DataLabel="detalle">
+                            <MudNavLink Href="@($"/page/socio/detalle/{socioRow.IdSocio}")">Ver Detalles</MudNavLink>
+                        </MudTd>
                         <MudTd DataLabel="">
                             <MudFab Color="Color.Primary" 
                                 StartIcon="@Icons.Material.Filled.Edit"
@@ -74,8 +77,6 @@
                         <MudTablePager />
                     </PagerContent>
                 </MudTable>
-
-
         </MudItem>
     </MudGrid>
    </MudPaper>
@@ -96,7 +97,6 @@
             listaSocios = (List<SocioDTO>)result.value!;
         }
     }
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -170,5 +170,4 @@
                 _snackBar.Add("No se pudo eliminar", Severity.Error, a => a.VisibleStateDuration = 500);
         }
     }
-
 }

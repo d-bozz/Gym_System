@@ -91,7 +91,7 @@ CREATE TABLE Socio (
 	telefono VARCHAR(100),
 	correo VARCHAR(40),
     fechaInicioMembresia DATETIME,
-    estadoPago BIT,
+    activo BIT,
 	restricciones VARCHAR(250),
 	mutualista VARCHAR(100),
     direccion VARCHAR(250),

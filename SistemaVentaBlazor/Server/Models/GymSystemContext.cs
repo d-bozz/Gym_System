@@ -229,7 +229,7 @@ public partial class GymSystemContext : DbContext
                 .HasMaxLength(250)
                 .IsUnicode(false)
                 .HasColumnName("direccion");
-            entity.Property(e => e.EstadoPago).HasColumnName("estadoPago");
+            entity.Property(e => e.Activo).HasColumnName("activo");
             entity.Property(e => e.FechaInicioMembresia)
                 .HasColumnType("datetime")
                 .HasColumnName("fechaInicioMembresia");

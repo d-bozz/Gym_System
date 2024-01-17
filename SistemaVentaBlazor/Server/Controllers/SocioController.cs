@@ -90,7 +90,7 @@ namespace SistemaVentaBlazor.Server.Controllers
                     _SocioParaEditar.Apellido = _Socio.Apellido;
                     _SocioParaEditar.Correo = _Socio.Correo;
                     _SocioParaEditar.Telefono = _Socio.Telefono;
-                    _SocioParaEditar.EstadoPago = _Socio.EstadoPago;
+                    _SocioParaEditar.Activo = _Socio.Activo;
                     _SocioParaEditar.FechaInicioMembresia = _Socio.FechaInicioMembresia;
                     _SocioParaEditar.Restricciones = _Socio.Restricciones;
                     _SocioParaEditar.Mutualista = _Socio.Mutualista;
@@ -115,8 +115,6 @@ namespace SistemaVentaBlazor.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
             }
         }
-
-
 
         [HttpDelete]
         [Route("Eliminar/{id:int}")]
@@ -146,5 +144,34 @@ namespace SistemaVentaBlazor.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
             }
         }
+
+        [HttpGet]
+        [Route("Obtener/{id:int}")]
+        public async Task<IActionResult> Obtener(int id)
+        {
+            ResponseDTO<SocioDTO> _ResponseDTO = new ResponseDTO<SocioDTO>();
+            try
+            {
+                Socio _Socio = await _SocioRepositorio.Obtener(u => u.IdSocio == id);
+
+                if (_Socio != null)
+                {
+                    SocioDTO socioDTO = _mapper.Map<SocioDTO>(_Socio);
+                    _ResponseDTO = new ResponseDTO<SocioDTO>() { status = true, msg = "ok", value = socioDTO };
+                }
+                else
+                {
+                    _ResponseDTO = new ResponseDTO<SocioDTO>() { status = false, msg = "No se encontró el socio", value = null };
+                }
+
+                return StatusCode(StatusCodes.Status200OK, _ResponseDTO);
+            }
+            catch (Exception ex)
+            {
+                _ResponseDTO = new ResponseDTO<SocioDTO>() { status = false, msg = ex.Message, value = null };
+                return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
+            }
+        }
+
     }
 }
