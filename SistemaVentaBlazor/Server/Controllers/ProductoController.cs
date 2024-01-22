@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemaVentaBlazor.Server.Models;
 using SistemaVentaBlazor.Server.Repositorio.Contrato;
+using SistemaVentaBlazor.Server.Repositorio.Implementacion;
 using SistemaVentaBlazor.Shared;
 
 namespace SistemaVentaBlazor.Server.Controllers
@@ -90,9 +91,15 @@ namespace SistemaVentaBlazor.Server.Controllers
                 {
 
                     _productoParaEditar.Nombre = _producto.Nombre;
+                    _productoParaEditar.Descripcion = _producto.Descripcion;
                     _productoParaEditar.IdCategoria = _producto.IdCategoria;
                     _productoParaEditar.Stock = _producto.Stock;
                     _productoParaEditar.Precio = _producto.Precio;
+                    _productoParaEditar.EsActivo = _producto.EsActivo;
+                    _productoParaEditar.Marca = _producto.Marca;
+                    _productoParaEditar.Peso = _producto.Peso;
+                    _productoParaEditar.Foto = _producto.Foto;
+
 
                     bool respuesta = await _productoRepositorio.Editar(_productoParaEditar);
 
@@ -114,8 +121,6 @@ namespace SistemaVentaBlazor.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
             }
         }
-
-
 
         [HttpDelete]
         [Route("Eliminar/{id:int}")]
@@ -142,6 +147,34 @@ namespace SistemaVentaBlazor.Server.Controllers
             catch (Exception ex)
             {
                 _ResponseDTO = new ResponseDTO<string>() { status = false, msg = ex.Message };
+                return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
+            }
+        }
+
+        [HttpGet]
+        [Route("Obtener/{id:int}")]
+        public async Task<IActionResult> Obtener(int id)
+        {
+            ResponseDTO<ProductoDTO> _ResponseDTO = new ResponseDTO<ProductoDTO>();
+            try
+            {
+                Producto _Producto = await _productoRepositorio.Obtener(u => u.IdProducto == id);
+
+                if (_Producto != null)
+                {
+                    ProductoDTO productoDTO = _mapper.Map<ProductoDTO>(_Producto);
+                    _ResponseDTO = new ResponseDTO<ProductoDTO>() { status = true, msg = "ok", value = productoDTO };
+                }
+                else
+                {
+                    _ResponseDTO = new ResponseDTO<ProductoDTO>() { status = false, msg = "No se encontró el producto", value = null };
+                }
+
+                return StatusCode(StatusCodes.Status200OK, _ResponseDTO);
+            }
+            catch (Exception ex)
+            {
+                _ResponseDTO = new ResponseDTO<ProductoDTO>() { status = false, msg = ex.Message, value = null };
                 return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
             }
         }

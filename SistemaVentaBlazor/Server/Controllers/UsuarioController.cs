@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemaVentaBlazor.Server.Models;
 using SistemaVentaBlazor.Server.Repositorio.Contrato;
+using SistemaVentaBlazor.Server.Repositorio.Implementacion;
 using SistemaVentaBlazor.Shared;
 
 namespace SistemaVentaBlazor.Server.Controllers
@@ -137,8 +138,6 @@ namespace SistemaVentaBlazor.Server.Controllers
             }
         }
 
-
-
         [HttpDelete]
         [Route("Eliminar/{id:int}")]
         public async Task<IActionResult> Eliminar(int id)
@@ -164,6 +163,37 @@ namespace SistemaVentaBlazor.Server.Controllers
             catch (Exception ex)
             {
                 _ResponseDTO = new ResponseDTO<string>() { status = false, msg = ex.Message };
+                return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
+            }
+        }
+
+        [HttpGet]
+        [Route("Obtener/{id:int}")]
+        public async Task<IActionResult> Obtener(int id)
+        {
+            ResponseDTO<UsuarioDTO> _ResponseDTO = new ResponseDTO<UsuarioDTO>();
+            try
+            {
+                IQueryable<Usuario> query = await _usuarioRepositorio.Consultar();
+                Usuario _Usuario = await query
+                    .Include(u => u.IdRolNavigation)
+                    .FirstOrDefaultAsync(u => u.IdUsuario == id);
+
+                if (_Usuario != null)
+                {
+                    UsuarioDTO usuarioDTO = _mapper.Map<UsuarioDTO>(_Usuario);
+                    _ResponseDTO = new ResponseDTO<UsuarioDTO>() { status = true, msg = "ok", value = usuarioDTO };
+                }
+                else
+                {
+                    _ResponseDTO = new ResponseDTO<UsuarioDTO>() { status = false, msg = "No se encontró el usuario", value = null };
+                }
+
+                return StatusCode(StatusCodes.Status200OK, _ResponseDTO);
+            }
+            catch (Exception ex)
+            {
+                _ResponseDTO = new ResponseDTO<UsuarioDTO>() { status = false, msg = ex.Message, value = null };
                 return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
             }
         }

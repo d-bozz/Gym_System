@@ -108,8 +108,6 @@ namespace SistemaVentaBlazor.Server.Controllers
             }
         }
 
-
-
         [HttpDelete]
         [Route("Eliminar/{id:int}")]
         public async Task<IActionResult> Eliminar(int id)
@@ -134,6 +132,34 @@ namespace SistemaVentaBlazor.Server.Controllers
             catch (Exception ex)
             {
                 _ResponseDTO = new ResponseDTO<string>() { status = false, msg = ex.Message };
+                return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
+            }
+        }
+
+        [HttpGet]
+        [Route("Obtener/{id:int}")]
+        public async Task<IActionResult> Obtener(int id)
+        {
+            ResponseDTO<CategoriaDTO> _ResponseDTO = new ResponseDTO<CategoriaDTO>();
+            try
+            {
+                Categoria _Categoria = await _categoriaRepositorio.Obtener(u => u.IdCategoria == id);
+
+                if (_Categoria != null)
+                {
+                    CategoriaDTO categoriaDTO = _mapper.Map<CategoriaDTO>(_Categoria);
+                    _ResponseDTO = new ResponseDTO<CategoriaDTO>() { status = true, msg = "ok", value = categoriaDTO };
+                }
+                else
+                {
+                    _ResponseDTO = new ResponseDTO<CategoriaDTO>() { status = false, msg = "No se encontró la categoria", value = null };
+                }
+
+                return StatusCode(StatusCodes.Status200OK, _ResponseDTO);
+            }
+            catch (Exception ex)
+            {
+                _ResponseDTO = new ResponseDTO<CategoriaDTO>() { status = false, msg = ex.Message, value = null };
                 return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
             }
         }

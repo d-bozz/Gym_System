@@ -47,7 +47,6 @@ namespace SistemaVentaBlazor.Server.Controllers
             }
         }
 
-        
         [HttpPost]
         [Route("Guardar")]
         public async Task<IActionResult> Guardar([FromBody] SocioDTO request)

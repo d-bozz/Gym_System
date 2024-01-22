@@ -8,5 +8,7 @@ namespace SistemaVentaBlazor.Client.Servicios.Contrato
         Task<ResponseDTO<ProductoDTO>> Crear(ProductoDTO entidad);
         Task<bool> Editar(ProductoDTO entidad);
         Task<bool> Eliminar(int id);
+        Task<ResponseDTO<ProductoDTO>> Obtener(int id);
+
     }
 }

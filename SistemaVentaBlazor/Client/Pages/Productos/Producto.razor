@@ -30,17 +30,21 @@
                     </ToolBarContent>
                     <HeaderContent>
                         <MudTh>Nombre</MudTh>
+                        <MudTh>Marca</MudTh>
                         <MudTh>Categoria</MudTh>
                         <MudTh>Stock</MudTh>
                         <MudTh>Precio</MudTh>
-                        <MudTh></MudTh>
+                        <MudTh>Ver Detalles</MudTh>
+                        <MudTh>Acción</MudTh>
                     </HeaderContent>
                     <RowTemplate Context="productoRow">
                         <MudTd DataLabel="Nombre">@productoRow.Nombre</MudTd>
+                        <MudTd DataLabel="Marca">@productoRow.Marca</MudTd>
                         <MudTd DataLabel="Correo">@productoRow.DescripcionCategoria</MudTd>
                         <MudTd DataLabel="Rol">@productoRow.Stock</MudTd>
                         <MudTd DataLabel="Precio">@productoRow.Precio</MudTd>
-                        <MudTd DataLabel="">
+                        <MudNavLink Href="@($"/page/producto/detalle/{productoRow.IdProducto}")">Ver Detalles</MudNavLink>
+                        <MudTd DataLabel="Accion">
                             <MudFab Color="Color.Primary"
                                     StartIcon="@Icons.Material.Filled.Edit"
                                     Size="Size.Small"
@@ -96,10 +100,10 @@
             return true;
         if (element.Nombre.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.DescripcionCategoria.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.Marca.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-     
-        if ($"{element.Nombre} {element.DescripcionCategoria}".Contains(searchString))
+
+        if ($"{element.Nombre} {element.Marca}".Contains(searchString))
             return true;
 
         return false;

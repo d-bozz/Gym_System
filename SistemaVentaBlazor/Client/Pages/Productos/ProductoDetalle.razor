@@ -1,0 +1,96 @@
+﻿@page "/page/producto/detalle/{id:int}"
+@inject IProductoService _productoServicio
+@inject ICategoriaService _categoriaServicio
+@inject IDialogService _dialogServicio
+@inject ISnackbar _snackBar
+@inject SweetAlertService Swal;
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="css/productoDetalle.css" />
+
+<div class="container">
+    <div class="row">
+         @if (productoDetalles != null)
+            {
+            <div class="col-md-5">
+                <div class="project-info-box mt-0">
+                    <h5>@productoDetalles.Nombre</h5>
+                    <p class="mb-0">@productoDetalles.Descripcion</p>
+                </div><!-- / project-info-box -->
+
+                <div class="project-info-box">
+                    <p><b>Categoria:</b> @categoriaDetalles.Descripcion</p>
+                    <p><b>Marca:</b> @productoDetalles.Marca</p>
+                    <p><b>Fecha de Ingreso:</b> @productoDetalles.FechaRegistro</p>
+                    <p><b>Peso:</b> @productoDetalles.Peso</p>
+                    <p class="mb-0"><b>Precio:</b> $ @productoDetalles.Precio</p>
+                </div><!-- / project-info-box -->
+
+                <div class="project-info-box mt-0 mb-0">
+                    <p class="mb-0">
+                        <span class="fw-bold mr-10 va-middle hide-mobile">Compartir:</span>
+                        <a href="#x" class="btn btn-xs btn-facebook btn-circle btn-icon mr-5 mb-0"><i class="fa fa-facebook"></i></a>
+                        <a href="#x" class="btn btn-xs btn-twitter btn-circle btn-icon mr-5 mb-0"><i class="fa fa-twitter"></i></a>
+                        <a href="#x" class="btn btn-xs btn-whatsapp btn-circle btn-icon mr-5 mb-0"><i class="fa fa-whatsapp"></i></a>
+                    </p>
+                </div><!-- / project-info-box -->
+            </div><!-- / column -->
+
+            <div class="col-md-7">
+                <img src="@($"data:image/png;base64,{productoDetalles.Foto}")" height="400" width="300" alt="project-image" class="rounded">
+                <div class="project-info-box">
+                    <p><b>Categoria:</b> @categoriaDetalles.Descripcion</p>
+                <p><b>Stock:</b> @productoDetalles.Stock</p>
+            </div><!-- / project-info-box -->
+        </div><!-- / column -->
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public int id { get; set; }
+    private ProductoDTO productoDetalles;
+    private CategoriaDTO categoriaDetalles;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        { 
+            if (id != 0)
+            {
+                var response = await _productoServicio.Obtener(id);
+
+                if (response.status!)
+                {
+                    productoDetalles = (ProductoDTO)response.value!;
+
+                    if (productoDetalles != null && productoDetalles.IdCategoria.HasValue)
+                    {
+                        var response2 = await _categoriaServicio.Obtener(productoDetalles.IdCategoria.Value);
+
+                        if (response2.status!)
+                        {
+                            categoriaDetalles = (CategoriaDTO)response2.value!;
+                        }
+                        else
+                        {
+                            _snackBar.Add("No se pudo encontrar la categoria", Severity.Error, a => a.VisibleStateDuration = 500);
+                        }
+                    }
+                    else
+                    {
+                        _snackBar.Add("No se pudo obtener los detalles del producto", Severity.Error, a => a.VisibleStateDuration = 500);
+                    }
+                }
+                else
+                {
+                    _snackBar.Add("No se pudo encontrar el producto", Severity.Error, a => a.VisibleStateDuration = 500);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error en OnParametersSetAsync: {ex.Message}");
+        }
+    }
+}

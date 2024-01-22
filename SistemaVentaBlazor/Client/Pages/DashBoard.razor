@@ -6,90 +6,113 @@
 @using ChartJs.Blazor.Common.Axes;
 @using ChartJs.Blazor.Common.Axes.Ticks;
 @using ChartJs.Blazor.BarChart;
-@using ChartJs.Blazor.Util;
+@using ChartJs.Blazor.Util;*
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
-
     <MudText Typo="Typo.h5" GutterBottom="true">DashBoard</MudText>
 
     <MudPaper Elevation="3" Class="pa-4" Width="100%">
 
         <MudGrid>
-            @*Estadisticas de Socios*@
             <MudText Typo="Typo.h6" Class="mb-3">Estadísticas de Socios:</MudText>
             <MudDivider />
-            <MudItem xs="12" sm="6" md="4">
-                <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-                    <MudIcon Icon="@Icons.Material.Filled.People" Color="Color.Dark" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
-                    <div>
-                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Socios Registrados</MudText>
-                        <MudText Typo="Typo.h5">@dashboard.TotalSocios</MudText>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card-box bg-blue">
+                            <div class="inner">
+                                            <h3> @dashboard.TotalSocios </h3>
+                                            <p> Socios Registrados </p>
+                            </div>
+                            <div class="icon">
+                                            <i class="fa fa-users" aria-hidden="true"></i>
+                            </div>
+                            <a href="/page/socio" class="card-box-footer">Ver Más <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
                     </div>
-                </MudPaper>
-            </MudItem>
-            <MudItem xs="12" sm="6" md="4">
-                <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-                    <MudIcon Icon="@Icons.Material.Filled.FactCheck" Color="Color.Success" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
-                    <div>
-                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Socios activos</MudText>
-                        <MudText Typo="Typo.h5">@dashboard.TotalSocios</MudText>
-                    </div>
-                </MudPaper>
-            </MudItem>
-            <MudItem xs="12" sm="6" md="4">
-                <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-                    <MudIcon Icon="@Icons.Material.Filled.Autorenew" Color="Color.Primary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
-                    <div>
-                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Nuevos Socios en el Último Mes</MudText>
-                        <MudText Typo="Typo.h5">@dashboard.TotalSocios</MudText>
-                    </div>
-                </MudPaper>
-            </MudItem>
-            <MudItem xs="12" sm="6" md="4">
-                <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-                    <MudIcon Icon="@Icons.Material.Filled.PendingActions" Color="Color.Error" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
-                    <div>
-                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Pagos Pendientes</MudText>
-                        <MudText Typo="Typo.h5">@dashboard.TotalSocios</MudText>
-                    </div>
-                </MudPaper>
-            </MudItem>
-            <MudDivider />
 
-            @*Fin Estadisticas de Socios*@
-
-            @*Estadisticas por Ventas*@
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card-box bg-green">
+                            <div class="inner">
+                                            <h3> @dashboard.TotalSociosActivos </h3>
+                                <p> Socios activos </p>
+                            </div>
+                            <div class="icon">
+                                            <i class="fa fa-recycle" aria-hidden="true"></i>
+                            </div>
+                                        <a href="/page/socio" class="card-box-footer">Ver Más <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card-box bg-orange">
+                            <div class="inner">
+                                            <h3> @dashboard.NuevosSocios </h3>
+                                            <p> Nuevos Socios en el Último Mes </p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-user-plus" aria-hidden="true"></i>
+                            </div>
+                                        <a href="/page/socio" class="card-box-footer">Ver Más <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card-box bg-red">
+                            <div class="inner">
+                                            <h3> @dashboard.PagosPendientes </h3>
+                                            <p> Pagos Pendientes </p>
+                            </div>
+                            <div class="icon">
+                                            <i class="fa fa-exclamation-triangle"></i>
+                            </div>
+                                        <a href="/page/pagomensual" class="card-box-footer">Ver Más <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <MudText Typo="Typo.h6" Class="mt-3 mb-3">Estadísticas por Ventas:</MudText>
             <MudDivider />
-            <MudItem xs="12" sm="6" md="4">
-                <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-                    <MudIcon Icon="@Icons.Material.Filled.AttachMoney" Color="Color.Dark" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
-                    <div>
-                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Total de Ingresos Mensual</MudText>
-                        <MudText Typo="Typo.h5">@dashboard.TotalIngresos</MudText>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card-box bg-dark">
+                            <div class="inner">
+                                <h3>$ @dashboard.TotalIngresos </h3>
+                                <p> Total de Ingresos Mensual </p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-money" aria-hidden="true"></i>
+                            </div>
+                            <a href="/page/historialventa" class="card-box-footer">Ver Más <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
                     </div>
-                </MudPaper>
-            </MudItem>
-            <MudItem xs="12" sm="6" md="4">
-                <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-                    <MudIcon Icon="@Icons.Material.Filled.LocalOffer" Color="Color.Secondary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
-                    <div>
-                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Total de Ventas Mensual</MudText>
-                        <MudText Typo="Typo.h5">@dashboard.TotalVentas</MudText>
+
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card-box bg-green">
+                            <div class="inner">
+                                <h3> @dashboard.TotalVentas </h3>
+                                <p> Total de Ventas Mensual </p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            </div>
+                            <a href="/page/venta" class="card-box-footer">Ver Más <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
                     </div>
-                </MudPaper>
-            </MudItem>
-            <MudItem xs="12" sm="6" md="4">
-                <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-                    <MudIcon Icon="@Icons.Material.Filled.Layers" Color="Color.Tertiary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
-                    <div>
-                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Total de Productos</MudText>
-                        <MudText Typo="Typo.h5">@dashboard.TotalProductos</MudText>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card-box bg-orange">
+                            <div class="inner">
+                                <h3> @dashboard.TotalProductos </h3>
+                                <p> Total de Productos </p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-cubes" aria-hidden="true"></i>
+                            </div>
+                            <a href="/page/producto" class="card-box-footer">Ver Más <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
                     </div>
-                </MudPaper>
-            </MudItem>
-            @*Fin Estadisticas por Ventas*@
+                </div>
+            </div>
 
             <MudText Typo="Typo.h6" Class="mt-3 mb-3">Graficas de Ventas:</MudText>
             <MudDivider />
@@ -104,6 +127,7 @@
         </MudGrid>
     </MudPaper>
 </MudContainer>
+
 @code {
     DashBoardDTO dashboard = new DashBoardDTO();
 
@@ -184,8 +208,4 @@
 
         _chart.Update();
     }
-
-
-
-
 }

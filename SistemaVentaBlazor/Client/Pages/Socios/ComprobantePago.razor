@@ -1,0 +1,206 @@
+﻿@page "/page/socio/comprobantepago/{id:int}"
+@inject IPagoMensualService _pagoMensualesServicio
+@inject ISocioService _socioServicio
+@inject IDialogService _dialogServicio
+@inject ISnackbar _snackBar
+@inject SweetAlertService Swal;
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>SistemaVentaBlazor</title>
+	<base href="/" />
+	<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+	<link href="css/app.css" rel="stylesheet" />
+	<link rel="icon" type="image/png" href="favicon.png" />
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+	<link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="css/comprobante.css" rel="stylesheet">
+
+</head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    @if (pagoMensualDetalles != null)
+                    {
+                        <div class="invoice-title">
+                            <h4 class="float-end font-size-15">Factura #@pagoMensualDetalles.IdPago <span class="badge bg-success font-size-12 ms-2">Pago</span></h4>
+                            <div class="mb-4">
+                                <h2 class="mb-1 text-muted"><img src="assets/images/icon.png" alt="Logotipo del Gimnasio" class="img-fluid" /></h2>
+                            </div>
+                            <div class="text-muted">
+                                <p class="mb-1">3184 Spruce Drive Pittsburgh, PA 15201</p>
+                                <p class="mb-1"><i class="uil uil-envelope-alt me-1"></i> xyz@987.com</p>
+                                <p><i class="uil uil-phone me-1"></i> 012-345-6789</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="text-muted">
+                                    <h5 class="font-size-16 mb-3">Facturado a:</h5>
+                                    <h5 class="font-size-15 mb-2">@socioDetalles.Nombre @socioDetalles.Apellido</h5>
+                                    <p class="mb-1">@socioDetalles.Direccion</p>
+                                    <p class="mb-1">@socioDetalles.Correo</p>
+                                    <p>@socioDetalles.Telefono</p>
+                                </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-sm-6">
+                                <div class="text-muted text-sm-end">
+                                    <div>
+                                        <h5 class="font-size-15 mb-1">Número de Factura:</h5>
+                                        <p>#@pagoMensualDetalles.IdPago</p>
+                                    </div>
+                                    <div class="mt-4">
+                                        <h5 class="font-size-15 mb-1">Fecha de Factura:</h5>
+                                        <p>@pagoMensualDetalles.FechaPago</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+
+                        <div class="py-2">
+                            <h5 class="font-size-15">Resumen de la Orden</h5>
+
+                            <div class="table-responsive">
+                                <table class="table align-middle table-nowrap table-centered mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 70px;">Ítem</th>
+                                            <th>Descripción</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Cantidad</th>
+                                            <th class="text-end">Total</th>
+                                        </tr>
+                                    </thead><!-- end thead -->
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">01</th>
+                                            <td>
+                                                <div>
+                                                    <h5 class="text-truncate font-size-14 mb-1">Pago de Membresía</h5>
+                                                    <p class="text-muted mb-0">@ObtenerNombreMes(pagoMensualDetalles.Mes), @pagoMensualDetalles.Anio</p>
+                                                </div>
+                                            </td>
+                                            <td>$ @pagoMensualDetalles.Monto</td>
+                                            <td>1</td>
+                                            <td class="text-end">$ @pagoMensualDetalles.Monto</td>
+                                        </tr>
+                                        <!-- end tr -->
+
+                                        <tr>
+                                            <th scope="row" colspan="4" class="text-end">Sub Total</th>
+                                            <td class="text-end">$ @pagoMensualDetalles.Monto</td>
+                                        </tr>
+                                        <!-- end tr -->
+                                        <tr>
+                                            <th scope="row" colspan="4" class="border-0 text-end">
+                                                Descuento :
+                                            </th>
+                                            <td class="border-0 text-end">$ 0.00</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" colspan="4" class="border-0 text-end">
+                                                Impuestos :
+                                            </th>
+                                            <td class="border-0 text-end">$ 0.00</td>
+                                        </tr>
+                                        <!-- end tr -->
+                                        <tr>
+                                            <th scope="row" colspan="4" class="border-0 text-end">Total</th>
+                                            <td class="border-0 text-end"><h4 class="m-0 fw-semibold">$ @pagoMensualDetalles.Monto</h4></td>
+                                        </tr>
+                                        <!-- end tr -->
+                                    </tbody><!-- end tbody -->
+                                </table><!-- end table -->
+                            </div><!-- end table responsive -->
+                            <div class="d-print-none mt-4">
+                                <div class="float-end">
+                                    <a href="javascript:window.print()" class="btn btn-primary me-1"><i class="fa fa-print"></i> Imprimir</a>
+                                    <a href="https://api.whatsapp.com/send?phone=094391883&text=Hola,%20aqu%C3%AD%20est%C3%A1%20tu%20factura%3A%20https%3A%2F%2Ftu-sitio-web%2Ffactura%2F@pagoMensualDetalles.IdPago" target="_blank" class="btn btn-success w-md">
+                                        <i class="fa fa-share"></i> Compartir
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="footer mt-4">
+                    <p> Copyright © 2024. Gym Fitness</p>
+                </div>
+            </div>
+        </div><!-- end col -->
+    </div>
+</div>
+
+@code {
+	[Parameter] public int id { get; set; }
+	private SocioDTO socioDetalles;
+	private PagoMensualDTO pagoMensualDetalles;
+
+	protected override async Task OnParametersSetAsync()
+	{
+		if (id != 0)
+		{
+			var response = await _pagoMensualesServicio.Obtener(id);
+
+			if (response.status!)
+			{
+				pagoMensualDetalles = (PagoMensualDTO)response.value!;
+
+				if (pagoMensualDetalles.IdSocio.HasValue)
+				{
+					var response2 = await _socioServicio.Obtener(pagoMensualDetalles.IdSocio.Value);
+
+					if (response2.status!)
+					{
+						socioDetalles = (SocioDTO)response2.value!;
+					}
+					else
+					{
+						_snackBar.Add("No se pudo encontrar el socio", Severity.Error, a => a.VisibleStateDuration = 500);
+					}
+				}
+				else
+				{
+					_snackBar.Add("El ID del socio en el pago es nulo", Severity.Error, a => a.VisibleStateDuration = 500);
+				}
+			}
+			else
+			{
+				_snackBar.Add("No se pudo encontrar el pago", Severity.Error, a => a.VisibleStateDuration = 500);
+			}
+		}
+	}
+
+    private string ObtenerNombreMes(int? numeroMes)
+    {
+        switch (numeroMes)
+        {
+            case 1: return "Enero";
+            case 2: return "Febrero";
+            case 3: return "Marzo";
+            case 4: return "Abril";
+            case 5: return "Mayo";
+            case 6: return "Junio";
+            case 7: return "Julio";
+            case 8: return "Agosto";
+            case 9: return "Septiembre";
+            case 10: return "Octubre";
+            case 11: return "Noviembre";
+            case 12: return "Diciembre";
+            default: return string.Empty;
+        }
+    }
+
+}

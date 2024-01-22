@@ -1,0 +1,140 @@
+﻿@page "/page/socio/pagosrealizados/{id:int}"
+@inject ISocioService _socioServicio
+@inject IPagoMensualService _pagoMensualesServicio
+@inject IDialogService _dialogServicio
+@inject ISnackbar _snackBar
+@inject SweetAlertService Swal;
+
+<div class="container mb-4 main-container">
+    <div class="row">
+        <div class="col-lg-4 pb-5">
+            @if (socioDetalles != null)
+            {
+                <!-- Account Sidebar-->
+                <div class="author-card pb-3">
+                    <div class="author-card-cover" style="background-image: url(https://bootdey.com/img/Content/flores-amarillas-wallpaper.jpeg);"></div>
+                    <div class="author-card-profile">
+                        <div class="author-card-avatar">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Daniel Adams">
+                        </div>
+                        <div class="author-card-details">
+                            <h5 class="author-card-name text-lg">@socioDetalles.Nombre @socioDetalles.Apellido</h5><span class="author-card-position">Socio desde: @socioDetalles.FechaInicioMembresia</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard">
+                    <nav class="list-group list-group-flush">
+                    <a class="list-group-item active" href="#">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fa fa-shopping-bag mr-1 text-muted"></i>
+                                <div class="d-inline-block font-weight-medium text-uppercase">Pagos realizados</div>
+                            </div><span class="badge badge-secondary">6</span>
+                        </div>
+                        </a><a class="list-group-item" href="/page/socio/detalle/@socioDetalles.IdSocio"><i class="fa fa-user text-muted"></i>Detalle de Socio</a>
+                </nav>
+            </div>
+            }
+        </div>
+        <!-- Orders Table-->
+        <div class="col-lg-8 pb-5">
+            <div class="d-flex justify-content-end pb-3">
+                <div class="form-inline">
+                    <label class="text-muted mr-3" for="order-sort">Orden</label>
+                    <select class="form-control" id="order-sort">
+                        <option>Más reciente</option>
+                        <option>Más antigua</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Id Pago</th>
+                            <th>Mes</th>
+                            <th>Año</th>
+                            <th>Fecha de Pago</th>
+                            <th>Importe</th>
+                            <th>Comprobante</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            @if (listaPagoMensuales != null)
+                        {
+                            @foreach (var item in listaPagoMensuales)
+                            {
+                                <tr>
+                                    <td><a class="navi-link" href="#order-details" data-toggle="modal">@item.IdPago</a></td>
+                                    <td>@ObtenerNombreMes(item.Mes)</td>
+                                    <td>@item.Anio</td>
+                                    <td>@item.FechaPago</td>
+                                    <td>$ @item.Monto</td>
+                                    <td>
+                                        <a href="/page/socio/comprobantepago/@item.IdPago">Comprobante</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int id { get; set; }
+    private SocioDTO socioDetalles;
+    List<PagoMensualDTO> listaPagoMensuales = new List<PagoMensualDTO>();
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (id != 0)
+        {
+            var response = await _socioServicio.Obtener(id);
+
+            if (response.status!)
+            {
+                socioDetalles = (SocioDTO)response.value!;
+
+                var pagosResponse = await _pagoMensualesServicio.ListaPorSocio(id);
+
+                if (pagosResponse != null)
+                {
+                    listaPagoMensuales = pagosResponse.value;
+                }
+                else
+                {
+                    _snackBar.Add("No se pudieron cargar los pagos mensuales", Severity.Error, a => a.VisibleStateDuration = 500);
+                }
+            }
+            else
+            {
+                _snackBar.Add("No se pudo encontrar al socio", Severity.Error, a => a.VisibleStateDuration = 500);
+            }
+        }
+    }
+
+    private string ObtenerNombreMes(int? numeroMes)
+    {
+        switch (numeroMes)
+        {
+            case 1: return "Enero";
+            case 2: return "Febrero";
+            case 3: return "Marzo";
+            case 4: return "Abril";
+            case 5: return "Mayo";
+            case 6: return "Junio";
+            case 7: return "Julio";
+            case 8: return "Agosto";
+            case 9: return "Septiembre";
+            case 10: return "Octubre";
+            case 11: return "Noviembre";
+            case 12: return "Diciembre";
+            default: return string.Empty;
+        }
+    }
+
+}

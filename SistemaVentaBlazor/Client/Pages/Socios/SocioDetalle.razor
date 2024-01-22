@@ -3,6 +3,7 @@
 @inject IDialogService _dialogServicio
 @inject ISnackbar _snackBar
 @inject SweetAlertService Swal;
+@inject NavigationManager NavigationManager
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
     <MudText Typo="Typo.h5" GutterBottom="true">Detalles del Socio</MudText>
@@ -30,8 +31,7 @@
                                                 <MudChip Color="Color.Error">Inactivo</MudChip>
                                             }
                                     </p>
-                                    <button class="btn btn-primary">Follow</button>
-                                    <button class="btn btn-outline-primary">Message</button>
+                                        <button @onclick="(() => AbrirPagosRealizados(socioDetalles))" class="btn btn-outline-primary">Ver Pagos</button>
                                 </div>
                             </div>
                         </div>
@@ -113,7 +113,7 @@
                                 </div>
                                 <hr>
                             <div class="row">
-                                    <MudTd DataLabel="">
+                                    <MudTd DataLabel="Editar">
                                         <MudFab Color="Color.Primary"
                                             StartIcon="@Icons.Material.Filled.Edit"
                                             Size="Size.Small"
@@ -156,5 +156,14 @@
 
         var dialogo = _dialogServicio.Show<MdSocio>("Editar Socio", parametros);
         var resultado = await dialogo.Result;
+    }
+
+    private async Task AbrirPagosRealizados(SocioDTO socio)
+    {
+        int id = socioDetalles.IdSocio;
+
+        string url = $"/page/socio/pagosrealizados/{id}";
+
+        NavigationManager.NavigateTo(url);
     }
 }

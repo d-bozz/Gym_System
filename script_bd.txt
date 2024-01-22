@@ -43,6 +43,7 @@ go
 create table Producto (
 idProducto int primary key identity(1,1),
 nombre varchar(100),
+descripcion varchar(250),
 idCategoria int references Categoria(idCategoria),
 stock int,
 precio decimal(10,2),

@@ -142,8 +142,23 @@ namespace SistemaVentaBlazor.Server.Utilidades
             #endregion
 
             #region PagoMensual
+            CreateMap<PagoMensual, PagoMensualDTO>()
+                .ForMember(destino =>
+                    destino.nombreSocio,
+                    opt => opt.MapFrom(origen => origen.IdSocioNavigation.Nombre)
+                )
+                .ForMember(destino =>
+                    destino.apellidoSocio,
+                    opt => opt.MapFrom(origen => origen.IdSocioNavigation.Apellido)
+                );
 
+            CreateMap<PagoMensualDTO, PagoMensual>()
+                .ForMember(destino =>
+                    destino.IdSocioNavigation,
+                    opt => opt.Ignore()
+                );
             #endregion
+
         }
     }
 }

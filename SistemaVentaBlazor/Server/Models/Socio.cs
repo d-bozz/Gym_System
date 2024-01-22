@@ -29,5 +29,5 @@ public partial class Socio
 
     public virtual ICollection<Asistencia> Asistencia { get; } = new List<Asistencia>();
 
-    public virtual ICollection<PagoMensual> PagoMensuals { get; } = new List<PagoMensual>();
+    public virtual ICollection<PagoMensual> PagoMensuales { get; } = new List<PagoMensual>();
 }

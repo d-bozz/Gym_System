@@ -1,0 +1,190 @@
+﻿@page "/page/usuario"
+@inject IUsuarioService _usuarioServicio
+@inject IDialogService _dialogServicio
+@inject ISnackbar _snackBar
+@inject SweetAlertService Swal;
+@inject NavigationManager NavigationManager
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <MudPaper Elevation="3" Class="pa-4" Width="100%">
+                   <MudGrid>
+                    <MudItem xs="12">
+                        <MudButton Variant="Variant.Filled" 
+                        StartIcon="@Icons.Material.Filled.PersonAdd"
+                        Color="Color.Primary"
+                        OnClick="AbrirNuevoUsuario">
+                            Nuevo Administrador</MudButton>
+                    </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase mb-0">Administradores</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table no-wrap user-table mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border-0 text-uppercase font-medium pl-4">#</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Nombre</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Horario</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Celular</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Rol</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (listaUsuarios != null)
+                            {
+                                @foreach (var item in listaUsuarios)
+                                {
+                                    <tr>
+                                        <td class="pl-4">@item.IdUsuario</td>
+                                        <td>
+                                            <h5 class="font-medium mb-0">@item.NombreApellidos</h5>
+                                        </td>
+                                        <td>
+                                            <span class="text-muted">@item.Horario</span><br>
+                                        </td>
+                                        <td>
+                                            <span class="text-muted">@item.Telefono</span><br>
+                                        </td>
+                                        <td>
+                                            <span class="text-muted">@item.rolDescripcion</span><br>
+                                        </td>
+
+                                        <td>
+                                            <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle"
+                                            @onclick="(() => AbrirDetalleUsuario(item))">
+                                                <i class="fa fa-eye"></i>
+                                            </button>                                            <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+                                            @onclick="(() => AbrirEditarUsuario(item))">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+                                            @onclick="(() => EliminarUsuario(item))">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    List<UsuarioDTO> listaUsuarios = new List<UsuarioDTO>();
+    private string searchString1 = "";
+    private UsuarioDTO selectedItem1 = null;
+    private bool _loading = true;
+
+    private async Task ObtenerUsuarios()
+    {
+        var result = await _usuarioServicio.Lista();
+
+        if (result.status)
+        {
+            listaUsuarios = (List<UsuarioDTO>)result.value!;
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ObtenerUsuarios();
+        _loading = false;
+    }
+
+    private bool FilterFunc1(UsuarioDTO element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(UsuarioDTO element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.NombreApellidos.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Correo.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.rolDescripcion.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{element.NombreApellidos} {element.Correo} {element.rolDescripcion}".Contains(searchString))
+            return true;
+
+        return false;
+    }
+
+    private async Task AbrirNuevoUsuario()
+    {
+        var dialogo = _dialogServicio.Show<MdUsuario>("Nuevo Administrador");
+        var resultado = await dialogo.Result;
+
+        if (!resultado.Canceled)
+        {
+            await ObtenerUsuarios();
+        }
+    }
+
+    private async Task AbrirEditarUsuario(UsuarioDTO usuario)
+    {
+        var parametros = new DialogParameters { ["_usuario"] = usuario };
+
+        var dialogo = _dialogServicio.Show<MdUsuario>("Editar Administrador", parametros);
+        var resultado = await dialogo.Result;
+        if (!resultado.Canceled)
+        {
+            await ObtenerUsuarios();
+        }
+    }
+
+    private async Task EliminarUsuario(UsuarioDTO usuario)
+    {
+        SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Esta seguro?",
+                Text = $"Eliminar usuario: {usuario.NombreApellidos}",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Si, eliminar",
+                CancelButtonText = "No, volver"
+            });
+
+        if (result.IsConfirmed)
+        {
+            var resultado = await _usuarioServicio.Eliminar(usuario.IdUsuario);
+
+            if (resultado)
+            {
+                _snackBar.Add("El usuario fue eliminado", Severity.Success, a => a.VisibleStateDuration = 500);
+                await ObtenerUsuarios();
+            }
+            else
+                _snackBar.Add("No se pudo eliminar", Severity.Error, a => a.VisibleStateDuration = 500);
+        }
+    }
+
+    private async Task AbrirDetalleUsuario(UsuarioDTO usuario)
+    {
+        int userId = usuario.IdUsuario;
+
+        string url = $"/page/usuario/detalle/{userId}";
+
+        NavigationManager.NavigateTo(url);
+    }
+
+}

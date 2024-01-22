@@ -12,6 +12,10 @@ namespace SistemaVentaBlazor.Shared
 
         public int? IdSocio { get; set; }
 
+        public string? nombreSocio { get; set; }
+
+        public string? apellidoSocio { get; set; }
+
         public int? Mes { get; set; }
 
         public int? Anio { get; set; }

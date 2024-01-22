@@ -1,0 +1,145 @@
+﻿@inject IPagoMensualService _pagoMensualServicio
+@inject ISocioService _socioServicio
+@inject ISnackbar _snackBar
+
+<MudDialog Style="width:400px">
+
+    <DialogContent>
+        <MudContainer Style="max-height: 400px; overflow-y: scroll" Class="m-0 p-0">
+
+            <EditForm Model="@_pagoMensual">
+                
+                <MudSelect Label="Socio" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Class="mb-3"
+                           @bind-Value="socioSeleccionado">
+                    @if (listaSocios != null && listaSocios.Any())
+                    {
+                        foreach (var socio in listaSocios)
+                        {
+                            <MudSelectItem Value="@socio">@socio.Nombre @socio.Apellido</MudSelectItem>
+                        }
+                    }
+                </MudSelect>
+                <MudSelect Label="Mes" T="int?" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Class="mb-3"
+                           @bind-Value="@_pagoMensual.Mes">
+                      
+                           <MudSelectItem T="int?" Value="1">Enero</MudSelectItem>
+                           <MudSelectItem T="int?" Value="2">Febrero</MudSelectItem>
+                            <MudSelectItem T="int?" Value="3">Marzo</MudSelectItem>
+                            <MudSelectItem T="int?"  Value="4">Abril</MudSelectItem>
+                            <MudSelectItem T="int?" Value="5">Mayo</MudSelectItem>
+                            <MudSelectItem T="int?" Value="6">Junio</MudSelectItem>
+                            <MudSelectItem T="int?" Value="7">Julio</MudSelectItem>
+                            <MudSelectItem T="int?" Value="8">Agosto</MudSelectItem>
+                            <MudSelectItem T="int?" Value="9">Setiembre</MudSelectItem>
+                            <MudSelectItem T="int?" Value="10">Octubre</MudSelectItem>
+                            <MudSelectItem T="int?" Value="11">Noviembre</MudSelectItem>
+                            <MudSelectItem T="int?" Value="12">Diciembre</MudSelectItem>
+                      
+                </MudSelect>
+                <MudSelect Label="Año" T="int?" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Class="mb-3"
+                           @bind-Value="@_pagoMensual.Anio">
+                    @for (int i = 0; i <= 4; i++)
+                    {
+                        var year = DateTime.Now.Year - i;
+                        <MudSelectItem T="int?" Value="@year">@year</MudSelectItem>
+                    }
+                </MudSelect>
+                              <MudTextField @bind-Value="@_pagoMensual.Monto" Required Class="mb-3"
+                              Label="Monto" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.AttachMoney" />                
+                </EditForm>
+
+                </MudContainer>
+
+            </DialogContent>
+            <DialogActions>
+                <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="Cancel">Cancelar</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Guardar">Guardar</MudButton>
+            </DialogActions>
+            </MudDialog>
+
+    @code {
+
+    [Parameter]
+    public PagoMensualDTO _pagoMensual { get; set; } = new PagoMensualDTO();
+
+    bool isShow;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    List<SocioDTO> listaSocios = new List<SocioDTO>();
+    public SocioDTO socioSeleccionado;
+
+
+    bool StringToBoolConverter(string stringValue)
+    {
+        return bool.Parse(stringValue);
+    }
+
+    private async Task ObtenerSocios()
+    {
+        var result = await _socioServicio.Lista();
+
+        if (result.status)
+        {
+            listaSocios = (List<SocioDTO>)result.value!;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ObtenerSocios();
+    }
+
+    void MostrarClave()
+    {
+        @if (isShow)
+        {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+    
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private async Task Guardar()
+    {
+        string _mensaje = "";
+        bool _resultado;
+
+        if (_pagoMensual.IdPago != 0)
+        {
+            _resultado = await _pagoMensualServicio.Editar(_pagoMensual);
+            _mensaje = "PagoMensual fue modificado";
+        }
+        else
+        {
+            _pagoMensual.IdSocio = socioSeleccionado.IdSocio;
+            _pagoMensual.FechaPago = DateTime.Now;
+            var response = await _pagoMensualServicio.Crear(_pagoMensual);
+            _resultado = response.status;
+            _mensaje = "PagoMensual fue creado";
+        }
+
+        if (_resultado)
+        {
+            _snackBar.Add(_mensaje, Severity.Success, a => a.VisibleStateDuration = 500);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        else
+            _snackBar.Add("Error al guardar cambios", Severity.Error, a => a.VisibleStateDuration = 500);
+
+    }
+}

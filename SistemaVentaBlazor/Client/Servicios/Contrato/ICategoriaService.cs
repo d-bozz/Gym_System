@@ -7,5 +7,6 @@ namespace SistemaVentaBlazor.Client.Servicios.Contrato
         Task<ResponseDTO<CategoriaDTO>> Crear(CategoriaDTO entidad);
         Task<bool> Editar(CategoriaDTO entidad);
         Task<bool> Eliminar(int id);
+        Task<ResponseDTO<CategoriaDTO>> Obtener(int id);
     }
 }

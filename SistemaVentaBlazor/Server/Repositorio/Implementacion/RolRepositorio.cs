@@ -16,7 +16,7 @@ namespace SistemaVentaBlazor.Server.Repositorio.Implementacion
         {
             try
             {
-                return await _dbContext.Rols.ToListAsync();
+                return await _dbContext.Roles.ToListAsync();
             }
             catch
             {

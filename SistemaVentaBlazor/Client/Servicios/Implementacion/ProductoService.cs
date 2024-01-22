@@ -38,5 +38,10 @@ namespace SistemaVentaBlazor.Client.Servicios.Implementacion
             var result = await _http.GetFromJsonAsync<ResponseDTO<List<ProductoDTO>>>("api/producto/Lista");
             return result!;
         }
+
+        public async Task<ResponseDTO<ProductoDTO>> Obtener(int id)
+        {
+            return await _http.GetFromJsonAsync<ResponseDTO<ProductoDTO>>($"api/producto/Obtener/{id}");
+        }
     }
 }

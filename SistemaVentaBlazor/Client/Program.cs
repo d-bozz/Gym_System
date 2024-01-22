@@ -20,6 +20,8 @@ builder.Services.AddScoped<IUsuarioService,UsuarioService>();
 builder.Services.AddScoped<IVentaService,VentaService>();
 builder.Services.AddScoped<IDashBoardService,DashBoardService>();
 builder.Services.AddScoped<ISocioService, SocioService>();
+builder.Services.AddScoped<IPagoMensualService, PagoMensualService>();
+
 
 builder.Services.AddMudServices();
 builder.Services.AddSweetAlert2();

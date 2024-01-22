@@ -25,11 +25,11 @@ public partial class GymSystemContext : DbContext
 
     public virtual DbSet<NumeroDocumento> NumeroDocumentos { get; set; }
 
-    public virtual DbSet<PagoMensual> PagoMensuals { get; set; }
+    public virtual DbSet<PagoMensual> PagoMensuales { get; set; }
 
     public virtual DbSet<Producto> Productos { get; set; }
 
-    public virtual DbSet<Rol> Rols { get; set; }
+    public virtual DbSet<Rol> Roles { get; set; }
 
     public virtual DbSet<Socio> Socios { get; set; }
 
@@ -149,7 +149,7 @@ public partial class GymSystemContext : DbContext
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("monto");
 
-            entity.HasOne(d => d.IdSocioNavigation).WithMany(p => p.PagoMensuals)
+            entity.HasOne(d => d.IdSocioNavigation).WithMany(p => p.PagoMensuales)
                 .HasForeignKey(d => d.IdSocio)
                 .HasConstraintName("FK__PagoMensu__idSoc__4F7CD00D");
         });
@@ -178,6 +178,10 @@ public partial class GymSystemContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("nombre");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(250)
+                .IsUnicode(false)
+                .HasColumnName("descripcion");
             entity.Property(e => e.Peso)
                 .HasMaxLength(10)
                 .IsUnicode(false)

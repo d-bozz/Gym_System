@@ -1,0 +1,131 @@
+﻿@page "/page/usuario/detalle/{id:int}"
+@inject IUsuarioService _usuarioServicio
+@inject IDialogService _dialogServicio
+@inject ISnackbar _snackBar
+@inject SweetAlertService Swal;
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
+    <MudText Typo="Typo.h5" GutterBottom="true">Detalles del Usuario</MudText>
+
+    <div class="container">
+        <div class="main-body">
+            @if (usuarioDetalles != null)
+            {
+                <div class="row gutters-sm">
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex flex-column align-items-center text-center">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                                    <div class="mt-3">
+                                        <h4>@usuarioDetalles.NombreApellidos</h4>
+                                        <p class="text-secondary mb-1">ID Usuario: @usuarioDetalles.IdUsuario</p>
+                                        <button class="btn btn-outline-primary">Modificar Foto</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Nombre completo</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @usuarioDetalles.NombreApellidos
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Rol</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @usuarioDetalles.rolDescripcion
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Teléfono</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @usuarioDetalles.Telefono
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Correo</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @usuarioDetalles.Correo
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Dirección</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @usuarioDetalles.Direccion
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Horario</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @usuarioDetalles.Horario
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <MudTd DataLabel="Editar">
+                                        <MudFab Color="Color.Info"
+                                            StartIcon="@Icons.Material.Filled.Edit"
+                                            Size="Size.Small"
+                                            IconSize="Size.Small"
+                                            OnClick="@(() => AbrirEditarUsuario(usuarioDetalles))" />
+                                    </MudTd>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</MudContainer>
+
+@code {
+    [Parameter] public int id { get; set; }
+    private UsuarioDTO usuarioDetalles;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (id != 0)
+        {
+            var response = await _usuarioServicio.Obtener(id);
+            if (response.status!)
+            {
+                usuarioDetalles = (UsuarioDTO)response.value!;
+            }
+            else
+            {
+                _snackBar.Add("No se pudo encontrar al usuario", Severity.Error, a => a.VisibleStateDuration = 500);
+            }
+        }
+    }
+
+    private async Task AbrirEditarUsuario(UsuarioDTO usuario)
+    {
+        var parametros = new DialogParameters { ["_usuario"] = usuario };
+
+        var dialogo = _dialogServicio.Show<MdUsuario>("Editar Usuario", parametros);
+        var resultado = await dialogo.Result;
+    }
+}

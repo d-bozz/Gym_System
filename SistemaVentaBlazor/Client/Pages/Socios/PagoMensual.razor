@@ -1,0 +1,186 @@
+﻿@page "/page/pagomensual"
+@inject IPagoMensualService _pagoMensualesServicio
+@inject IDialogService _dialogServicio
+@inject ISnackbar _snackBar
+@inject SweetAlertService Swal;
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
+
+    <MudText Typo="Typo.h5" GutterBottom="true">PagoMensuales</MudText>
+
+    <MudPaper Elevation="3" Class="pa-4" Width="100%">
+        <MudGrid>
+            <MudItem xs="12">
+                <MudButton Variant="Variant.Filled"
+                           StartIcon="@Icons.Material.Filled.AddCard"
+                           Color="Color.Primary"
+                           OnClick="AbrirNuevoPagoMensual">
+                    Registrar Pago
+                </MudButton>
+            </MudItem>
+            <MudItem xs="12">
+
+                <MudTable Items="@listaPagoMensuales"
+                          Dense="true"
+                          Striped="true" Bordered="true"
+                          Filter="new Func<PagoMensualDTO,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1"
+                          Loading="@_loading" LoadingProgressColor="Color.Info">
+                    <ToolBarContent>
+                        <MudSpacer />
+                        <MudTextField @bind-Value="searchString1" Placeholder="Buscar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                    </ToolBarContent>
+                    <HeaderContent>
+                        <MudTh>ID de Pago</MudTh>
+                        <MudTh>Nombre</MudTh>
+                        <MudTh>Mes</MudTh>
+                        <MudTh>Anio</MudTh>
+                        <MudTh>Fecha del pago</MudTh>
+                        <MudTh>Monto</MudTh>
+                        <MudTh>Comprobante</MudTh>
+                        <MudTh>Acción</MudTh>
+                    </HeaderContent>
+                    <RowTemplate Context="pagoMensualesRow">
+                        <MudTd DataLabel="ID Pago">@pagoMensualesRow.IdPago</MudTd>
+                        <MudTd DataLabel="Nombre">@pagoMensualesRow.nombreSocio @pagoMensualesRow.apellidoSocio</MudTd>
+                        <MudTd DataLabel="Mes">@ObtenerNombreMes(pagoMensualesRow.Mes)</MudTd>
+                        <MudTd DataLabel="Anio">@pagoMensualesRow.Anio</MudTd>
+                        <MudTd DataLabel="Fecha del pago">@pagoMensualesRow.FechaPago</MudTd>
+                        <MudTd DataLabel="Monto">$ @pagoMensualesRow.Monto</MudTd>
+                        <MudTd DataLabel="comprobante">
+                            <MudNavLink Href="@($"/page/socio/comprobantepago/{pagoMensualesRow.IdPago}")">Comprobante</MudNavLink>
+                        </MudTd>                        <MudTd DataLabel="">
+                            <MudFab Color="Color.Primary"
+                                    StartIcon="@Icons.Material.Filled.Edit"
+                                    Size="Size.Small"
+                                    IconSize="Size.Small"
+                                    OnClick="@(() => AbrirEditarPagoMensual(pagoMensualesRow))" />
+                            <MudFab Color="Color.Error"
+                                    StartIcon="@Icons.Material.Filled.Delete"
+                                    Size="Size.Small"
+                                    IconSize="Size.Small"
+                                    OnClick="@(() => EliminarPagoMensual(pagoMensualesRow))" />
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager />
+                    </PagerContent>
+                </MudTable>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+</MudContainer>
+
+@code {
+    List<PagoMensualDTO> listaPagoMensuales = new List<PagoMensualDTO>();
+    private string searchString1 = "";
+    private PagoMensualDTO selectedItem1 = null;
+    private bool _loading = true;
+
+    private async Task ObtenerPagoMensuales()
+    {
+        var result = await _pagoMensualesServicio.Lista();
+
+        if (result.status)
+        {
+            listaPagoMensuales = (List<PagoMensualDTO>)result.value!;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ObtenerPagoMensuales();
+        _loading = false;
+    }
+
+    private bool FilterFunc1(PagoMensualDTO element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(PagoMensualDTO element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+
+        if (element.IdPago.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (element.nombreSocio.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (element.apellidoSocio.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if ($"{element.IdPago} {element.nombreSocio} {element.apellidoSocio}".Contains(searchString))
+            return true;
+
+        return false;
+    }
+
+    private async Task AbrirNuevoPagoMensual()
+    {
+        var dialogo = _dialogServicio.Show<MdPagoMensual>("Nuevo PagoMensual");
+        var resultado = await dialogo.Result;
+
+        if (!resultado.Canceled)
+        {
+            await ObtenerPagoMensuales();
+        }
+    }
+
+    private async Task AbrirEditarPagoMensual(PagoMensualDTO pagoMensuales)
+    {
+        var parametros = new DialogParameters { ["_pagoMensuales"] = pagoMensuales };
+
+        var dialogo = _dialogServicio.Show<MdPagoMensual>("Editar PagoMensual", parametros);
+        var resultado = await dialogo.Result;
+        if (!resultado.Canceled)
+        {
+            await ObtenerPagoMensuales();
+        }
+    }
+
+    private async Task EliminarPagoMensual(PagoMensualDTO pagoMensuales)
+    {
+        SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Esta seguro?",
+                Text = $"Eliminar pagoMensuales: {pagoMensuales.IdPago} ",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Si, eliminar",
+                CancelButtonText = "No, volver"
+            });
+
+        if (result.IsConfirmed)
+        {
+            var resultado = await _pagoMensualesServicio.Eliminar(pagoMensuales.IdPago);
+
+            if (resultado)
+            {
+                _snackBar.Add("El pagoMensuales fue eliminado", Severity.Success, a => a.VisibleStateDuration = 500);
+                await ObtenerPagoMensuales();
+            }
+            else
+                _snackBar.Add("No se pudo eliminar", Severity.Error, a => a.VisibleStateDuration = 500);
+        }
+    }
+
+    private string ObtenerNombreMes(int? numeroMes)
+    {
+        switch (numeroMes)
+        {
+            case 1: return "Enero";
+            case 2: return "Febrero";
+            case 3: return "Marzo";
+            case 4: return "Abril";
+            case 5: return "Mayo";
+            case 6: return "Junio";
+            case 7: return "Julio";
+            case 8: return "Agosto";
+            case 9: return "Septiembre";
+            case 10: return "Octubre";
+            case 11: return "Noviembre";
+            case 12: return "Diciembre";
+            default: return string.Empty;
+        }
+    }
+}

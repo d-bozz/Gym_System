@@ -12,6 +12,12 @@
                 <MudTextField @bind-Value="@_producto.Nombre" Class="mb-3"
                               Label="Nombre" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Badge" />
 
+                <MudTextField @bind-Value="@_producto.Descripcion" Class="mb-3"
+                              Label="Descripcion" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Description" />
+
+                <MudTextField @bind-Value="@_producto.Marca" Class="mb-3"
+                              Label="Marca" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Bookmarks" />
+
 
                 <MudSelect Label="Categoria" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Class="mb-3"
                            @bind-Value="categoriaSeleccionado">
@@ -29,6 +35,34 @@
 
                 <MudNumericField @bind-Value="@_producto.Precio" Class="mb-3"
                               Label="Precio" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Money" />
+
+                <MudNumericField @bind-Value="@_producto.Peso" Class="mb-3"
+                                 Label="Peso" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.MonitorWeight" />
+
+                @*Carga de imagen*@
+
+                <MudFileUpload T="IBrowserFile" Accept=".png, .jpg" FilesChanged="UploadFiles2" MaximumFileCount="100">
+                    <ButtonTemplate Context="buttonContext">
+                        <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.CloudUpload"
+                                   for="@buttonContext">
+                            Subir una imagen
+                        </MudButton>
+                    </ButtonTemplate>
+                </MudFileUpload>
+
+                @if (file != null)
+                {
+                    <MudList>
+                            <MudListItem Icon="@Icons.Material.Filled.AttachFile">
+                                @file.Name <code>@file.Size bytes</code>
+                            </MudListItem>
+                    </MudList>
+                }
+
+                @*Carga de imagen termina*@
 
             </EditForm>
 
@@ -48,10 +82,10 @@
     List<CategoriaDTO> listaCategoria = new List<CategoriaDTO>();
     public CategoriaDTO categoriaSeleccionado;
 
-
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; }
 
+    IBrowserFile file;
 
     protected override async Task OnInitializedAsync()
     {
@@ -74,6 +108,7 @@
     {
         MudDialog.Cancel();
     }
+
     private async Task Guardar()
     {
         _producto.IdCategoria = categoriaSeleccionado.IdCategoria;
@@ -82,6 +117,22 @@
 
         if (_producto.IdProducto != 0)
         {
+            if (file != null)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    try
+                    {
+                        await file.OpenReadStream().CopyToAsync(stream);
+                        _producto.Foto = Convert.ToBase64String(stream.ToArray());
+                    }
+                    catch (Exception ex)
+                    {
+                        _snackBar.Add("Error al cargar la imagen", Severity.Error, a => a.VisibleStateDuration = 500);
+                    }
+                }
+            }
+
             _resultado = await _productoServicio.Editar(_producto);
             _mensaje = "Producto fue modificado";
         }
@@ -100,5 +151,10 @@
         else
             _snackBar.Add("Error al guardar cambios", Severity.Error, a => a.VisibleStateDuration = 500);
 
+    }
+
+    private void UploadFiles2(IBrowserFile uploadedFile)
+    {
+        file = uploadedFile;
     }
 }
