@@ -28,7 +28,12 @@
                             <th>10:00</th>
                             <th>11:00</th>
                             <th>12:00</th>
-                            <th class="last">07 pm</th>
+                            <th>16:00</th>
+                            <th>17:00</th>
+                            <th>18:00</th>
+                            <th>19:00</th>
+                            <th>20:00</th>
+                            <th>21:00</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,16 +42,16 @@
                             <tr>
                                 <td class="day">@diaSemana</td>
 
-                                @foreach (var horario in ObtenerHorariosPorDia(diaSemana))
+                                @foreach (var hora in ObtenerHorariosPorDia(diaSemana))
                                 {
-                                    <td class="@(horario != null ? "active" : "")">
-                                        @if (horario != null)
+                                    <td class="@(hora.Actividad != null ? "active" : "")">
+                                        @if (hora.Actividad != null)
                                         {
-                                            <h4>@horario.Actividad</h4>
-                                            <p>@($"{horario.HoraInicio?.ToString("hh\\:mm")} - {horario.HoraFin?.ToString("hh\\:mm")}")</p>
+                                            <h4>@hora.Actividad</h4>
+                                            <p>@hora.HoraMostrar</p>
                                             <div class="hover">
-                                                <h4>@horario.Actividad</h4>
-                                                <p>@($"{horario.HoraInicio?.ToString("hh\\:mm")} - {horario.HoraFin?.ToString("hh\\:mm")}")</p>
+                                                <h4>@hora.Actividad</h4>
+                                                <p>@hora.HoraMostrar</p>
                                             </div>
                                         }
                                     </td>
@@ -60,7 +65,6 @@
     </div>
 </div>
 
-
 @code {
     List<HorarioActividadDTO> listaHorarios = new List<HorarioActividadDTO>();
 
@@ -69,9 +73,34 @@
         return new List<string> { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo" };
     }
 
-    List<HorarioActividadDTO> ObtenerHorariosPorDia(string dia)
+    List<HorarioPorHoraDTO> ObtenerHorariosPorDia(string dia)
     {
-        return listaHorarios.Where(h => h.DiaSemana == dia).ToList();
+        var horariosPorDia = new List<HorarioPorHoraDTO>();
+
+        var horasDelDia = new List<int> { 9, 10, 11, 12, 16, 17, 18, 19, 20, 21 };
+
+        foreach (var horaDelDia in horasDelDia)
+        {
+            var horaInicio = TimeSpan.FromHours(horaDelDia);
+            var horaFin = TimeSpan.FromHours(horaDelDia + 1);
+
+            var horario = listaHorarios.FirstOrDefault(h =>
+                h.DiaSemana == dia &&
+                ((h.HoraInicio <= horaInicio && h.HoraFin > horaInicio) ||
+                 (h.HoraInicio < horaFin && h.HoraFin >= horaFin) ||
+                 (h.HoraInicio >= horaInicio && h.HoraFin <= horaFin))
+            );
+
+            var horarioPorHora = new HorarioPorHoraDTO
+                {
+                    Actividad = horario?.Actividad,
+                    HoraMostrar = $"{horaInicio.Hours:00}:{horaInicio.Minutes:00} - {horaFin.Hours:00}:{horaFin.Minutes:00}"
+                };
+
+            horariosPorDia.Add(horarioPorHora);
+        }
+
+        return horariosPorDia;
     }
 
     private HorarioActividadDTO horario = null;
@@ -91,5 +120,11 @@
     {
         await ObtenerHorarios();
         _loading = false;
+    }
+
+    public class HorarioPorHoraDTO
+    {
+        public string? Actividad { get; set; }
+        public string? HoraMostrar { get; set; }
     }
 }
