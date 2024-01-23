@@ -159,6 +159,10 @@ namespace SistemaVentaBlazor.Server.Utilidades
                 );
             #endregion
 
+            #region HorarioActividad
+            CreateMap<HorarioActividad, HorarioActividadDTO>().ReverseMap();
+            #endregion HorarioActividad
+
         }
     }
 }

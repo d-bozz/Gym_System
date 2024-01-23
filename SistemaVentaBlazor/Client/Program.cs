@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using SistemaVentaBlazor.Client;
 using SistemaVentaBlazor.Client.Servicios.Implementacion;
+using Syncfusion.Blazor;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -21,9 +22,12 @@ builder.Services.AddScoped<IVentaService,VentaService>();
 builder.Services.AddScoped<IDashBoardService,DashBoardService>();
 builder.Services.AddScoped<ISocioService, SocioService>();
 builder.Services.AddScoped<IPagoMensualService, PagoMensualService>();
+builder.Services.AddScoped<IHorarioActividadService, HorarioActividadService>();
 
 
 builder.Services.AddMudServices();
 builder.Services.AddSweetAlert2();
+
+builder.Services.AddSyncfusionBlazor();
 
 await builder.Build().RunAsync();

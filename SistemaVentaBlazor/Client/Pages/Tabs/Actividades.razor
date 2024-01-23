@@ -1,0 +1,95 @@
+﻿@page "/"
+@page "/page/actividades"
+
+@inject IHorarioActividadService _horarioActividadServicio
+@inject IDialogService _dialogServicio
+@inject ISnackbar _snackBar
+@inject SweetAlertService Swal;
+
+<link href="css/calendar.css" rel="stylesheet">
+
+<!-- Otras importaciones y estilos -->
+
+<div class="container">
+    <!-- Encabezado de la tabla -->
+    <div class="w-95 w-md-75 w-lg-60 w-xl-55 mx-auto mb-6 text-center">
+        <h2 class="display-18 display-md-16 display-lg-14 mb-0">Calendario de Actividades </h2>
+    </div>
+
+    <!-- Tabla de actividades -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="schedule-table">
+                <table class="table bg-white">
+                    <thead>
+                        <tr>
+                            <th>Rutina</th>
+                            <th>09:00</th>
+                            <th>10:00</th>
+                            <th>11:00</th>
+                            <th>12:00</th>
+                            <th class="last">07 pm</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var diaSemana in ObtenerDiasSemana())
+                        {
+                            <tr>
+                                <td class="day">@diaSemana</td>
+
+                                @foreach (var horario in ObtenerHorariosPorDia(diaSemana))
+                                {
+                                    <td class="@(horario != null ? "active" : "")">
+                                        @if (horario != null)
+                                        {
+                                            <h4>@horario.Actividad</h4>
+                                            <p>@($"{horario.HoraInicio?.ToString("hh\\:mm")} - {horario.HoraFin?.ToString("hh\\:mm")}")</p>
+                                            <div class="hover">
+                                                <h4>@horario.Actividad</h4>
+                                                <p>@($"{horario.HoraInicio?.ToString("hh\\:mm")} - {horario.HoraFin?.ToString("hh\\:mm")}")</p>
+                                            </div>
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    List<HorarioActividadDTO> listaHorarios = new List<HorarioActividadDTO>();
+
+    List<string> ObtenerDiasSemana()
+    {
+        return new List<string> { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo" };
+    }
+
+    List<HorarioActividadDTO> ObtenerHorariosPorDia(string dia)
+    {
+        return listaHorarios.Where(h => h.DiaSemana == dia).ToList();
+    }
+
+    private HorarioActividadDTO horario = null;
+    private bool _loading = true;
+
+    private async Task ObtenerHorarios()
+    {
+        var result = await _horarioActividadServicio.Lista();
+
+        if (result.status)
+        {
+            listaHorarios = (List<HorarioActividadDTO>)result.value!;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ObtenerHorarios();
+        _loading = false;
+    }
+}

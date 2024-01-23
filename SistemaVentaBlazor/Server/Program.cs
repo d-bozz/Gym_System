@@ -26,6 +26,7 @@ builder.Services.AddScoped<IVentaRepositorio, VentaRepositorio>();
 builder.Services.AddScoped<IDashBoardRepositorio, DashBoardRepositorio>();
 builder.Services.AddScoped<ISocioRepositorio, SocioRepositorio>();
 builder.Services.AddScoped<IPagoMensualRepositorio, PagoMensualRepositorio>();
+builder.Services.AddScoped<IHorarioActividadRepositorio, HorarioActividadRepositorio>();
 
 var app = builder.Build();
 
