@@ -14,6 +14,14 @@
     <!-- Encabezado de la tabla -->
     <div class="w-95 w-md-75 w-lg-60 w-xl-55 mx-auto mb-6 text-center">
         <h2 class="display-18 display-md-16 display-lg-14 mb-0">Calendario de Actividades </h2>
+        <MudItem xs="12">
+            <MudButton Variant="Variant.Filled"
+                       StartIcon="@Icons.Material.Filled.NewLabel"
+                       Color="Color.Primary"
+                       OnClick="AbrirNuevoHorario">
+                Nueva Actividad
+            </MudButton>
+        </MudItem>
     </div>
 
     <!-- Tabla de actividades -->
@@ -52,6 +60,13 @@
                                             <div class="hover">
                                                 <h4>@hora.Actividad</h4>
                                                 <p>@hora.HoraMostrar</p>
+                                                <MudTd DataLabel="">
+                                                    <MudFab Color="Color.Primary"
+                                                StartIcon="@Icons.Material.Filled.Edit"
+                                                Size="Size.Small"
+                                                IconSize="Size.Small"
+                                                OnClick="@(() => AbrirEditarHorario(hora))" />
+                                                </MudTd>
                                             </div>
                                         }
                                     </td>
@@ -126,5 +141,28 @@
     {
         public string? Actividad { get; set; }
         public string? HoraMostrar { get; set; }
+    }
+
+    private async Task AbrirNuevoHorario()
+    {
+        var dialogo = _dialogServicio.Show<MdHorarioActividad>("Nueva Actividad");
+        var resultado = await dialogo.Result;
+
+        if (!resultado.Canceled)
+        {
+            await ObtenerHorarios();
+        }
+    }
+
+    private async Task AbrirEditarHorario(HorarioPorHoraDTO horario)
+    {
+        var parametros = new DialogParameters { ["_horario"] = horario };
+
+        var dialogo = _dialogServicio.Show<MdHorarioActividad>("Editar Actividad", parametros);
+        var resultado = await dialogo.Result;
+        if (!resultado.Canceled)
+        {
+            await ObtenerHorarios();
+        }
     }
 }
