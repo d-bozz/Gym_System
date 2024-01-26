@@ -54,6 +54,12 @@ namespace SistemaVentaBlazor.Server.Controllers
             ResponseDTO<CategoriaDTO> _ResponseDTO = new ResponseDTO<CategoriaDTO>();
             try
             {
+                if (string.IsNullOrEmpty(request.Descripcion))
+                {
+                    _ResponseDTO = new ResponseDTO<CategoriaDTO>() { status = false, msg = "La descripción es requerida" };
+                    return StatusCode(StatusCodes.Status400BadRequest, _ResponseDTO);
+                }
+
                 Categoria _Categoria = _mapper.Map<Categoria>(request);
 
                 Categoria _CategoriaCreado = await _categoriaRepositorio.Crear(_Categoria);

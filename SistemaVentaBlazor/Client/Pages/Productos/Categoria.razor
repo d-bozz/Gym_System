@@ -12,10 +12,10 @@
         <MudGrid>
             <MudItem xs="12">
                 <MudButton Variant="Variant.Filled"
-                           StartIcon="@Icons.Material.Filled.Add"
+                           StartIcon="@Icons.Material.Filled.AddBox"
                            Color="Color.Primary"
                            OnClick="AbrirNuevoCategoria">
-                    Nuevo Categoria
+                    Nueva Categoría
                 </MudButton>
             </MudItem>
             <MudItem xs="12">
@@ -30,12 +30,14 @@
                         <MudTextField @bind-Value="searchString1" Placeholder="Buscar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                     </ToolBarContent>
                     <HeaderContent>
-                        <MudTh>Descripción</MudTh>
-                        <MudTh></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<CategoriaDTO, object>(x=>x.IdCategoria)">Id Categoría</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<CategoriaDTO, object>(x=>x.Descripcion)">Descripción</MudTableSortLabel></MudTh>
+                        <MudTh>Acción</MudTh>
                     </HeaderContent>
                     <RowTemplate Context="categoriaRow">
+                        <MudTd DataLabel="IdCategoria">@categoriaRow.IdCategoria</MudTd>
                         <MudTd DataLabel="Nombre">@categoriaRow.Descripcion</MudTd>
-                        <MudTd DataLabel="">
+                        <MudTd DataLabel="Acción">
                             <MudFab Color="Color.Primary"
                                     StartIcon="@Icons.Material.Filled.Edit"
                                     Size="Size.Small"
@@ -99,7 +101,7 @@
 
     private async Task AbrirNuevoCategoria()
     {
-        var dialogo = _dialogServicio.Show<MdCategoria>("Nuevo Categoria");
+        var dialogo = _dialogServicio.Show<MdCategoria>("Nueva Categoría");
         var resultado = await dialogo.Result;
 
         if (!resultado.Canceled)
@@ -112,7 +114,7 @@
     {
         var parametros = new DialogParameters { ["_categoria"] = categoria };
 
-        var dialogo = _dialogServicio.Show<MdCategoria>("Editar Categoria", parametros);
+        var dialogo = _dialogServicio.Show<MdCategoria>("Editar Categoría", parametros);
         var resultado = await dialogo.Result;
         if (!resultado.Canceled)
         {
@@ -125,7 +127,7 @@
         SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
             {
                 Title = "Esta seguro?",
-                Text = $"Eliminar categoria: {categoria.Descripcion}",
+                Text = $"Eliminar categoría: {categoria.Descripcion}",
                 Icon = SweetAlertIcon.Warning,
                 ShowCancelButton = true,
                 ConfirmButtonText = "Si, eliminar",
