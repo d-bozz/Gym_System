@@ -51,8 +51,8 @@ go
 
 --INSERTAR HORARIO DE ACTIVIDAD
 insert into HorarioActividad (diaSemana, horaInicio, horaFin, actividad)
-values ('Martes', '10:00', '11:00', 'Spinning'),
-       ('Jueves', '11:00', '12:00', 'Zumba')
+values ('Martes', '10:00', '11:00', 'Spinning','Piñon Fijo'),
+       ('Jueves', '11:00', '12:00', 'Zumba','Abeja Reina')
 
 go
 

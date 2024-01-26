@@ -118,6 +118,7 @@ create table HorarioActividad (
     horaInicio time,
     horaFin time,
     actividad varchar(100),
+    encargado varchar(50)
 )
 
 go
