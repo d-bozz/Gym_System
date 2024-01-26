@@ -84,6 +84,7 @@ namespace SistemaVentaBlazor.Server.Controllers
                 {
 
                     _HorarioActividadParaEditar.Actividad = _HorarioActividad.Actividad;
+                    _HorarioActividadParaEditar.Encargado = _HorarioActividad.Encargado;
                     _HorarioActividadParaEditar.HoraInicio = _HorarioActividad.HoraInicio;
                     _HorarioActividadParaEditar.HoraFin = _HorarioActividad.HoraFin;
                     _HorarioActividadParaEditar.DiaSemana = _HorarioActividad.DiaSemana;

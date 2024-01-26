@@ -6,12 +6,12 @@
     <DialogContent>
         <MudContainer Style="max-height: 400px; overflow-y: scroll" Class="m-0 p-0">
 
-            <EditForm Model="@_horarioActividad">
+            <EditForm Model="@_horario">
 
-                <MudTextField @bind-Value="@_horarioActividad.Actividad" Required Class="mb-3"
+                <MudTextField @bind-Value="@_horario.Actividad" Required Class="mb-3"
                               Label="Actividad " Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.SportsGymnastics" />
 
-                <MudSelect @bind-Value="@_horarioActividad.DiaSemana" Label="Día de la semana" AnchorOrigin="Origin.BottomCenter">
+                <MudSelect @bind-Value="@_horario.DiaSemana" Label="Día de la semana" AnchorOrigin="Origin.BottomCenter">
                     <MudSelectItem Value="@("Lunes")" />
                     <MudSelectItem Value="@("Martes")" />
                     <MudSelectItem Value="@("Miercoles")" />
@@ -21,8 +21,10 @@
                     <MudSelectItem Value="@("Domingo")" />
                 </MudSelect>
 
-                <MudTimePicker Label="Hora de inicio" @bind-Time="_horarioActividad.HoraInicio" />
-                <MudTimePicker Label="Hora de fin" @bind-Time="_horarioActividad.HoraFin" />
+                <MudTimePicker Label="Hora de inicio" @bind-Time="_horario.HoraInicio" />
+                <MudTimePicker Label="Hora de fin" @bind-Time="_horario.HoraFin" />
+                <MudTextField @bind-Value="@_horario.Encargado" Required Class="mb-3"
+                              Label="Encargado " Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Description" />
 
                 </EditForm>
 
@@ -37,7 +39,7 @@
 
             @code {
     [Parameter]
-    public HorarioActividadDTO _horarioActividad { get; set; } = new HorarioActividadDTO();
+    public HorarioActividadDTO _horario { get; set; } = new HorarioActividadDTO();
 
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; }
@@ -57,14 +59,14 @@
         string _mensaje = "";
         bool _resultado;
 
-        if (_horarioActividad.IdHorario != 0)
+        if (_horario.IdHorario != 0)
         {
-            _resultado = await _horarioActividadServicio.Editar(_horarioActividad);
-            _mensaje = "El horario fue modificado";
+            _resultado = await _horarioActividadServicio.Editar(_horario);
+            _mensaje = "La actividad fue modificada";
         }
         else
         {
-            var response = await _horarioActividadServicio.Crear(_horarioActividad);
+            var response = await _horarioActividadServicio.Crear(_horario);
             _resultado = response.status;
             _mensaje = "La actividad fue creada";
         }

@@ -17,5 +17,7 @@ namespace SistemaVentaBlazor.Shared
         public TimeSpan? HoraFin { get; set; }
 
         public string? Actividad { get; set; }
+
+        public string? Encargado { get; set; }
     }
 }

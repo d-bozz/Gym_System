@@ -15,5 +15,7 @@ public partial class HorarioActividad
 
     public string? Actividad { get; set; }
 
+    public string? Encargado { get; set; }
+
     public virtual ICollection<Asistencia> Asistencia { get; } = new List<Asistencia>();
 }

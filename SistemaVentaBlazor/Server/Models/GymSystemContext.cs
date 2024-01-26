@@ -110,6 +110,10 @@ public partial class GymSystemContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("actividad");
+            entity.Property(e => e.Encargado)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("encargado");
             entity.Property(e => e.DiaSemana)
                 .HasMaxLength(20)
                 .IsUnicode(false)

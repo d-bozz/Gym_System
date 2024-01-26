@@ -51,20 +51,21 @@
 
                                 @foreach (var hora in ObtenerHorariosPorDia(diaSemana))
                                 {
-                                    <td class="@(hora.Actividad != null ? "active" : "")">
-                                        @if (hora.Actividad != null)
+                                    <td class="@(hora.HorarioObj?.Actividad != null ? "active" : "")">
+                                        @if (hora.HorarioObj != null && hora.HorarioObj.Actividad != null)
                                         {
-                                            <h4>@hora.Actividad</h4>
+                                            <h4>@hora.HorarioObj.Actividad</h4>
                                             <p>@hora.HoraMostrar</p>
                                             <div class="hover">
-                                                <h4>@hora.Actividad</h4>
+                                                <h4>@hora.HorarioObj.Actividad</h4>
                                                 <p>@hora.HoraMostrar</p>
+                                                <p>@hora.HorarioObj.Encargado</p>
                                                 <MudTd DataLabel="">
                                                     <MudFab Color="Color.Primary"
                                                 StartIcon="@Icons.Material.Filled.Edit"
                                                 Size="Size.Small"
                                                 IconSize="Size.Small"
-                                                OnClick="@(() => AbrirEditarHorario(hora))" />
+                                                OnClick="@(() => AbrirEditarHorario(hora.HorarioObj))" />
                                                 </MudTd>
                                             </div>
                                         }
@@ -104,11 +105,12 @@
                  (h.HoraInicio < horaFin && h.HoraFin >= horaFin) ||
                  (h.HoraInicio >= horaInicio && h.HoraFin <= horaFin))
             );
+            var horarioObj = horario != null ? horario : null;
 
             var horarioPorHora = new HorarioPorHoraDTO
                 {
-                    Actividad = horario?.Actividad,
-                    HoraMostrar = $"{horaInicio.Hours:00}:{horaInicio.Minutes:00} - {horaFin.Hours:00}:{horaFin.Minutes:00}"
+                    HoraMostrar = $"{horaInicio.Hours:00}:{horaInicio.Minutes:00} - {horaFin.Hours:00}:{horaFin.Minutes:00}",
+                    HorarioObj = horarioObj
                 };
 
             horariosPorDia.Add(horarioPorHora);
@@ -138,7 +140,7 @@
 
     public class HorarioPorHoraDTO
     {
-        public string? Actividad { get; set; }
+        public HorarioActividadDTO? HorarioObj { get; set; }
         public string? HoraMostrar { get; set; }
     }
 
@@ -153,15 +155,25 @@
         }
     }
 
-    private async Task AbrirEditarHorario(HorarioPorHoraDTO horario)
+    private async Task AbrirEditarHorario(HorarioActividadDTO horarioObj)
     {
-        var parametros = new DialogParameters { ["_horario"] = horario };
-
-        var dialogo = _dialogServicio.Show<MdHorarioActividad>("Editar Actividad", parametros);
-        var resultado = await dialogo.Result;
-        if (!resultado.Canceled)
+        try
         {
-            await ObtenerHorarios();
+            if (horarioObj != null)
+            {
+                var parametros = new DialogParameters { ["_horario"] = horarioObj };
+
+                var dialogo = _dialogServicio.Show<MdHorarioActividad>("Editar Actividad", parametros);
+                var resultado = await dialogo.Result;
+                if (resultado != null && !resultado.Canceled)
+                {
+                    await ObtenerHorarios();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener el resultado del diálogo: {ex.Message}");
         }
     }
 }
