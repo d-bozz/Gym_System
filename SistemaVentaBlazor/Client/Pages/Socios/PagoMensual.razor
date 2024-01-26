@@ -30,12 +30,12 @@
                         <MudTextField @bind-Value="searchString1" Placeholder="Buscar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                     </ToolBarContent>
                     <HeaderContent>
-                        <MudTh>ID de Pago</MudTh>
-                        <MudTh>Nombre</MudTh>
-                        <MudTh>Mes</MudTh>
-                        <MudTh>Anio</MudTh>
-                        <MudTh>Fecha del pago</MudTh>
-                        <MudTh>Monto</MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<PagoMensualDTO, object>(x=>x.IdPago)">ID Pago</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<PagoMensualDTO, object>(x=>x.nombreSocio)">Nombre</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<PagoMensualDTO, object>(x=>x.Mes)">Mes</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<PagoMensualDTO, object>(x=>x.Anio)">Año</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<PagoMensualDTO, object>(x=>x.FechaPago)">Fecha de Pago</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<PagoMensualDTO, object>(x=>x.Monto)">Monto</MudTableSortLabel></MudTh>
                         <MudTh>Comprobante</MudTh>
                         <MudTh>Acción</MudTh>
                     </HeaderContent>

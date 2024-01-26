@@ -60,13 +60,10 @@
                                                 <h4>@hora.HorarioObj.Actividad</h4>
                                                 <p>@hora.HoraMostrar</p>
                                                 <p>@hora.HorarioObj.Encargado</p>
-                                                <MudTd DataLabel="">
-                                                    <MudFab Color="Color.Primary"
-                                                StartIcon="@Icons.Material.Filled.Edit"
-                                                Size="Size.Small"
-                                                IconSize="Size.Small"
-                                                OnClick="@(() => AbrirEditarHorario(hora.HorarioObj))" />
-                                                </MudTd>
+                                                <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+                                                    @onclick="(() => AbrirEditarHorario(hora.HorarioObj))">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
                                             </div>
                                         }
                                     </td>

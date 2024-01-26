@@ -29,19 +29,21 @@
                         <MudTextField @bind-Value="searchString1" Placeholder="Buscar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                     </ToolBarContent>
                     <HeaderContent>
-                        <MudTh>Nombre</MudTh>
-                        <MudTh>Marca</MudTh>
-                        <MudTh>Categoria</MudTh>
-                        <MudTh>Stock</MudTh>
-                        <MudTh>Precio</MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ProductoDTO, object>(x=>x.IdProducto)">ID Producto</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ProductoDTO, object>(x=>x.Nombre)">Nombre</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ProductoDTO, object>(x=>x.Marca)">Marca</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ProductoDTO, object>(x=>x.DescripcionCategoria)">Categoria</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ProductoDTO, object>(x=>x.Stock)">Stock</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ProductoDTO, object>(x=>x.Precio)">Precio</MudTableSortLabel></MudTh>
                         <MudTh>Ver Detalles</MudTh>
                         <MudTh>Acción</MudTh>
                     </HeaderContent>
                     <RowTemplate Context="productoRow">
+                        <MudTd DataLabel="IdProducto">@productoRow.IdProducto</MudTd>
                         <MudTd DataLabel="Nombre">@productoRow.Nombre</MudTd>
                         <MudTd DataLabel="Marca">@productoRow.Marca</MudTd>
                         <MudTd DataLabel="Correo">@productoRow.DescripcionCategoria</MudTd>
-                        <MudTd DataLabel="Rol">@productoRow.Stock</MudTd>
+                        <MudTd DataLabel="Stock">@productoRow.Stock</MudTd>
                         <MudTd DataLabel="Precio">@productoRow.Precio</MudTd>
                         <MudNavLink Href="@($"/page/producto/detalle/{productoRow.IdProducto}")">Ver Detalles</MudNavLink>
                         <MudTd DataLabel="Accion">
