@@ -17,6 +17,9 @@
             OnClick="AbrirNuevoSocio">
                 Nuevo Socio</MudButton>
         </MudItem>
+        <MudItem>
+            <MudSwitch @bind-Checked="@ronly" Color="Color.Tertiary">Mostrar Socios Inactivos</MudSwitch>
+            </MudItem>
         <MudItem xs="12">
 
                 <MudTable 
@@ -87,6 +90,8 @@
     private string searchString1 = "";
     private SocioDTO selectedItem1 = null;
     private bool _loading = true;
+    private bool ronly = false;
+
 
     private async Task ObtenerSocios()
     {
@@ -104,23 +109,32 @@
         _loading = false;
     }
 
-    private bool FilterFunc1(SocioDTO element) => FilterFunc(element, searchString1);
+    private bool FilterFunc1(SocioDTO element) => FilterFunc(element, searchString1, ronly);
 
-    private bool FilterFunc(SocioDTO element, string searchString)
+    private bool FilterFunc(SocioDTO element, string searchString, bool ronly)
     {
+
+        if (!ronly && !element.Activo)
+            return false;
+
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
+
         if (element.Nombre.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
+
         if (element.Apellido.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
+
         if (element.Correo.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
+
         if ($"{element.Nombre} {element.Apellido} {element.Correo}".Contains(searchString))
             return true;
 
         return false;
     }
+
 
     private async Task AbrirNuevoSocio()
     {
