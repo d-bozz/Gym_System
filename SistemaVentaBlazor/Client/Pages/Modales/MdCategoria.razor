@@ -53,7 +53,7 @@
 
         if (string.IsNullOrEmpty(_categoria.Descripcion))
         {
-            _snackBar.Add("La descripción es requerida", Severity.Error, a => a.VisibleStateDuration = 500);
+            _snackBar.Add("Complete los campos requeridos.", Severity.Error, a => a.VisibleStateDuration = 500);
             return;
         }
 

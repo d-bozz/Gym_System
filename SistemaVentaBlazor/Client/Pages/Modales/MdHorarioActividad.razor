@@ -8,10 +8,15 @@
 
             <EditForm Model="@_horario">
 
-                <MudTextField @bind-Value="@_horario.Actividad" Required Class="mb-3"
-                              Label="Actividad " Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.SportsGymnastics" />
+                <MudTextField @bind-Value="@_horario.Actividad" 
+                Required RequiredError="Ingrese la Actividad"
+                Class="mb-3"
+                Label="Actividad " 
+                Variant="Variant.Outlined" 
+                Adornment="Adornment.End" 
+                AdornmentIcon="@Icons.Material.Filled.SportsGymnastics" />
 
-                <MudSelect @bind-Value="@_horario.DiaSemana" Label="Día de la semana" AnchorOrigin="Origin.BottomCenter">
+                <MudSelect @bind-Value="@_horario.DiaSemana" Required RequiredError="Seleccione día de la Semana" Label="Día de la semana" AnchorOrigin="Origin.BottomCenter">
                     <MudSelectItem Value="@("Lunes")" />
                     <MudSelectItem Value="@("Martes")" />
                     <MudSelectItem Value="@("Miercoles")" />
@@ -21,9 +26,9 @@
                     <MudSelectItem Value="@("Domingo")" />
                 </MudSelect>
 
-                <MudTimePicker Label="Hora de inicio" @bind-Time="_horario.HoraInicio" />
-                <MudTimePicker Label="Hora de fin" @bind-Time="_horario.HoraFin" />
-                <MudTextField @bind-Value="@_horario.Encargado" Required Class="mb-3"
+                <MudTimePicker Label="Hora de inicio" Required RequiredError="Seleccione Hora de Inicio" @bind-Time="_horario.HoraInicio" />
+                <MudTimePicker Label="Hora de fin" Required RequiredError="Seleccione Hora de Fin" @bind-Time="_horario.HoraFin" />
+                <MudTextField @bind-Value="@_horario.Encargado" Required RequiredError="Ingrese Encargado" Class="mb-3"
                               Label="Encargado " Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Description" />
 
                 </EditForm>
@@ -59,11 +64,22 @@
         string _mensaje = "";
         bool _resultado;
 
+        if (string.IsNullOrEmpty(_horario.Actividad) || 
+            string.IsNullOrEmpty(_horario.Encargado) ||
+            string.IsNullOrEmpty(_horario.DiaSemana) ||
+            (_horario.HoraInicio == null) ||
+            (_horario.HoraFin == null))
+        {
+            _snackBar.Add("Complete los campos requeridos.", Severity.Error, a => a.VisibleStateDuration = 500);
+            return;
+        }
+        
         if (_horario.IdHorario != 0)
         {
             _resultado = await _horarioActividadServicio.Editar(_horario);
             _mensaje = "La actividad fue modificada";
         }
+
         else
         {
             var response = await _horarioActividadServicio.Crear(_horario);
