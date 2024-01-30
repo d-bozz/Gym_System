@@ -24,7 +24,7 @@ namespace SistemaVentaBlazor.Client.Utilidades
 
         #region Methods
 
-        public async Task UpdateAuthenticationState(SesionDTO? sesionUsuario)
+        public async Task UpdateAuthenticationState(UsuarioDTO? sesionUsuario)
         {
             ClaimsPrincipal claimsPrincipal;
 
@@ -33,9 +33,9 @@ namespace SistemaVentaBlazor.Client.Utilidades
                 claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier,sesionUsuario.IdUsuario.ToString()),
-                    new Claim(ClaimTypes.Name,sesionUsuario.NombreCompleto),
+                    new Claim(ClaimTypes.Name,sesionUsuario.NombreApellidos),
                     new Claim(ClaimTypes.Email,sesionUsuario.Correo),
-                    new Claim(ClaimTypes.Role,sesionUsuario.Rol)
+                    new Claim(ClaimTypes.Role,sesionUsuario.IdRol.ToString())
                 }, "JwtAuth"));
 
                 await _localStorage.SetItemAsync("sesionUsuario", sesionUsuario);
@@ -53,7 +53,7 @@ namespace SistemaVentaBlazor.Client.Utilidades
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
 
-            var sesionUsuario = await _localStorage.GetItemAsync<SesionDTO>("sesionUsuario");
+            var sesionUsuario = await _localStorage.GetItemAsync<UsuarioDTO>("sesionUsuario");
 
             if (sesionUsuario == null)
                 return await Task.FromResult(new AuthenticationState(_sinInformacion));
@@ -61,9 +61,9 @@ namespace SistemaVentaBlazor.Client.Utilidades
             var claimPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier,sesionUsuario.IdUsuario.ToString()),
-                    new Claim(ClaimTypes.Name,sesionUsuario.NombreCompleto),
+                    new Claim(ClaimTypes.Name,sesionUsuario.NombreApellidos),
                     new Claim(ClaimTypes.Email,sesionUsuario.Correo),
-                    new Claim(ClaimTypes.Role,sesionUsuario.Rol)
+                    new Claim(ClaimTypes.Role,sesionUsuario.IdRol.ToString())
                 }, "JwtAuth"));
 
 

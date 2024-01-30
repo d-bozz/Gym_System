@@ -5,6 +5,8 @@
 @inject SweetAlertService Swal;
 @inject NavigationManager NavigationManager
 
+@attribute [Authorize(Roles = "1")];
+
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
     <MudText Typo="Typo.h5" GutterBottom="true">Detalles del Socio</MudText>
 

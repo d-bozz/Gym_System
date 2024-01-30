@@ -5,6 +5,8 @@
 @inject ISnackbar _snackBar
 @inject SweetAlertService Swal;
 
+@attribute [Authorize(Roles = "1")];
+
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />

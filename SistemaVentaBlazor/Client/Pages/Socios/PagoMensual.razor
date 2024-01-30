@@ -1,9 +1,10 @@
-﻿@page "/"
-@page "/page/pagomensual"
+﻿@page "/page/pagomensual"
 @inject IPagoMensualService _pagoMensualesServicio
 @inject IDialogService _dialogServicio
 @inject ISnackbar _snackBar
 @inject SweetAlertService Swal;
+
+@attribute [Authorize(Roles = "1")];
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
 

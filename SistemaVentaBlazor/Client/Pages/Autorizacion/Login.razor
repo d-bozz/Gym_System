@@ -1,6 +1,10 @@
-﻿@page "/page/login"
+﻿@page "/"
+@page "/page/login"
+
+@using Microsoft.AspNetCore.Components.Authorization;
 @inject NavigationManager _navigationManager
 @inject IUsuarioService _usuarioServicio
+@inject AuthenticationStateProvider autenticacionProvider
 
 @layout LoginLayout
 
@@ -70,10 +74,26 @@
     {
         myImageClass = "d-block";
         disableButton = true;
+
         var result = await _usuarioServicio.IniciarSesion(usuarioLogin);
 
         if (result.status)
-            _navigationManager.NavigateTo("/page/dashboard");
+        {
+            var sesion = result.value as UsuarioDTO;
+
+            if (sesion != null)
+            {
+                var autenticacionExt = (AuthenticationExtension)autenticacionProvider;
+                await autenticacionExt.UpdateAuthenticationState(sesion);
+                _navigationManager.NavigateTo("/page/dashboard");
+            }
+            else
+            {
+                myImageClass = "d-none";
+                disableButton = false;
+                myAlert = "d-block";
+            }
+        }
         else
         {
             myImageClass = "d-none";

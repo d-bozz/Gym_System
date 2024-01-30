@@ -5,6 +5,8 @@
 @inject ISnackbar _snackBar
 @inject SweetAlertService Swal;
 
+@attribute [Authorize(Roles = "1")];
+
 <link href="css/pagosRealizados.css" rel="stylesheet">
 
 <div class="container mb-4 main-container">
