@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using DocumentFormat.OpenXml.EMMA;
 using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace SistemaVentaBlazor.Client.Servicios.Implementacion
 {
@@ -37,12 +38,6 @@ namespace SistemaVentaBlazor.Client.Servicios.Implementacion
             return response!.status;
         }
 
-        public async Task<ResponseDTO<UsuarioDTO>> IniciarSesion(UsuarioLogin request)
-        {
-            var result = await _http.GetFromJsonAsync<ResponseDTO<UsuarioDTO>>($"api/usuario/IniciarSesion?correo={request.Correo}&clave={request.Clave}");
-            return result!;
-        }
-
         public async Task<ResponseDTO<List<UsuarioDTO>>> Lista()
         {
             var result = await _http.GetFromJsonAsync<ResponseDTO<List<UsuarioDTO>>>("api/usuario/Lista");
@@ -56,9 +51,25 @@ namespace SistemaVentaBlazor.Client.Servicios.Implementacion
 
         public async Task<ResponseDTO<UsuarioDTO>> Validar(UsuarioLogin request)
         {
-            var response = await _http.PostAsJsonAsync($"api/usuario/Validar", request);
-            var result = await response.Content.ReadFromJsonAsync<ResponseDTO<UsuarioDTO>>();
-            return result;
+            try
+            {
+                var response = await _http.PostAsJsonAsync($"api/usuario/Validar", request);
+
+                response.EnsureSuccessStatusCode();
+                
+                var result = await response.Content.ReadFromJsonAsync<ResponseDTO<UsuarioDTO>>();
+
+                if (result != null && result.status)
+                {
+                    _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.token);
+                }
+
+                return result;
+            }
+            catch (HttpRequestException ex)
+            {
+                throw ex;
+            }
         }
     }
 }

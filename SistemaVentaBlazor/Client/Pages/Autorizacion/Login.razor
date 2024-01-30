@@ -5,6 +5,7 @@
 @inject NavigationManager _navigationManager
 @inject IUsuarioService _usuarioServicio
 @inject AuthenticationStateProvider autenticacionProvider
+@inject IJSRuntime JSRuntime
 
 @layout LoginLayout
 
@@ -79,12 +80,13 @@
 
         if (result.status)
         {
-            var sesion = result.value as UsuarioDTO;
+            var usuario = result.value as UsuarioDTO;
 
-            if (sesion != null)
+            if (usuario != null)
             {
                 var autenticacionExt = (AuthenticationExtension)autenticacionProvider;
-                await autenticacionExt.UpdateAuthenticationState(sesion);
+                await autenticacionExt.UpdateAuthenticationState(usuario);
+                await JSRuntime.InvokeVoidAsync("localStorage.setItem", "token", result.token);
                 _navigationManager.NavigateTo("/page/dashboard");
             }
             else

@@ -39,7 +39,7 @@ namespace SistemaVentaBlazor.Server.Controllers
         [Route("Validar")]
         public async Task<IActionResult> Validar([FromBody] Usuario request)
         {
-            ResponseDTO<string> _ResponseDTO = new ResponseDTO<string>();
+            ResponseDTO<UsuarioDTO> _ResponseDTO = new ResponseDTO<UsuarioDTO>();
             try
             {
                 Usuario _usuario = await _usuarioRepositorio.Obtener(u => u.Correo == request.Correo && u.Clave == request.Clave);
@@ -62,20 +62,25 @@ namespace SistemaVentaBlazor.Server.Controllers
 
                     string tokencreado = tokenHandler.WriteToken(tokenConfig);
 
-                    return StatusCode(StatusCodes.Status200OK, new { token = tokencreado });
+                    var usuarioDTO = _mapper.Map<UsuarioDTO>(_usuario);
+
+                    _ResponseDTO = new ResponseDTO<UsuarioDTO>() { status = true, msg = "ok", value = usuarioDTO, token = tokencreado };
                 }
                 else
                 {
-                    return StatusCode(StatusCodes.Status401Unauthorized, new { token = "" });
+                    _ResponseDTO = new ResponseDTO<UsuarioDTO>() { status = false, msg = "no encontrado", value = null };
                 }
+                return StatusCode(StatusCodes.Status200OK, _ResponseDTO);
+
             }
             catch (Exception ex)
             {
-                _ResponseDTO = new ResponseDTO<string>() { status = false, msg = ex.Message, value = null };
+                _ResponseDTO = new ResponseDTO<UsuarioDTO>() { status = false, msg = ex.Message, value = null };
                 return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("Lista")]
         public async Task<IActionResult> Lista()
@@ -104,29 +109,7 @@ namespace SistemaVentaBlazor.Server.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("IniciarSesion")]
-        public async Task<IActionResult> IniciarSesion(string correo, string clave)
-        {
-            ResponseDTO<Usuario> _ResponseDTO = new ResponseDTO<Usuario>();
-            try
-            {
-                Usuario _usuario = await _usuarioRepositorio.Obtener(u => u.Correo == correo && u.Clave == clave);
-
-                if (_usuario != null)
-                    _ResponseDTO = new ResponseDTO<Usuario>() { status = true, msg = "ok", value = _usuario };
-                else
-                    _ResponseDTO = new ResponseDTO<Usuario>() { status = false, msg = "no encontrado", value = null };
-
-                return StatusCode(StatusCodes.Status200OK, _ResponseDTO);
-            }
-            catch (Exception ex)
-            {
-                _ResponseDTO = new ResponseDTO<Usuario>() { status = false, msg = ex.Message, value = null };
-                return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
-            }
-        }
-
+        [Authorize]
         [HttpPost]
         [Route("Guardar")]
         public async Task<IActionResult> Guardar([FromBody]UsuarioDTO request)
@@ -152,6 +135,7 @@ namespace SistemaVentaBlazor.Server.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
         [Route("Editar")]
         public async Task<IActionResult> Editar([FromBody] UsuarioDTO request)
@@ -191,6 +175,7 @@ namespace SistemaVentaBlazor.Server.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete]
         [Route("Eliminar/{id:int}")]
         public async Task<IActionResult> Eliminar(int id)
@@ -220,6 +205,7 @@ namespace SistemaVentaBlazor.Server.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("Obtener/{id:int}")]
         public async Task<IActionResult> Obtener(int id)

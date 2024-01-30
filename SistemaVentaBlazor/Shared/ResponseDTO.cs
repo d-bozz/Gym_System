@@ -11,10 +11,6 @@ namespace SistemaVentaBlazor.Shared
         public bool status { get; set; }
         public string? msg { get; set; }
         public T? value { get; set; }
-
-        public static implicit operator ResponseDTO<T>(ResponseDTO<SistemaVentaBlazor.Server.Models.Usuario> v)
-        {
-            throw new NotImplementedException();
-        }
+        public string? token { get; set; }
     }
 }
