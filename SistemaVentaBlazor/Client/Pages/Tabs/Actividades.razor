@@ -66,6 +66,11 @@
                                                     @onclick="(() => AbrirEditarHorario(hora.HorarioObj))">
                                                     <i class="fa fa-edit"></i>
                                                 </button>
+                                                <!-- Icono de cruz (visible solo al hacer hover) -->
+                                                <button type="button" class="delete-icon" style="position: absolute;top: 5px;right: 5px;cursor: pointer;font-size: 16px;color: red;"
+                                                @onclick="(() => EliminarHorario(hora.HorarioObj))">
+                                                    <i class="fa fa-close"></i>
+                                                </button>
                                             </div>
                                         }
                                     </td>
@@ -173,6 +178,32 @@
         catch (Exception ex)
         {
             Console.WriteLine($"Error al obtener el resultado del diálogo: {ex.Message}");
+        }
+    }
+
+    private async Task EliminarHorario(HorarioActividadDTO horarioObj)
+    {
+        SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Esta seguro?",
+                Text = $"Eliminar actividad: {horarioObj.Actividad} - {horarioObj.DiaSemana} - {horarioObj.HoraInicio} - {horarioObj.HoraFin}",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Si, eliminar",
+                CancelButtonText = "No, volver"
+            });
+
+        if (result.IsConfirmed)
+        {
+            var resultado = await _horarioActividadServicio.Eliminar(horarioObj.IdHorario);
+
+            if (resultado)
+            {
+                _snackBar.Add("La actividad fue eliminada", Severity.Success, a => a.VisibleStateDuration = 500);
+                await ObtenerHorarios();
+            }
+            else
+                _snackBar.Add("No se pudo eliminar", Severity.Error, a => a.VisibleStateDuration = 500);
         }
     }
 }
