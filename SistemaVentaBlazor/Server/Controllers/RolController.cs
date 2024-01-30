@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SistemaVentaBlazor.Server.Repositorio.Contrato;
@@ -9,6 +10,7 @@ namespace SistemaVentaBlazor.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RolController : ControllerBase
     {
         private readonly IMapper _mapper;

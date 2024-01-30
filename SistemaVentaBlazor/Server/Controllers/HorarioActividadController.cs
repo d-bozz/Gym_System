@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SistemaVentaBlazor.Server.Models;
 using SistemaVentaBlazor.Server.Repositorio.Contrato;
@@ -8,6 +9,7 @@ namespace SistemaVentaBlazor.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class HorarioActividadController : ControllerBase
     {
         private readonly IMapper _mapper;

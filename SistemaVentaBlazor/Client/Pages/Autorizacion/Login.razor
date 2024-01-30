@@ -25,14 +25,14 @@
     </MudTextField>
 
     <MudTextField 
-        @bind-Value="@usuarioLogin.Password" 
+        @bind-Value="@usuarioLogin.Clave" 
         Label="Contraseña" 
         Variant="Variant.Outlined" 
         InputType="@PasswordInput" 
         Adornment="Adornment.End" 
         AdornmentIcon="@PasswordInputIcon" 
         OnAdornmentClick="TogglePasswordVisibility"
-                  For="@(() => usuarioLogin.Password)" />
+                  For="@(() => usuarioLogin.Clave)" />
 
     <MudButton Class="mt-5" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit" Size="Size.Large" 
     FullWidth="true"
@@ -75,7 +75,7 @@
         myImageClass = "d-block";
         disableButton = true;
 
-        var result = await _usuarioServicio.IniciarSesion(usuarioLogin);
+        var result = await _usuarioServicio.Validar(usuarioLogin);
 
         if (result.status)
         {

@@ -8,6 +8,13 @@ using SistemaVentaBlazor.Server.Models;
 using SistemaVentaBlazor.Server.Repositorio.Contrato;
 using SistemaVentaBlazor.Server.Repositorio.Implementacion;
 using SistemaVentaBlazor.Shared;
+using System.Drawing.Text;
+
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SistemaVentaBlazor.Server.Controllers
 {
@@ -15,13 +22,58 @@ namespace SistemaVentaBlazor.Server.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-
+        #region Properties and fields
+        private readonly string secretKey;
         private readonly IMapper _mapper;
         private readonly IUsuarioRepositorio _usuarioRepositorio;
-        public UsuarioController(IUsuarioRepositorio usuarioRepositorio, IMapper mapper)
+
+        public UsuarioController(IUsuarioRepositorio usuarioRepositorio, IMapper mapper, IConfiguration config)
         {
             _mapper = mapper;
+            secretKey = config.GetSection("settings").GetSection("secretkey").ToString();
             _usuarioRepositorio = usuarioRepositorio;
+        }
+        #endregion
+
+        [HttpPost]
+        [Route("Validar")]
+        public async Task<IActionResult> Validar([FromBody] Usuario request)
+        {
+            ResponseDTO<string> _ResponseDTO = new ResponseDTO<string>();
+            try
+            {
+                Usuario _usuario = await _usuarioRepositorio.Obtener(u => u.Correo == request.Correo && u.Clave == request.Clave);
+
+                if (_usuario != null)
+                {
+                    var keyBytes = Encoding.ASCII.GetBytes(secretKey);
+                    var claims = new ClaimsIdentity();
+                    claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, _usuario.Correo));
+
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = claims,
+                        Expires = DateTime.UtcNow.AddMinutes(5),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
+                    };
+
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var tokenConfig = tokenHandler.CreateToken(tokenDescriptor);
+
+                    string tokencreado = tokenHandler.WriteToken(tokenConfig);
+
+                    return StatusCode(StatusCodes.Status200OK, new { token = tokencreado });
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, new { token = "" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _ResponseDTO = new ResponseDTO<string>() { status = false, msg = ex.Message, value = null };
+                return StatusCode(StatusCodes.Status500InternalServerError, _ResponseDTO);
+            }
         }
 
         [HttpGet]
@@ -56,7 +108,6 @@ namespace SistemaVentaBlazor.Server.Controllers
         [Route("IniciarSesion")]
         public async Task<IActionResult> IniciarSesion(string correo, string clave)
         {
-
             ResponseDTO<Usuario> _ResponseDTO = new ResponseDTO<Usuario>();
             try
             {

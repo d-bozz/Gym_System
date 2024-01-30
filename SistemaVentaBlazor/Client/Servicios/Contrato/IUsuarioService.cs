@@ -6,6 +6,7 @@ namespace SistemaVentaBlazor.Client.Servicios.Contrato
     {
         Task<ResponseDTO<List<UsuarioDTO>>> Lista();
         Task<ResponseDTO<UsuarioDTO>> IniciarSesion(UsuarioLogin request);
+        Task<ResponseDTO<UsuarioDTO>> Validar(UsuarioLogin request);
         Task<ResponseDTO<UsuarioDTO>> Crear(UsuarioDTO entidad);
         Task<bool> Editar(UsuarioDTO entidad);
         Task<bool> Eliminar(int id);

@@ -3,6 +3,8 @@ using System.Net.Http.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using DocumentFormat.OpenXml.EMMA;
+using System.Net.Http;
 
 namespace SistemaVentaBlazor.Client.Servicios.Implementacion
 {
@@ -37,7 +39,7 @@ namespace SistemaVentaBlazor.Client.Servicios.Implementacion
 
         public async Task<ResponseDTO<UsuarioDTO>> IniciarSesion(UsuarioLogin request)
         {
-            var result = await _http.GetFromJsonAsync<ResponseDTO<UsuarioDTO>>($"api/usuario/IniciarSesion?correo={request.Correo}&clave={request.Password}");
+            var result = await _http.GetFromJsonAsync<ResponseDTO<UsuarioDTO>>($"api/usuario/IniciarSesion?correo={request.Correo}&clave={request.Clave}");
             return result!;
         }
 
@@ -50,6 +52,13 @@ namespace SistemaVentaBlazor.Client.Servicios.Implementacion
         public async Task<ResponseDTO<UsuarioDTO>> Obtener(int id)
         {
             return await _http.GetFromJsonAsync<ResponseDTO<UsuarioDTO>>($"api/usuario/Obtener/{id}");
+        }
+
+        public async Task<ResponseDTO<UsuarioDTO>> Validar(UsuarioLogin request)
+        {
+            var response = await _http.PostAsJsonAsync($"api/usuario/Validar", request);
+            var result = await response.Content.ReadFromJsonAsync<ResponseDTO<UsuarioDTO>>();
+            return result;
         }
     }
 }

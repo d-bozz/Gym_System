@@ -1,13 +1,39 @@
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using SistemaVentaBlazor.Server.Models;
 using SistemaVentaBlazor.Server.Repositorio.Contrato;
 using SistemaVentaBlazor.Server.Repositorio.Implementacion;
 using SistemaVentaBlazor.Server.Utilidades;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Configuration.AddJsonFile("appsettings.json");
+var secretkey = builder.Configuration.GetSection("settings").GetSection("secretkey").ToString();
+var keyBytes = Encoding.UTF8.GetBytes(secretkey);
+
+builder.Services.AddAuthentication(config =>
+{
+    config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(config =>
+{
+    config.RequireHttpsMetadata = false;
+    config.SaveToken = true;
+    config.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -28,6 +54,16 @@ builder.Services.AddScoped<ISocioRepositorio, SocioRepositorio>();
 builder.Services.AddScoped<IPagoMensualRepositorio, PagoMensualRepositorio>();
 builder.Services.AddScoped<IHorarioActividadRepositorio, HorarioActividadRepositorio>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("NewPolicy", app =>
+    {
+        app.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,6 +80,8 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
