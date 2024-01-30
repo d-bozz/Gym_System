@@ -26,7 +26,8 @@ clave varchar(40),
 esActivo bit,
 telefono varchar(25),
 direccion varchar(250),
-horario varchar(250)
+horario varchar(250),
+foto varchar(max)
 )
 
 go

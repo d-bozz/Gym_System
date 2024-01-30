@@ -21,6 +21,8 @@ public partial class Usuario
 
     public string? Direccion { get; set; }
 
+    public string? Foto { get; set; }
+
     public string? Horario { get; set; }
 
     public virtual Rol? IdRolNavigation { get; set; }

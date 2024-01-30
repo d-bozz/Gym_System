@@ -26,5 +26,6 @@ namespace SistemaVentaBlazor.Shared
         public string? Direccion { get; set; }
 
         public string? Horario { get; set; }
+        public string? Foto { get; set; }
     }
 }

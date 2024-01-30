@@ -153,6 +153,7 @@ namespace SistemaVentaBlazor.Server.Controllers
                     _usuarioParaEditar.Correo = _usuario.Correo;
                     _usuarioParaEditar.IdRol = _usuario.IdRol;
                     _usuarioParaEditar.Clave = _usuario.Clave;
+                    _usuarioParaEditar.Foto = _usuario.Foto;
 
                     bool respuesta = await _usuarioRepositorio.Editar(_usuarioParaEditar);
 
