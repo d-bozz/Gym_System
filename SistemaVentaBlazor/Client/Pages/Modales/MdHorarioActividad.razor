@@ -73,7 +73,7 @@
             _snackBar.Add("Complete los campos requeridos.", Severity.Error, a => a.VisibleStateDuration = 500);
             return;
         }
-        
+
         if (_horario.IdHorario != 0)
         {
             _resultado = await _horarioActividadServicio.Editar(_horario);
@@ -84,7 +84,7 @@
         {
             var response = await _horarioActividadServicio.Crear(_horario);
             _resultado = response.status;
-            _mensaje = "La actividad fue creada";
+            _mensaje = response.msg;
         }
 
         if (_resultado)
@@ -93,7 +93,7 @@
             MudDialog.Close(DialogResult.Ok(true));
         }
         else
-            _snackBar.Add("Error al guardar cambios", Severity.Error, a => a.VisibleStateDuration = 500);
+            _snackBar.Add(_mensaje, Severity.Error, a => a.VisibleStateDuration = 500);
 
     }
 }

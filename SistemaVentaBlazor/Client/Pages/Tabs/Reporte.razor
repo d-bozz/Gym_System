@@ -48,7 +48,7 @@
                 >
                     <HeaderContent>
                         <MudTh>Fecha Registro</MudTh>
-                        <MudTh>Numero Venta</MudTh>
+                        <MudTh>Número Venta</MudTh>
                         <MudTh>Tipo de pago</MudTh>
                         <MudTh>Total</MudTh>
                         <MudTh>Producto</MudTh>
@@ -60,11 +60,11 @@
                         <MudTd DataLabel="Fecha Registro">@ventaRow.FechaRegistro</MudTd>
                         <MudTd DataLabel="Numero Venta">@ventaRow.NumeroDocumento</MudTd>
                         <MudTd DataLabel="Tipo de pago">@ventaRow.TipoPago</MudTd>
-                        <MudTd DataLabel="Total">@ventaRow.TotalVenta</MudTd>
+                        <MudTd DataLabel="Total">$@ventaRow.TotalVenta</MudTd>
                         <MudTd DataLabel="Producto">@ventaRow.Producto</MudTd>
                         <MudTd DataLabel="Cantidad">@ventaRow.Cantidad</MudTd>
-                        <MudTd DataLabel="Precio">@ventaRow.Precio</MudTd>
-                        <MudTd DataLabel="Total por Producto">@ventaRow.Total</MudTd>
+                        <MudTd DataLabel="Precio">$@ventaRow.Precio</MudTd>
+                        <MudTd DataLabel="Total por Producto">$@ventaRow.Total</MudTd>
                     </RowTemplate>
                     <PagerContent>
                         <MudTablePager />
@@ -90,11 +90,9 @@
     private async Task Buscar()
     {
         _loading = true;
-        string _fechaInicio;
-        string _fechaFin;
 
-        _fechaInicio = fechaInicio.Value.ToString("dd/MM/yyyy");
-        _fechaFin = fechaFin.Value.ToString("dd/MM/yyyy");
+        string _fechaInicio = fechaInicio?.ToString("dd/MM/yyyy") ?? "";
+        string _fechaFin = fechaFin?.ToString("dd/MM/yyyy") ?? "";
 
         var resultado = await _ventaServicio.Reporte(_fechaInicio, _fechaFin);
         if (resultado.status)
@@ -109,6 +107,7 @@
         }
 
         _loading = false;
+        StateHasChanged();
     }
 
     private async Task ExportarExcel()

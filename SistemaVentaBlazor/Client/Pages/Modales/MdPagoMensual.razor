@@ -9,7 +9,7 @@
 
             <EditForm Model="@_pagoMensual">
                 
-                <MudSelect Label="Socio" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Class="mb-3"
+                <MudSelect Label="Socio" Variant="Variant.Outlined" Required RequiredError="Seleccione Socio" AnchorOrigin="Origin.BottomCenter" Class="mb-3"
                            @bind-Value="socioSeleccionado">
                     @if (listaSocios != null && listaSocios.Any())
                     {
@@ -19,7 +19,7 @@
                         }
                     }
                 </MudSelect>
-                <MudSelect Label="Mes" T="int?" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Class="mb-3"
+                <MudSelect Label="Mes" T="int?" Variant="Variant.Outlined" Required RequiredError="Seleccione Mes" AnchorOrigin="Origin.BottomCenter" Class="mb-3"
                            @bind-Value="@_pagoMensual.Mes">
                       
                            <MudSelectItem T="int?" Value="1">Enero</MudSelectItem>
@@ -36,7 +36,7 @@
                             <MudSelectItem T="int?" Value="12">Diciembre</MudSelectItem>
                       
                 </MudSelect>
-                <MudSelect Label="Año" T="int?" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Class="mb-3"
+                <MudSelect Label="Año" T="int?" Variant="Variant.Outlined" Required RequiredError="Seleccione Año" AnchorOrigin="Origin.BottomCenter" Class="mb-3"
                            @bind-Value="@_pagoMensual.Anio">
                     @for (int i = 0; i <= 4; i++)
                     {
@@ -44,7 +44,7 @@
                         <MudSelectItem T="int?" Value="@year">@year</MudSelectItem>
                     }
                 </MudSelect>
-                              <MudTextField @bind-Value="@_pagoMensual.Monto" Required Class="mb-3"
+                              <MudTextField @bind-Value="@_pagoMensual.Monto" Required RequiredError="Ingrese Monto" Class="mb-3"
                               Label="Monto" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.AttachMoney" />                
                 </EditForm>
 
@@ -108,7 +108,7 @@
             PasswordInput = InputType.Text;
         }
     }
-    
+
     private void Cancel()
     {
         MudDialog.Cancel();
@@ -118,6 +118,15 @@
     {
         string _mensaje = "";
         bool _resultado;
+
+        if (_pagoMensual.IdSocio == null ||
+            _pagoMensual.Mes == null ||
+            _pagoMensual.Anio == null ||
+            _pagoMensual.Monto == null)
+        {
+            _snackBar.Add("Complete los campos requeridos.", Severity.Error, a => a.VisibleStateDuration = 500);
+            return;
+        }
 
         if (_pagoMensual.IdPago != 0)
         {

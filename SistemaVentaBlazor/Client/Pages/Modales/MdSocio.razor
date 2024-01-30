@@ -8,36 +8,36 @@
 
             <EditForm Model="@_socio">
 
-                <MudTextField @bind-Value="@_socio.Nombre" Required Class="mb-3"
+                <MudTextField @bind-Value="@_socio.Nombre" Required RequiredError="Ingrese Nombre" Class="mb-3"
                               Label="Nombre" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Person" />
 
-                <MudTextField @bind-Value="@_socio.Apellido" Required Class="mb-3"
+                <MudTextField @bind-Value="@_socio.Apellido" Required RequiredError="Ingrese Apellido" Class="mb-3"
                               Label="Apellido" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Person" />
 
-                <MudTextField @bind-Value="@_socio.Telefono" Class="mb-3"
+                <MudTextField @bind-Value="@_socio.Telefono" Required RequiredError="Ingrese Teléfono" Class="mb-3"
                               Label="Teléfono" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Phone" />
 
-                <MudTextField @bind-Value="@_socio.Correo" Required Class="mb-3"
+                <MudTextField @bind-Value="@_socio.Correo" Required RequiredError="Ingrese Correo" Class="mb-3"
                               Label="Correo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Email" />
 
-                <MudTextField @bind-Value="@_socio.FechaInicioMembresia" Class="mb-3"
-                              Label="Fecha de Inicio de la Membresia" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.CalendarToday" />
+                <MudDatePicker @bind-Date="@_socio.FechaInicioMembresia" Required RequiredError="Ingrese Fecha de inicio de la membresia" 
+                              Label="Fecha de Inicio de la Membresia" Class="mb-3" />
 
                 <MudSelect @bind-Value="@_socio.Activo" Label="Actividad" AnchorOrigin="Origin.BottomCenter" ItemConverter="StringToBoolConverter">
                     <MudSelectItem Value="true">Activo</MudSelectItem>
                     <MudSelectItem Value="false">Inactivo</MudSelectItem>
                 </MudSelect>
 
-                <MudTextField @bind-Value="@_socio.Restricciones" Class="mb-3"
+                <MudTextField @bind-Value="@_socio.Restricciones" Required RequiredError="Ingrese Restricciones" Class="mb-3"
                               Label="Restricciones" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Cancel" />
 
-                <MudTextField @bind-Value="@_socio.Mutualista" Class="mb-3"
+                <MudTextField @bind-Value="@_socio.Mutualista" Required RequiredError="Ingrese Mutualista" Class="mb-3"
                               Label="Mutualista" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.LocalHospital" />
                 
-                <MudTextField @bind-Value="@_socio.Direccion" Class="mb-3"
+                <MudTextField @bind-Value="@_socio.Direccion" Required RequiredError="Ingrese Dirección" Class="mb-3"
                               Label="Dirección" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.MyLocation" />
                 
-                <MudTextField @bind-Value="@_socio.TelefonoContacto" Class="mb-3"
+                <MudTextField @bind-Value="@_socio.TelefonoContacto" Required RequiredError="Ingrese Teléfono de Contacto" Class="mb-3"
                               Label="Teléfono de Contacto" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContactPhone" />
 
             </EditForm>
@@ -68,7 +68,6 @@
         return bool.Parse(stringValue);
     }
 
-
     protected override async Task OnInitializedAsync()
     {
        
@@ -89,14 +88,30 @@
             PasswordInput = InputType.Text;
         }
     }
+
     private void Cancel()
     {
         MudDialog.Cancel();
     }
+
     private async Task Guardar()
     {
         string _mensaje = "";
         bool _resultado;
+
+        if (string.IsNullOrEmpty(_socio.Nombre) ||
+       string.IsNullOrEmpty(_socio.Apellido) ||
+       string.IsNullOrEmpty(_socio.Telefono) ||
+       string.IsNullOrEmpty(_socio.Correo) ||
+       string.IsNullOrEmpty(_socio.Restricciones) ||
+       string.IsNullOrEmpty(_socio.Mutualista) ||
+       string.IsNullOrEmpty(_socio.Direccion) ||
+       string.IsNullOrEmpty(_socio.TelefonoContacto) ||
+       (_socio.FechaInicioMembresia == null))
+        {
+            _snackBar.Add("Complete los campos requeridos.", Severity.Error, a => a.VisibleStateDuration = 500);
+            return;
+        }
 
         if (_socio.IdSocio != 0)
         {

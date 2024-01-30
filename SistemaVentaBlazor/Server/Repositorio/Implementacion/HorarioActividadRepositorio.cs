@@ -26,13 +26,27 @@ namespace SistemaVentaBlazor.Server.Repositorio.Implementacion
         {
             try
             {
+                // Verificar si ya existe una actividad en el mismo horario
+                bool existeActividadEnHorario = await _dbContext.HorarioActividads
+                    .AnyAsync(h =>
+                        h.DiaSemana == entidad.DiaSemana &&
+                        ((h.HoraInicio >= entidad.HoraInicio && h.HoraInicio < entidad.HoraFin) ||
+                         (h.HoraFin > entidad.HoraInicio && h.HoraFin <= entidad.HoraFin) ||
+                         (h.HoraInicio <= entidad.HoraInicio && h.HoraFin >= entidad.HoraFin))
+                    );
+
+                if (existeActividadEnHorario)
+                {
+                    throw new InvalidOperationException("Ya existe una actividad en el mismo horario");
+                }
+
                 _dbContext.Set<HorarioActividad>().Add(entidad);
                 await _dbContext.SaveChangesAsync();
                 return entidad;
             }
             catch
             {
-                throw;
+                throw new InvalidOperationException("Ya existe una actividad en el mismo horario");
             }
         }
 

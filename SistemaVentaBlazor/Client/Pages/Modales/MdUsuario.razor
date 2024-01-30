@@ -9,14 +9,14 @@
 
             <EditForm Model="@_usuario">
 
-                <MudTextField @bind-Value="@_usuario.NombreApellidos" Required Class="mb-3"
+                <MudTextField @bind-Value="@_usuario.NombreApellidos" Required RequiredError="Ingrese Nombre" Class="mb-3"
                               Label="Nombre Completo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Badge" />
 
-                <MudTextField @bind-Value="@_usuario.Correo" Required Class="mb-3"
+                <MudTextField @bind-Value="@_usuario.Correo" Required RequiredError="Ingrese Correo" Class="mb-3"
                               Label="Correo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Email" />
 
-                <MudSelect Label="Rol" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Class="mb-3" 
-                @bind-Value="rolSeleccionado">
+                <MudSelect Label="Rol" Variant="Variant.Outlined" Required RequiredError="Seleccione Rol" AnchorOrigin="Origin.BottomCenter" Class="mb-3"
+                           @bind-Value="rolSeleccionado">
                     @if (listaRoles.Any())
                     {
                         foreach (var rol in listaRoles)
@@ -26,17 +26,17 @@
                     }
                 </MudSelect>
 
-                <MudTextField @bind-Value="@_usuario.Telefono" Class="mb-3"
+                <MudTextField @bind-Value="@_usuario.Telefono" Required RequiredError="Ingrese Teléfono" Class="mb-3"
                               Label="Telefono" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Phone" />
 
-                <MudTextField @bind-Value="@_usuario.Direccion" Class="mb-3"
+                <MudTextField @bind-Value="@_usuario.Direccion" Required RequiredError="Ingrese Direccón" Class="mb-3"
                               Label="Dirección" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.LocationCity" />
 
-                <MudTextField @bind-Value="@_usuario.Horario" Class="mb-3"
+                <MudTextField @bind-Value="@_usuario.Horario" Required RequiredError="Ingrese Horario" Class="mb-3"
                               Label="Horario" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Schedule" />
 
 
-                <MudTextField @bind-Value="@_usuario.Clave" Required Label="Contraseña" Variant="Variant.Outlined" Class="mb-3"
+                <MudTextField @bind-Value="@_usuario.Clave" Required RequiredError="Ingrese Contraseña"  Label="Contraseña" Variant="Variant.Outlined" Class="mb-3"
                               InputType="@PasswordInput" Adornment="Adornment.End"
                               AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="MostrarClave"
                               AdornmentAriaLabel="Mostrar Contraseña" />
@@ -102,15 +102,28 @@
             PasswordInput = InputType.Text;
         }
     }
+
     private void Cancel()
     {
         MudDialog.Cancel();
     }
+
     private async Task Guardar()	
     {
         _usuario.IdRol = rolSeleccionado.IdRol;
         string _mensaje = "";
         bool _resultado;
+
+        if (string.IsNullOrEmpty(_usuario.NombreApellidos) ||
+           string.IsNullOrEmpty(_usuario.Correo) ||
+           string.IsNullOrEmpty(_usuario.Telefono) ||
+           string.IsNullOrEmpty(_usuario.Direccion) ||
+           string.IsNullOrEmpty(_usuario.Horario) ||
+           string.IsNullOrEmpty(_usuario.Clave))
+        {
+            _snackBar.Add("Complete los campos requeridos.", Severity.Error, a => a.VisibleStateDuration = 500);
+            return;
+        }
 
         if(_usuario.IdUsuario != 0)
         {

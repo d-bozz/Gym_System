@@ -9,17 +9,17 @@
 
             <EditForm Model="@_producto">
 
-                <MudTextField @bind-Value="@_producto.Nombre" Class="mb-3"
+                <MudTextField @bind-Value="@_producto.Nombre" Required RequiredError="Ingrese Nombre" Class="mb-3"
                               Label="Nombre" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Badge" />
 
-                <MudTextField @bind-Value="@_producto.Descripcion" Class="mb-3"
+                <MudTextField @bind-Value="@_producto.Descripcion" Required RequiredError="Ingrese Descripción" Class="mb-3"
                               Label="Descripcion" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Description" />
 
-                <MudTextField @bind-Value="@_producto.Marca" Class="mb-3"
+                <MudTextField @bind-Value="@_producto.Marca" Required RequiredError="Ingrese Marca" Class="mb-3"
                               Label="Marca" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Bookmarks" />
 
 
-                <MudSelect Label="Categoria" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Class="mb-3"
+                <MudSelect Label="Categoria" Variant="Variant.Outlined" Required RequiredError="Seleccione Categoria" AnchorOrigin="Origin.BottomCenter" Class="mb-3"
                            @bind-Value="categoriaSeleccionado">
                     @if (listaCategoria.Any())
                     {
@@ -30,13 +30,13 @@
                     }
                 </MudSelect>
 
-                <MudNumericField @bind-Value="@_producto.Stock" Class="mb-3"
+                <MudNumericField @bind-Value="@_producto.Stock" Required RequiredError="Ingrese Stock" Class="mb-3"
                               Label="Stock" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.QrCode" />
 
-                <MudNumericField @bind-Value="@_producto.Precio" Class="mb-3"
+                <MudNumericField @bind-Value="@_producto.Precio" Required RequiredError="Ingrese Precio" Class="mb-3"
                               Label="Precio" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Money" />
 
-                <MudNumericField @bind-Value="@_producto.Peso" Class="mb-3"
+                <MudNumericField @bind-Value="@_producto.Peso" Required RequiredError="Ingrese Peso" Class="mb-3"
                                  Label="Peso" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.MonitorWeight" />
 
                 @*Carga de imagen*@
@@ -114,6 +114,18 @@
         _producto.IdCategoria = categoriaSeleccionado.IdCategoria;
         string _mensaje = "";
         bool _resultado;
+
+        if (string.IsNullOrEmpty(_producto.Nombre) ||
+           string.IsNullOrEmpty(_producto.Descripcion) ||
+           string.IsNullOrEmpty(_producto.Marca) ||
+           (_producto.IdCategoria == null) ||
+           (_producto.Stock == null) ||
+           (_producto.Precio == null) ||
+           (_producto.Peso == null))
+        {
+            _snackBar.Add("Complete los campos requeridos.", Severity.Error, a => a.VisibleStateDuration = 500);
+            return;
+        }
 
         if (_producto.IdProducto != 0)
         {

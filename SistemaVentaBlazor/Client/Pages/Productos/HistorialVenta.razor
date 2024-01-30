@@ -61,7 +61,7 @@
                         <MudTd DataLabel="Fecha Registro">@ventaRow.FechaRegistro.Value.ToString("dd/MM/yyyy")</MudTd>
                         <MudTd DataLabel="Numero Venta">@ventaRow.NumeroDocumento</MudTd>
                         <MudTd DataLabel="Tipo de pago">@ventaRow.TipoPago</MudTd>
-                        <MudTd DataLabel="Total">@ventaRow.Total</MudTd>
+                        <MudTd DataLabel="Total">$@ventaRow.Total</MudTd>
                         <MudTd DataLabel="">
                             <MudFab Color="Color.Primary" 
                                 StartIcon="@Icons.Material.Filled.RemoveRedEye"
@@ -120,33 +120,26 @@
     private async Task Buscar()
     {
         _loading = true;
-        string _bpor;
-        string _fechaInicio;
-        string _fechaFin;
 
-        if(buscarPor == "Fechas")
+        string buscarPorParametro = buscarPor == "Fechas" ? "fecha" : "numero";
+        string fechaInicioParametro = fechaInicio?.ToString("dd/MM/yyyy") ?? "";
+        string fechaFinParametro = fechaFin?.ToString("dd/MM/yyyy") ?? "";
+
+        if (buscarPorParametro == "numero")
         {
-            _bpor = "fecha";
-            _fechaInicio = fechaInicio.Value.ToString("dd/MM/yyyy");
-            _fechaFin = fechaFin.Value.ToString("dd/MM/yyyy");
+            fechaInicioParametro = "";
+            fechaFinParametro = "";
             numeroVenta = "";
         }
-        else
-        {
-            _bpor = "numero";
-            _fechaInicio = "";
-            _fechaFin = "";
-        }
 
+        var resultado = await _ventaServicio.Historial(buscarPorParametro, numeroVenta, fechaInicioParametro, fechaFinParametro);
 
-        var resultado = await _ventaServicio.Historial(_bpor, numeroVenta, _fechaInicio,_fechaFin);
-        if (resultado.status)
-            listaVentas = (List<VentaDTO>)resultado.value!;
-        else
-            listaVentas = new List<VentaDTO>();
+        listaVentas = resultado.status ? (List<VentaDTO>)resultado.value! : new List<VentaDTO>();
 
         _loading = false;
+        StateHasChanged();
     }
+
 
     private async Task mostrarDetalle(VentaDTO model)
     {
