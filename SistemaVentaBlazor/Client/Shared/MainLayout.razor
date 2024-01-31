@@ -5,12 +5,12 @@
 @using System.Security.Claims
 @inject AuthenticationStateProvider authenticationProvider
 
+<MudThemeProvider />
+<MudDialogProvider DisableBackdropClick="true" Position="DialogPosition.Center" />
+<MudSnackbarProvider />
+
 <AuthorizeView>
     <Authorized>
-        <MudThemeProvider />
-        <MudDialogProvider DisableBackdropClick="true" Position="DialogPosition.Center" />
-        <MudSnackbarProvider />
-
         @{
             var currentUri = _navigationManager.ToAbsoluteUri(_navigationManager.Uri);
             bool mostrarNavMenu = !currentUri.AbsolutePath.Contains("/page/socio/comprobantepago/");
@@ -21,6 +21,9 @@
             <MudLayout>
                 <MudAppBar Elevation="0">
                     <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+                    <MudSpacer />
+                    <MudText>@GetCurrentUserId(context.User)</MudText>
+                    <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" OnClick="CerrarSesion" />
                 </MudAppBar>
 
                 @{
@@ -72,5 +75,11 @@
             await autenticacionExt.UpdateAuthenticationState(null);
             _navigationManager.NavigateTo("/", true);
         }
+    }
+
+    private string GetCurrentUserId(ClaimsPrincipal user)
+    {
+        var userMail = user.FindFirst(ClaimTypes.Email)?.Value;
+        return userMail;
     }
 }
