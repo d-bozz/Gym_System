@@ -70,7 +70,8 @@ create table Venta(
     numeroDocumento varchar(40),
     tipoPago varchar(50),
     fechaRegistro datetime default getdate(),
-    total decimal(10,2)
+    total decimal(10,2),
+    cliente varchar(50)
 )
 
 go

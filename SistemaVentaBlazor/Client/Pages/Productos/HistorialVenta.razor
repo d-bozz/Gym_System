@@ -53,13 +53,15 @@
                     Loading="@_loading" LoadingProgressColor="Color.Info"
                 >
                     <HeaderContent>
-                        <MudTh>Fecha Registro</MudTh>
-                        <MudTh>Numero Venta</MudTh>
-                        <MudTh>Tipo de pago</MudTh>
-                        <MudTh>Total</MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<VentaDTO, object>(x=>x.Cliente)">Cliente</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<VentaDTO, object>(x=>x.FechaRegistro)">Fecha Registro</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<VentaDTO, object>(x=>x.NumeroDocumento)">Numero Venta</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<VentaDTO, object>(x=>x.TipoPago)">Tipo de pago</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<VentaDTO, object>(x=>x.Total)">Total</MudTableSortLabel></MudTh>
                         <MudTh></MudTh>
                     </HeaderContent>
                     <RowTemplate Context="ventaRow">
+                        <MudTd DataLabel="Cliente">@ventaRow.Cliente</MudTd>
                         <MudTd DataLabel="Fecha Registro">@ventaRow.FechaRegistro.Value.ToString("dd/MM/yyyy")</MudTd>
                         <MudTd DataLabel="Numero Venta">@ventaRow.NumeroDocumento</MudTd>
                         <MudTd DataLabel="Tipo de pago">@ventaRow.TipoPago</MudTd>

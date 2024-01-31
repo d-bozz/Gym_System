@@ -44,6 +44,16 @@
                     <MudSelectItem Value="@("Tarjeta")" />
                 </MudSelect>
             </MudItem>
+            <MudTextField T="string"
+                          @bind-Value="_venta.Cliente"
+                            Required
+                          RequiredError="El nombre del cliente es requerido"
+                          Class="mb-3"
+                          Label="Nombre"
+                          Variant="Variant.Outlined"
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@Icons.Material.Filled.Person">
+            </MudTextField>
 
             <MudItem xs="3">
                 <MudAlert Severity="Severity.Warning" NoIcon="true" Variant="Variant.Filled"
@@ -56,6 +66,7 @@
 
                 <MudTable Items="@_venta.DetalleVenta" Dense="true" Striped="true" Bordered="true">
                     <HeaderContent>
+                        <MudTh>Cliente</MudTh>
                         <MudTh>Producto</MudTh>
                         <MudTh>Cantidad</MudTh>
                         <MudTh>Precio</MudTh>

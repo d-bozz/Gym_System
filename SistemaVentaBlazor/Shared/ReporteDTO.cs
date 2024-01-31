@@ -9,6 +9,7 @@ namespace SistemaVentaBlazor.Shared
     public class ReporteDTO
     {
         public string? NumeroDocumento { get; set; }
+        public string? Cliente { get; set; }
         public string? TipoPago { get; set; }
         public string? FechaRegistro { get; set; }
         public string? TotalVenta { get; set; }

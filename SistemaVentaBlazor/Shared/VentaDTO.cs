@@ -11,6 +11,7 @@ namespace SistemaVentaBlazor.Shared
         public int IdVenta { get; set; }
         public string? NumeroDocumento { get; set; }
         public string? TipoPago { get; set; }
+        public string? Cliente { get; set; }
         public DateTime? FechaRegistro { get; set; }
         public decimal? Total { get; set; }
         public string? TotalTexto {
@@ -23,6 +24,7 @@ namespace SistemaVentaBlazor.Shared
                 return sum.ToString();
             }
         }
+
         public virtual List<DetalleVentaDTO>? DetalleVenta { get; set; }
     }
 }

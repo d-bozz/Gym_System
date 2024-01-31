@@ -292,6 +292,9 @@ public partial class GymSystemContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("nombreApellidos");
+            entity.Property(e => e.Foto)
+                .IsUnicode(false)
+                .HasColumnName("foto");
             entity.Property(e => e.Telefono)
                 .HasMaxLength(25)
                 .IsUnicode(false)
@@ -319,6 +322,10 @@ public partial class GymSystemContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("tipoPago");
+            entity.Property(e => e.Cliente)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("cliente");
             entity.Property(e => e.Total)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("total");

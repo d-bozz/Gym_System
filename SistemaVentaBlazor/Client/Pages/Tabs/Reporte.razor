@@ -49,16 +49,18 @@
                     Loading="@_loading" LoadingProgressColor="Color.Info"
                 >
                     <HeaderContent>
-                        <MudTh>Fecha Registro</MudTh>
-                        <MudTh>Número Venta</MudTh>
-                        <MudTh>Tipo de pago</MudTh>
-                        <MudTh>Total</MudTh>
-                        <MudTh>Producto</MudTh>
-                        <MudTh>Cantidad</MudTh>
-                        <MudTh>Precio</MudTh>
-                        <MudTh>Total por Producto</MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ReporteDTO, object>(x=>x.Cliente)">Cliente</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ReporteDTO, object>(x=>x.FechaRegistro)">Fecha Registro</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ReporteDTO, object>(x=>x.NumeroDocumento)">Número Venta</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ReporteDTO, object>(x=>x.TipoPago)">Tipo de pago</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ReporteDTO, object>(x=>x.TotalVenta)">Total</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ReporteDTO, object>(x=>x.Producto)">Producto</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ReporteDTO, object>(x=>x.Cantidad)">Cantidad</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ReporteDTO, object>(x=>x.Precio)">Precio</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<ReporteDTO, object>(x=>x.Total)">Total por Producto</MudTableSortLabel></MudTh>
                     </HeaderContent>
                     <RowTemplate Context="ventaRow">
+                        <MudTd DataLabel="Cliente">@ventaRow.Cliente</MudTd>
                         <MudTd DataLabel="Fecha Registro">@ventaRow.FechaRegistro</MudTd>
                         <MudTd DataLabel="Numero Venta">@ventaRow.NumeroDocumento</MudTd>
                         <MudTd DataLabel="Tipo de pago">@ventaRow.TipoPago</MudTd>
@@ -121,14 +123,15 @@
             {
                 IXLWorksheet hoja = libro.Worksheets.Add("ventas");
 
-                hoja.Cell(1, 1).Value = "Numero Venta";
-                hoja.Cell(1, 2).Value = "Tipo de pago";
-                hoja.Cell(1, 3).Value = "Fecha Registro";
-                hoja.Cell(1, 4).Value = "Total";
-                hoja.Cell(1, 5).Value = "Producto";
-                hoja.Cell(1, 6).Value = "Cantidad";
-                hoja.Cell(1, 7).Value = "Precio";
-                hoja.Cell(1, 8).Value = "Total por Producto";
+                hoja.Cell(1, 1).Value = "Cliente";
+                hoja.Cell(1, 2).Value = "Numero Venta";
+                hoja.Cell(1, 3).Value = "Tipo de pago";
+                hoja.Cell(1, 4).Value = "Fecha Registro";
+                hoja.Cell(1, 5).Value = "Total";
+                hoja.Cell(1, 6).Value = "Producto";
+                hoja.Cell(1, 7).Value = "Cantidad";
+                hoja.Cell(1, 8).Value = "Precio";
+                hoja.Cell(1, 9).Value = "Total por Producto";
  
                 hoja.Cell(2, 1).InsertData(listaVentas);
 

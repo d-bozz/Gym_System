@@ -7,13 +7,16 @@ namespace SistemaVentaBlazor.Server.Repositorio.Implementacion
 {
     public class VentaRepositorio : IVentaRepositorio
     {
-
+        #region Properties and Fields
         private readonly GymSystemContext _dbcontext;
+
         public VentaRepositorio(GymSystemContext context)
         {
             _dbcontext = context;
         }
+        #endregion
 
+        #region Methods
         public async Task<Venta> Registrar(Venta entidad)
         {
             Venta VentaGenerada = new Venta();
@@ -132,7 +135,7 @@ namespace SistemaVentaBlazor.Server.Repositorio.Implementacion
             }
             #endregion
         }
-
+        
         public async Task<List<DetalleVenta>> Reporte(string FechaInicio, string FechaFin)
         {
             #region No se ingresan Fechas
@@ -197,6 +200,6 @@ namespace SistemaVentaBlazor.Server.Repositorio.Implementacion
 
             return listaResumen;
         }
-
+        #endregion
     }
 }

@@ -120,6 +120,10 @@ namespace SistemaVentaBlazor.Server.Utilidades
                     opt => opt.MapFrom(origen => origen.IdVentaNavigation.TipoPago)
                 )
                 .ForMember(destino =>
+                    destino.Cliente,
+                    opt => opt.MapFrom(origen => origen.IdVentaNavigation.Cliente)
+                )
+                .ForMember(destino =>
                     destino.TotalVenta,
                     opt => opt.MapFrom(origen => Convert.ToString(origen.IdVentaNavigation.Total.Value, new CultureInfo("es-PE")))
                 )
