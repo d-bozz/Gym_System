@@ -22,7 +22,7 @@
                 <MudAppBar Elevation="0">
                     <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
                     <MudSpacer />
-                    <MudText>@GetCurrentUserId(context.User)</MudText>
+                    <MudText class="white-text">@GetCurrentUserId(context.User)</MudText>
                     <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" OnClick="CerrarSesion" />
                 </MudAppBar>
 

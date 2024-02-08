@@ -37,7 +37,7 @@
                         <MudTh><MudTableSortLabel SortBy="new Func<ProductoDTO, object>(x=>x.DescripcionCategoria)">Categoria</MudTableSortLabel></MudTh>
                         <MudTh><MudTableSortLabel SortBy="new Func<ProductoDTO, object>(x=>x.Stock)">Stock</MudTableSortLabel></MudTh>
                         <MudTh><MudTableSortLabel SortBy="new Func<ProductoDTO, object>(x=>x.Precio)">Precio</MudTableSortLabel></MudTh>
-                        <MudTh>Ver Detalles</MudTh>
+                        <MudTh>Detalles</MudTh>
                         <MudTh>Acción</MudTh>
                     </HeaderContent>
                     <RowTemplate Context="productoRow">
@@ -46,8 +46,10 @@
                         <MudTd DataLabel="Marca">@productoRow.Marca</MudTd>
                         <MudTd DataLabel="Correo">@productoRow.DescripcionCategoria</MudTd>
                         <MudTd DataLabel="Stock">@productoRow.Stock</MudTd>
-                        <MudTd DataLabel="Precio">@productoRow.Precio</MudTd>
-                        <MudNavLink Href="@($"/page/producto/detalle/{productoRow.IdProducto}")">Ver Detalles</MudNavLink>
+                        <MudTd DataLabel="Precio">$@productoRow.Precio</MudTd>
+                         <MudTd DataLabel="detalle">
+                            <MudNavLink Href="@($"/page/producto/detalle/{productoRow.IdProducto}")">Ver Detalles</MudNavLink>
+                        </MudTd>
                         <MudTd DataLabel="Accion">
                             <MudFab Color="Color.Primary"
                                     StartIcon="@Icons.Material.Filled.Edit"

@@ -106,42 +106,42 @@ img {
         border: 2px solid #4e68a1;
     }
 
-/* twitter button */
-.btn-twitter, .btn-twitter:active, .btn-twitter:focus {
+/* whatsapp button */
+.btn-whatsapp, .btn-whatsapp:active, .btn-whatsapp:focus {
     color: #fff !important;
-    background: #65b5f2;
-    border: 2px solid #65b5f2;
+    background: #25d366;
+    border: 2px solid #25d366;
 }
 
-    .btn-twitter:hover {
+    .btn-whatsapp:hover {
         color: #fff !important;
-        background: #5294c6;
-        border: 2px solid #5294c6;
+        background: #128c7e;
+        border: 2px solid #128c7e;
     }
 
-    .btn-twitter:hover {
+    .btn-whatsapp:hover {
         color: #fff !important;
-        background: #5294c6;
-        border: 2px solid #5294c6;
+        background: #128c7e;
+        border: 2px solid #128c7e;
     }
 
-.btn-twitter-link, .btn-twitter-link:active, .btn-twitter-link:focus {
+.btn-whatsapp-link, .btn-whatsapp-link:active, .btn-whatsapp-link:focus {
     color: #65b5f2 !important;
     background: transparent;
     border: none;
 }
 
-    .btn-twitter-link:hover {
+    .btn-whatsapp-link:hover {
         color: #5294c6 !important;
     }
 
-.btn-outline-twitter, .btn-outline-twitter:active, .btn-outline-twitter:focus {
+.btn-outline-whatsapp, .btn-outline-whatsapp:active, .btn-outline-whatsapp:focus {
     color: #65b5f2 !important;
     background: transparent;
     border: 2px solid #65b5f2;
 }
 
-    .btn-outline-twitter:hover {
+    .btn-outline-whatsapp:hover {
         color: #fff !important;
         background: #65b5f2;
         border: 2px solid #65b5f2;
@@ -414,4 +414,10 @@ p {
 
 b, strong {
     font-weight: 700 !important;
+}
+
+.white-text {
+    color: white;
+    font-family: "Roboto";
+    font-size: 16px;
 }
