@@ -20,6 +20,7 @@ public partial class Usuario
     public string? Telefono { get; set; }
 
     public string? Direccion { get; set; }
+    public string? Cedula { get; set; }
 
     public string? Foto { get; set; }
 

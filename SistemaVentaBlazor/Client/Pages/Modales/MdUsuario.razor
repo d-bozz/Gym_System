@@ -15,6 +15,9 @@
                 <MudTextField @bind-Value="@_usuario.Correo" Required RequiredError="Ingrese Correo" Class="mb-3"
                               Label="Correo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Email" />
 
+                 <MudTextField @bind-Value="@_usuario.Cedula" Required RequiredError="Ingrese Cédula" Class="mb-3"
+                               Label="Cedula" ReadOnly="@IsCedulaReadOnly" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.PermIdentity" />
+
                 <MudSelect Label="Rol" Variant="Variant.Outlined" Required RequiredError="Seleccione Rol" AnchorOrigin="Origin.BottomCenter" Class="mb-3"
                            @bind-Value="rolSeleccionado">
                     @if (listaRoles.Any())
@@ -78,8 +81,9 @@
 </MudDialog>
 
 @code {
-    [Parameter]
-    public UsuarioDTO _usuario { get; set; } = new UsuarioDTO();
+    [Parameter] public UsuarioDTO _usuario { get; set; } = new UsuarioDTO();
+
+    [Parameter] public bool IsCedulaReadOnly { get; set; }
 
     List<RolDTO> listaRoles = new List<RolDTO>();
     public RolDTO rolSeleccionado;

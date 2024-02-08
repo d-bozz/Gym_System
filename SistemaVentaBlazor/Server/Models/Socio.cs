@@ -24,6 +24,7 @@ public partial class Socio
     public string? Mutualista { get; set; }
 
     public string? Direccion { get; set; }
+    public string? Cedula { get; set; }
 
     public string? TelefonoContacto { get; set; }
 

@@ -140,7 +140,9 @@
 
     private async Task AbrirNuevoSocio()
     {
-        var dialogo = _dialogServicio.Show<MdSocio>("Nuevo Socio");
+        var parametros = new DialogParameters { ["IsCedulaReadOnly"] = false };
+
+        var dialogo = _dialogServicio.Show<MdSocio>("Nuevo Socio", parametros);
         var resultado = await dialogo.Result;
 
         if (!resultado.Canceled)
@@ -151,9 +153,9 @@
 
     private async Task AbrirEditarSocio(SocioDTO socio)
     {
-        var parametros = new DialogParameters { ["_socio"] = socio };
+        var parametros = new DialogParameters { ["_socio"] = socio, ["IsCedulaReadOnly"] = true };
 
-        var dialogo = _dialogServicio.Show<MdSocio>("Editar Socio",parametros);
+        var dialogo = _dialogServicio.Show<MdSocio>("Editar Socio", parametros);
         var resultado = await dialogo.Result;
         if (!resultado.Canceled)
         {

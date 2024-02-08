@@ -133,7 +133,9 @@
 
     private async Task AbrirNuevoUsuario()
     {
-        var dialogo = _dialogServicio.Show<MdUsuario>("Nuevo Administrador");
+        var parametros = new DialogParameters { ["IsCedulaReadOnly"] = false };
+
+        var dialogo = _dialogServicio.Show<MdUsuario>("Nuevo Administrador", parametros);
         var resultado = await dialogo.Result;
 
         if (!resultado.Canceled)
@@ -144,7 +146,7 @@
 
     private async Task AbrirEditarUsuario(UsuarioDTO usuario)
     {
-        var parametros = new DialogParameters { ["_usuario"] = usuario };
+        var parametros = new DialogParameters { ["_usuario"] = usuario, ["IsCedulaReadOnly"] = true };
 
         var dialogo = _dialogServicio.Show<MdUsuario>("Editar Administrador", parametros);
         var resultado = await dialogo.Result;

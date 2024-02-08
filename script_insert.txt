@@ -7,9 +7,9 @@ insert into rol(descripcion,esActivo) values
 go
 
 --INSERTAR USUARIOS
-insert into usuario(nombreApellidos,correo,idRol,Clave,esActivo,telefono,direccion,horario) values
-('jose smith','admin@example.com',1,'12345',1,'094391883','avenida springfield 2233','Lunes, miercoles y viernes 08:00 a 17:00 hs'),
-('luis smith','employe@example.com',2,'12345',1,'099333988','avenida siempre viva 123','Martes y jueves 12:00 a 22:00 hs')
+insert into usuario(nombreApellidos,correo,idRol,Clave,esActivo,telefono,direccion,horario,cedula) values
+('jose smith','admin@example.com',1,'12345',1,'094391883','avenida springfield 2233','Lunes, miercoles y viernes 08:00 a 17:00 hs','42658953'),
+('luis smith','employe@example.com',2,'12345',1,'099333988','avenida siempre viva 123','Martes y jueves 12:00 a 22:00 hs','45236587')
 
 go
 --INSERTAR CATEGORIAS
@@ -35,22 +35,23 @@ go
 
 --INSERTAR SOCIOS
 -- Insertar un socio con información básica
-INSERT INTO Socio (nombre, apellido, telefono, correo, fechaInicioMembresia, estadoPago, restricciones, mutualista, direccion, telefonoContacto) VALUES 
-('Juan', 'Pérez', '555-1234', 'juan@example.com', '2022-01-01', 1, 'Ninguna', 'CASMU', 'Constituyente 1740', '23657448'),
-('María', 'Gómez', '555-5678', 'maria@example.com', '2022-02-15', 0, 'Alergia a frutas', 'Comeu', 'Yi 1500', '23654456')
-
+INSERT INTO Socio (nombre, apellido, telefono, correo, fechaInicioMembresia,activo, restricciones, mutualista, direccion, telefonoContacto,cedula) VALUES 
+('Juan', 'Pérez', '555-1234', 'juan@example.com', '2022-01-01',1, 'Ninguna', 'CASMU', 'Constituyente 1740', '23657448','48569521'),
+('María', 'Gómez', '555-5678', 'maria@example.com', '2022-02-15',1, 'Alergia a frutas', 'Comeu', 'Yi 1500', '23654456','47583241')
 
 go
+
 
 --INSERTAR PAGOS MENSUALES
 insert into PagoMensual (idSocio, mes, anio, fechaPago, monto)
-values (1, 1, 2023, '2023-01-05', 50.00),
-       (1, 2, 2023, '2023-02-05', 50.00)
+values (2, 1, 2023, '2023-01-05', 50.00),
+       (3, 2, 2023, '2023-02-05', 50.00)
 
 go
 
+
 --INSERTAR HORARIO DE ACTIVIDAD
-insert into HorarioActividad (diaSemana, horaInicio, horaFin, actividad)
+insert into HorarioActividad (diaSemana, horaInicio, horaFin, actividad, encargado)
 values ('Martes', '10:00', '11:00', 'Spinning','Piñon Fijo'),
        ('Jueves', '11:00', '12:00', 'Zumba','Abeja Reina')
 
@@ -58,7 +59,7 @@ go
 
 --INSERTAR ASISTENCIAS
 insert into Asistencia (idSocio, idHorario, fechaAsistencia)
-values (1, 1, '2023-01-03'),
-       (1, 2, '2023-02-07')
+values (2, 1, '2023-01-03'),
+       (3, 2, '2023-02-07')
 
 go

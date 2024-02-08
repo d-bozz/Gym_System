@@ -1,6 +1,6 @@
 
 
-create database DBGymSystem
+CREATE database DBGymSystem
 
 go
 
@@ -8,47 +8,48 @@ use DBGymSystem
 
 go
 
-create table Rol(
-idRol int primary key identity(1,1),
-descripcion varchar(50),
-esActivo bit,
+CREATE TABLE Rol(
+idRol INT PRIMARY KEY IDENTITY(1,1),
+descripcion VARCHAR(50) NOT NULL,
+esActivo BIT NOT NULL,
 fechaRegistro datetime default getdate()
 )
 
 go
 
-create table Usuario(
-idUsuario int primary key identity(1,1),
-nombreApellidos varchar(100),
-correo varchar(40),
-idRol int references Rol(idRol),
-clave varchar(40),
-esActivo bit,
-telefono varchar(25),
+CREATE TABLE Usuario(
+idUsuario INT PRIMARY KEY IDENTITY(1,1),
+nombreApellidos VARCHAR(100) NOT NULL,
+correo VARCHAR(40) NOT NULL UNIQUE,
+idRol INT references Rol(idRol) NOT NULL,
+clave varchar(40) NOT NULL,
+esActivo bit NOT NULL,
+telefono varchar(25) NOT NULL,
 direccion varchar(250),
 horario varchar(250),
-foto varchar(max)
+foto varchar(max),
+cedula varchar(15) NOT NULL UNIQUE
 )
 
 go
 
-create table Categoria(
+CREATE TABLE Categoria(
 idCategoria int primary key identity(1,1),
-descripcion varchar(50),
-esActivo bit,
+descripcion varchar(50) NOT NULL,
+esActivo bit NOT NULL,
 fechaRegistro datetime default getdate()
 )
 
 go
 
-create table Producto (
+CREATE TABLE Producto (
 idProducto int primary key identity(1,1),
-nombre varchar(100),
+nombre varchar(100) NOT NULL,
 descripcion varchar(250),
-idCategoria int references Categoria(idCategoria),
-stock int,
-precio decimal(10,2),
-esActivo bit,
+idCategoria int references Categoria(idCategoria) NOT NULL,
+stock int NOT NULL,
+precio decimal(10,2) NOT NULL,
+esActivo bit NOT NULL,
 fechaRegistro datetime default getdate(),
 marca varchar(100),
 peso varchar(10),
@@ -57,7 +58,7 @@ foto varchar(max)
 
 go
 
-create table NumeroDocumento(
+CREATE TABLE NumeroDocumento(
 idNumeroDocumento int primary key identity(1,1),
 ultimo_Numero int not null,
 fechaRegistro datetime default getdate()
@@ -65,7 +66,7 @@ fechaRegistro datetime default getdate()
 
 go
 
-create table Venta(
+CREATE TABLE Venta(
     idVenta int primary key identity(1,1),
     numeroDocumento varchar(40),
     tipoPago varchar(50),
@@ -76,7 +77,7 @@ create table Venta(
 
 go
 
-create table DetalleVenta(
+CREATE TABLE DetalleVenta(
     idDetalleVenta int primary key identity(1,1),
     idVenta int references Venta(idVenta),
     idProducto int references Producto(idProducto),
@@ -89,43 +90,45 @@ go
 
 CREATE TABLE Socio (
     idSocio INT PRIMARY KEY IDENTITY(1,1),
-    nombre VARCHAR(100),
-	apellido VARCHAR(100),
+    nombre VARCHAR(100) NOT NULL,
+	apellido VARCHAR(100) NOT NULL,
 	telefono VARCHAR(100),
-	correo VARCHAR(40),
-    fechaInicioMembresia DATETIME,
-    activo BIT,
+	correo VARCHAR(40) NOT NULL,
+    fechaInicioMembresia DATETIME NOT NULL,
+    activo BIT NOT NULL,
 	restricciones VARCHAR(250),
 	mutualista VARCHAR(100),
     direccion VARCHAR(250),
-    telefonoContacto varchar(50)
-)
+    telefonoContacto VARCHAR(50),
+    cedula VARCHAR(15) NOT NULL UNIQUE
+);
+
 
 go
 
-create table PagoMensual (
+CREATE TABLE PagoMensual (
     idPago int primary key identity(1,1),
-    idSocio int references Socio(idSocio),
-    mes int,
-    anio int,
-    fechaPago datetime,
-    monto decimal(10,2),
+    idSocio int references Socio(idSocio) NOT NULL,
+    mes int NOT NULL,
+    anio int NOT NULL,
+    fechaPago datetime NOT NULL,
+    monto decimal(10,2) NOT NULL,
 )
 
 go
 
-create table HorarioActividad (
+CREATE TABLE HorarioActividad (
     idHorario int primary key identity(1,1),
-    diaSemana varchar(20),
-    horaInicio time,
-    horaFin time,
-    actividad varchar(100),
-    encargado varchar(50)
+    diaSemana varchar(20) NOT NULL,
+    horaInicio time NOT NULL,
+    horaFin time NOT NULL,
+    actividad varchar(100) NOT NULL,
+    encargado varchar(50) NOT NULL
 )
 
 go
 
-create table Asistencia (
+CREATE TABLE Asistencia (
     idAsistencia int primary key identity(1,1),
     idSocio int references Socio(idSocio),
     idHorario int references HorarioActividad(idHorario),

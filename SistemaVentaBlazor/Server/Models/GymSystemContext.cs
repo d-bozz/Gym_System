@@ -221,6 +221,7 @@ public partial class GymSystemContext : DbContext
         modelBuilder.Entity<Socio>(entity =>
         {
             entity.HasKey(e => e.IdSocio).HasName("PK__Socio__E19769C12AE5F727");
+            entity.HasKey(e => e.IdSocio).HasName("UQ__Socio__415B7BE58E58EF10");
 
             entity.ToTable("Socio");
 
@@ -237,6 +238,10 @@ public partial class GymSystemContext : DbContext
                 .HasMaxLength(250)
                 .IsUnicode(false)
                 .HasColumnName("direccion");
+            entity.Property(e => e.Cedula)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasColumnName("cedula");
             entity.Property(e => e.Activo).HasColumnName("activo");
             entity.Property(e => e.FechaInicioMembresia)
                 .HasColumnType("datetime")
@@ -265,7 +270,9 @@ public partial class GymSystemContext : DbContext
 
         modelBuilder.Entity<Usuario>(entity =>
         {
+
             entity.HasKey(e => e.IdUsuario).HasName("PK__Usuario__645723A615FCC783");
+            entity.HasKey(e => e.IdUsuario).HasName("UQ__Usuario__415B7BE5F3F54B12");
 
             entity.ToTable("Usuario");
 
@@ -282,6 +289,10 @@ public partial class GymSystemContext : DbContext
                 .HasMaxLength(250)
                 .IsUnicode(false)
                 .HasColumnName("direccion");
+            entity.Property(e => e.Cedula)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasColumnName("cedula");
             entity.Property(e => e.EsActivo).HasColumnName("esActivo");
             entity.Property(e => e.Horario)
                 .HasMaxLength(250)
