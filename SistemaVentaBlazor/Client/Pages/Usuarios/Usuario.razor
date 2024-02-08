@@ -7,88 +7,78 @@
 
 @attribute [Authorize(Roles = "1")];
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <MudPaper Elevation="3" Class="pa-4" Width="100%">
-                   <MudGrid>
-                    <MudItem xs="12">
-                        <MudButton Variant="Variant.Filled" 
-                        StartIcon="@Icons.Material.Filled.PersonAdd"
-                        Color="Color.Primary"
-                        OnClick="AbrirNuevoUsuario">
-                            Nuevo Administrador</MudButton>
-                    </MudItem>
-                    </MudGrid>
-                </MudPaper>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-uppercase mb-0">Administradores</h5>
-                </div>
-                <div class="table-responsive">
-                    <table class="table no-wrap user-table mb-0">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="border-0 text-uppercase font-medium pl-4">#</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Nombre</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Horario</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Celular</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Rol</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (listaUsuarios != null)
-                            {
-                                @foreach (var item in listaUsuarios)
-                                {
-                                    <tr>
-                                        <td class="pl-4">@item.IdUsuario</td>
-                                        <td>
-                                            <h5 class="font-medium mb-0">@item.NombreApellidos</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted">@item.Horario</span><br>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted">@item.Telefono</span><br>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted">@item.rolDescripcion</span><br>
-                                        </td>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
 
-                                        <td>
-                                            <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle"
-                                            @onclick="(() => AbrirDetalleUsuario(item))">
-                                                <i class="fa fa-eye"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
-                                            @onclick="(() => AbrirEditarUsuario(item))">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
-                                            @onclick="(() => EliminarUsuario(item))">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    <MudText Typo="Typo.h5" GutterBottom="true">Socios</MudText>
+
+    <MudPaper Elevation="3" Class="pa-4" Width="100%">
+        <MudGrid>
+            <MudItem xs="12">
+                <MudButton Variant="Variant.Filled"
+                           StartIcon="@Icons.Material.Filled.PersonAdd"
+                           Color="Color.Primary"
+                           OnClick="AbrirNuevoUsuario">
+                    Nuevo Administrador
+                </MudButton>
+            </MudItem>
+            <MudItem xs="12">
+
+                <MudTable Items="@listaUsuarios"
+                          Dense="true"
+                          Striped="true" Bordered="true"
+                          Filter="new Func<UsuarioDTO,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1"
+                          Loading="@_loading" LoadingProgressColor="Color.Info">
+                    <ToolBarContent>
+                        <MudSpacer />
+                        <MudTextField @bind-Value="searchString1" Placeholder="Buscar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                    </ToolBarContent>
+                    <HeaderContent>
+                        <MudTh><MudTableSortLabel SortBy="new Func<UsuarioDTO, object>(x=>x.IdUsuario)">ID Usuario</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<UsuarioDTO, object>(x=>x.NombreApellidos)">Nombre</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<UsuarioDTO, object>(x=>x.Cedula)">Cedula</MudTableSortLabel></MudTh>
+                        <MudTh>Horario</MudTh>
+                        <MudTh>Celular</MudTh>
+                        <MudTh>Rol</MudTh>
+                        <MudTh>Acciones</MudTh>
+                    </HeaderContent>
+                    <RowTemplate Context="usuarioRow">
+                        <MudTd DataLabel="IdUsuario">@usuarioRow.IdUsuario</MudTd>
+                            <MudTd DataLabel="Nombre">@usuarioRow.NombreApellidos</MudTd>
+                            <MudTd DataLabel="Cedula">@FormatoCedula(usuarioRow.Cedula)</MudTd>
+                            <MudTd DataLabel="Horario">@usuarioRow.Horario</MudTd>
+                            <MudTd DataLabel="Telefono">@usuarioRow.Telefono</MudTd>
+                            <MudTd DataLabel="Rol">@usuarioRow.rolDescripcion</MudTd>
+                        <MudTd DataLabel="">
+                                <td>
+                                    <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle"
+                                            @onclick="(() => AbrirDetalleUsuario(usuarioRow))">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+                                            @onclick="(() => AbrirEditarUsuario(usuarioRow))">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+                                            @onclick="(() => EliminarUsuario(usuarioRow))">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager />
+                    </PagerContent>
+                </MudTable>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+</MudContainer>
+
+
+
+
+
 
 @code {
     List<UsuarioDTO> listaUsuarios = new List<UsuarioDTO>();
@@ -106,7 +96,6 @@
         }
     }
 
-
     protected override async Task OnInitializedAsync()
     {
         await ObtenerUsuarios();
@@ -123,9 +112,9 @@
             return true;
         if (element.Correo.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.rolDescripcion.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.Cedula.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if ($"{element.NombreApellidos} {element.Correo} {element.rolDescripcion}".Contains(searchString))
+        if ($"{element.NombreApellidos} {element.Correo} {element.Cedula}".Contains(searchString))
             return true;
 
         return false;
@@ -189,6 +178,14 @@
         string url = $"/page/usuario/detalle/{userId}";
 
         NavigationManager.NavigateTo(url);
+    }
+
+    private string FormatoCedula(string cedula)
+    {
+        if (cedula.Length != 8)
+            return cedula;
+
+        return $"{cedula.Substring(0, 1)}.{cedula.Substring(1, 3)}.{cedula.Substring(4, 3)}-{cedula.Substring(7)}";
     }
 
 }

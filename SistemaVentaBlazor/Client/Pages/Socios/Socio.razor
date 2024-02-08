@@ -39,7 +39,7 @@
                         <MudTh><MudTableSortLabel SortBy="new Func<SocioDTO, object>(x=>x.IdSocio)">ID Socio</MudTableSortLabel></MudTh>
                         <MudTh><MudTableSortLabel SortBy="new Func<SocioDTO, object>(x=>x.Nombre)">Nombre</MudTableSortLabel></MudTh>
                         <MudTh><MudTableSortLabel SortBy="new Func<SocioDTO, object>(x=>x.Apellido)">Apellido</MudTableSortLabel></MudTh>
-                        <MudTh>Teléfono</MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<SocioDTO, object>(x=>x.Cedula)">Cedula</MudTableSortLabel></MudTh>
                         <MudTh>Actividad</MudTh>
                         <MudTh>Detalles</MudTh>
                         <MudTh>Acciones</MudTh>
@@ -48,7 +48,9 @@
                         <MudTd DataLabel="IdSocio">@socioRow.IdSocio</MudTd>
                         <MudTd DataLabel="Nombre">@socioRow.Nombre</MudTd>
                         <MudTd DataLabel="Apellido">@socioRow.Apellido</MudTd>
-                        <MudTd DataLabel="Telefono">@socioRow.Telefono</MudTd>
+                        <MudTd DataLabel="Cedula">@socioRow.Cedula</MudTd>
+                            <p class="text-secondary mb-1">Cédula: @FormatoCedula(socioRow.Cedula)</p>
+
                         <MudTd DataLabel="Activo">
                             @if (socioRow.Activo == true)
                             { 
@@ -187,5 +189,13 @@
             else
                 _snackBar.Add("No se pudo eliminar", Severity.Error, a => a.VisibleStateDuration = 500);
         }
+    }
+
+    private string FormatoCedula(string cedula)
+    {
+        if (cedula.Length != 8)
+            return cedula;
+
+        return $"{cedula.Substring(0, 1)}.{cedula.Substring(1, 3)}.{cedula.Substring(4, 3)}-{cedula.Substring(7)}";
     }
 }

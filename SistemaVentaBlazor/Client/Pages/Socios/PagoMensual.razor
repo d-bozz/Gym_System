@@ -119,7 +119,7 @@
 
     private async Task AbrirNuevoPagoMensual()
     {
-        var dialogo = _dialogServicio.Show<MdPagoMensual>("Nuevo PagoMensual");
+        var dialogo = _dialogServicio.Show<MdPagoMensual>("Nuevo Pago Mensual");
         var resultado = await dialogo.Result;
 
         if (!resultado.Canceled)
@@ -128,11 +128,11 @@
         }
     }
 
-    private async Task AbrirEditarPagoMensual(PagoMensualDTO pagoMensuales)
+    private async Task AbrirEditarPagoMensual(PagoMensualDTO pagoMensual)
     {
-        var parametros = new DialogParameters { ["_pagoMensuales"] = pagoMensuales };
+        var parametros = new DialogParameters { ["_pagoMensual"] = pagoMensual };
 
-        var dialogo = _dialogServicio.Show<MdPagoMensual>("Editar PagoMensual", parametros);
+        var dialogo = _dialogServicio.Show<MdPagoMensual>("Editar Pago Mensual", parametros);
         var resultado = await dialogo.Result;
         if (!resultado.Canceled)
         {
