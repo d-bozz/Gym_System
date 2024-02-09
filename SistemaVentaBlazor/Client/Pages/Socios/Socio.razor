@@ -48,9 +48,7 @@
                         <MudTd DataLabel="IdSocio">@socioRow.IdSocio</MudTd>
                         <MudTd DataLabel="Nombre">@socioRow.Nombre</MudTd>
                         <MudTd DataLabel="Apellido">@socioRow.Apellido</MudTd>
-                        <MudTd DataLabel="Cedula">@socioRow.Cedula</MudTd>
-                            <p class="text-secondary mb-1">Cédula: @FormatoCedula(socioRow.Cedula)</p>
-
+                        <MudTd DataLabel="Cedula">@FormatoCedula(socioRow.Cedula)</MudTd>
                         <MudTd DataLabel="Activo">
                             @if (socioRow.Activo == true)
                             { 

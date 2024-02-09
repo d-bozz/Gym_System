@@ -119,10 +119,7 @@
         string _mensaje = "";
         bool _resultado;
 
-        if (_pagoMensual.IdSocio == null ||
-            _pagoMensual.Mes == null ||
-            _pagoMensual.Anio == null ||
-            _pagoMensual.Monto == null)
+        if (socioSeleccionado == null || _pagoMensual.Mes == null || _pagoMensual.Anio == null || _pagoMensual.Monto == null)
         {
             _snackBar.Add("Complete los campos requeridos.", Severity.Error, a => a.VisibleStateDuration = 500);
             return;
@@ -148,7 +145,8 @@
             MudDialog.Close(DialogResult.Ok(true));
         }
         else
+        {
             _snackBar.Add("Error al guardar cambios", Severity.Error, a => a.VisibleStateDuration = 500);
-
+        }
     }
 }
